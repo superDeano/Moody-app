@@ -3,7 +3,7 @@
     package="ultramirinc.champs_mood">
     //schiwfty
     //this is a test
-    
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -26,7 +26,8 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
