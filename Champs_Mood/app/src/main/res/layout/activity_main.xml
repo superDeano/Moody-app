@@ -10,4 +10,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ultramirinc.champs_mood.MainActivity">
 
+    <TextView
+        android:text="ARE YOU CONNECTED?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp"
+        android:id="@+id/textView"
+        android:textSize="30sp"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <Button
+        android:text="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btrue"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="201dp" />
+
+    <Button
+        android:text="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bfalse"
+        android:onClick="startLoginActivity"
+        android:elevation="0dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/btrue"
+        android:layout_marginTop="41dp" />
 </RelativeLayout>
