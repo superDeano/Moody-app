@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    private boolean isConnected = true;
+    private boolean isConnected = false;
     private Toolbar toolbar;
 
     @Override
@@ -23,10 +23,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-        /*
-        Button bTrue = (Button) findViewById(R.id.btrue);
-        Button bFalse = (Button) findViewById(R.id.bfalse);
-        */
 
 
         if(!isConnected){
