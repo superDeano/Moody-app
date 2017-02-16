@@ -11,7 +11,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    private boolean isConnected = false;
+    private boolean isConnected = true;
     private Toolbar toolbar;
 
     @Override
@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_add) {
             return true;
         }else if(id == R.id.action_list){
+            Intent intent = new Intent(this, SettingsActivity.class);
+
+            startActivity(intent);
             return true;
         }
 
