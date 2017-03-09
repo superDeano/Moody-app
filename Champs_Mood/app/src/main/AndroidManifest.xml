@@ -40,6 +40,10 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ScheduleAdder"
+            android:label="@string/title_activity_schedule_adder"
             android:theme="@style/AppTheme"></activity>
     </application>
 

@@ -13,13 +13,7 @@
     tools:context="ultramirinc.champs_mood.LoginActivity">
 
 
-    <include
-        android:id="@+id/tool_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        layout="@layout/tool_bar">
 
-    </include>
 
     <!-- Login progress -->
     <ProgressBar
@@ -32,10 +26,13 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        app:srcCompat="@mipmap/ic_launcher"
-        android:id="@+id/imageView" />
+        android:layout_height="186dp"
+        android:paddingTop="0dp"
+        android:id="@+id/imageView"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        app:srcCompat="@drawable/logo" />
 
     <ScrollView
         android:id="@+id/login_form"
@@ -47,7 +44,7 @@
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
             android:paddingBottom="50dp"
-            android:paddingTop="10dp"
+            android:paddingTop="0dp"
             android:dividerPadding="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +53,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 >
 
                 <AutoCompleteTextView

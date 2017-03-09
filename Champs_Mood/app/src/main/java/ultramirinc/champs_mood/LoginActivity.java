@@ -71,9 +71,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
-        toolbar.setTitle("Champlain mood");
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        //toolbar.setTitle("Champlain mood");
+        //setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
         // Set up the login form.
