@@ -380,5 +380,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void startRegisterActivity(){
+        Intent intent = new Intent(this, RegisterActivity.class);
+
+        startActivity(intent);
+    }
 }
 
