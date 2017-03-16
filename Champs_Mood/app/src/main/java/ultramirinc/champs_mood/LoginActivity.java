@@ -381,7 +381,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return super.onOptionsItemSelected(item);
     }
 
-    public void startRegisterActivity(){
+    public void startRegisterActivityView(View view){
         Intent intent = new Intent(this, RegisterActivity.class);
 
         startActivity(intent);
