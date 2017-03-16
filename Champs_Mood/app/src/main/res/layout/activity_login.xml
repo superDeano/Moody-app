@@ -9,7 +9,8 @@
     android:paddingRight= "@dimen/outer_padding"
     android:paddingTop="@dimen/outer_padding"
     android:background="@color/colorPrimary"
-    tools:context="ultramirinc.champs_mood.LoginActivity">
+    tools:context="ultramirinc.champs_mood.LoginActivity"
+    android:id="@+id/login_form">
 
 
 
@@ -47,23 +48,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
-                >
+                />
 
                 <AutoCompleteTextView
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
-                    android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1" />
-
-            </android.support.design.widget.TextInputLayout>
+                    android:maxLines="1"
+                    android:textColor="@android:color/white"
+                    android:fontFamily=""/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"/>
 
                 <EditText
                     android:id="@+id/password"
@@ -78,8 +78,6 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     />
-
-            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/email_sign_in_button"
