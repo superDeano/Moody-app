@@ -47,7 +47,8 @@
             android:id="@+id/btrue"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="201dp" />
+            android:layout_marginBottom="201dp"
+            android:onClick="startMapActivityView"/>
 
         <Button
             android:text="false"
