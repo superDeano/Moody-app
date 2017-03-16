@@ -12,7 +12,8 @@
     android:paddingTop="0dp"
     android:dividerPadding="0dp"
     android:background="@color/colorPrimary"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:id="@+id/register_form">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -21,12 +22,6 @@
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
         android:id="@+id/toolbar"/>
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/register_progress" />
 
     <ImageView
         android:layout_width="match_parent"
