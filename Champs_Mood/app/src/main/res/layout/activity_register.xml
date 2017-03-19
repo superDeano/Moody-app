@@ -39,7 +39,7 @@
         android:paddingRight="50dp"
         android:paddingBottom="0dp"
         android:paddingTop="0dp"
-        android:dividerPadding="0dp"
+        android:dividerPadding="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -54,12 +54,12 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:hint="Full Name"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:fontFamily="sans-serif" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -71,11 +71,12 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:hint="@string/prompt_email"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
             android:inputType="textEmailAddress"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -85,15 +86,15 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:hint="@string/prompt_password"
-            android:textColorHint="@android:color/white"
-            android:textColor="@color/white"
             android:imeActionId="@+id/login_text"
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
             android:maxLines="1"
-            />
+            android:textColor="@color/white"
+            android:textColorHint="@android:color/white" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -103,15 +104,15 @@
             android:id="@+id/confirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:hint="Confirm Password"
-            android:textColorHint="@android:color/white"
-            android:textColor="@color/white"
             android:imeActionId="@+id/login_text"
             android:imeActionLabel="@string/action_sign_in_short"
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
             android:maxLines="1"
-            />
+            android:textColor="@color/white"
+            android:textColorHint="@android:color/white" />
 
     <Button
         android:id="@+id/email_sign_in_button"

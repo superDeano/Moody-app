@@ -98,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         });
 
         mRegisterFormView = findViewById(R.id.register_form);
-        mProgressView = findViewById(R.id.login_progress);
+        //mProgressView = findViewById(R.id.login_progress);
 
     }
 

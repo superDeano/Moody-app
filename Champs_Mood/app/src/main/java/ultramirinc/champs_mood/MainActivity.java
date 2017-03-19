@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+//https://codelabs.developers.google.com/codelabs/material-design-style/#0
+
 public class MainActivity extends AppCompatActivity {
 
     private boolean isConnected = true;
