@@ -39,7 +39,7 @@
         android:paddingRight="50dp"
         android:paddingBottom="0dp"
         android:paddingTop="0dp"
-        android:dividerPadding="20dp"
+        android:dividerPadding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
