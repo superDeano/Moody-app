@@ -42,7 +42,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
-        mMap.addMarker(new MarkerOptions().position(champlain).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
         mMap.setIndoorEnabled(true);
         mMap.setMinZoomPreference((float)17.0);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(champlain));
