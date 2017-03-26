@@ -1,14 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/homepage_text"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="156dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/homepage_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="12dp"
+            android:text="Name LastName"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight = "10dp"
+            android:paddingRight="10dp"
+            android:text="Mood:"
+            android:textSize="25sp"
+            android:layout_alignTop="@+id/editText"
+            android:layout_alignStart="@+id/homepage_text" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Possible mood"
+            android:textStyle="italic"
+            android:layout_above="@+id/imageView3"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/small_button"
+            android:scaleType="center"
+            android:paddingTop="10dp"
+            app:srcCompat="@drawable/gps_update_36_fill"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/editText" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="73dp"
+            android:background="@drawable/small_button"
+            android:scaleType="center"
+            app:srcCompat="@drawable/mood_update_32" />
+
+    </RelativeLayout>
+
+    <fragment
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="home"
-        android:textSize="65sp"/>
+        tools:context="ultramirinc.champs_mood.MapsActivity"/>
 
 </LinearLayout>
