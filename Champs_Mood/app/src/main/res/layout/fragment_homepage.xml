@@ -13,7 +13,11 @@
         android:layout_height="156dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:elevation="10dp">
+        android:elevation="5dp"
+        android:paddingRight="15dp"
+        android:layout_marginRight="0dp"
+        android:outlineProvider="bounds"
+        android:background="@android:color/white">
 
         <TextView
             android:id="@+id/homepage_text"
@@ -31,41 +35,45 @@
             android:paddingRight="10dp"
             android:text="Mood:"
             android:textSize="25sp"
-            android:layout_alignTop="@+id/editText"
+            android:layout_alignBaseline="@+id/editText"
+            android:layout_alignBottom="@+id/editText"
             android:layout_alignStart="@+id/homepage_text" />
 
         <EditText
             android:id="@+id/editText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:elevation="1dp"
             android:ems="10"
             android:inputType="textPersonName"
+            android:paddingLeft="10dp"
             android:text="Possible mood"
             android:textStyle="italic"
-            android:layout_above="@+id/imageView3"
-            android:layout_centerHorizontal="true" />
+            android:layout_marginLeft="75dp"
+            android:layout_alignStart="@+id/homepage_text" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/small_button"
             android:scaleType="center"
             android:paddingTop="10dp"
-            app:srcCompat="@drawable/gps_update_36_fill"
+            android:src="@drawable/ic_action_gps_update"
             android:layout_alignParentBottom="true"
             android:layout_alignStart="@+id/editText" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/imageView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="73dp"
+            android:layout_marginEnd="34dp"
             android:background="@drawable/small_button"
             android:scaleType="center"
-            app:srcCompat="@drawable/mood_update_32" />
+            android:src="@drawable/ic_action_update_mood"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/textView2" />
 
     </RelativeLayout>
 

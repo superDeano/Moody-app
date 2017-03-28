@@ -66,6 +66,9 @@ public class TabActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
+
+        mViewPager.setOnTouchListener((v, event) -> {return true;});
+
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -77,20 +80,22 @@ public class TabActivity extends AppCompatActivity {
 
         tabLayout.setupWithViewPager(mViewPager);
 
-
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_tab_home);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_firends);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_search);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_notif);
+        tabLayout.getTabAt(4).setIcon(R.drawable.ic_action_profil);
 
     }
 
     private void setupViewPager(ViewPager viewPager){
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFragment(new HomeFragment(), "Home Page");
-        mSectionsPagerAdapter.addFragment(new FriendsFragment(), "Friend Page");
-        mSectionsPagerAdapter.addFragment(new SearchFragment(), "Search Page");
-        mSectionsPagerAdapter.addFragment(new NotificationFragment(), "notif Page");
-        mSectionsPagerAdapter.addFragment(new ProfilFragment(), "profil Page");
+        mSectionsPagerAdapter.addFragment(new HomeFragment());
+        mSectionsPagerAdapter.addFragment(new FriendsFragment());
+        mSectionsPagerAdapter.addFragment(new SearchFragment());
+        mSectionsPagerAdapter.addFragment(new NotificationFragment());
+        mSectionsPagerAdapter.addFragment(new ProfilFragment());
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-
     }
 
     @Override
@@ -123,9 +128,12 @@ public class TabActivity extends AppCompatActivity {
             mFragmentTitleList.add(title);
         }
 
+        public void addFragment(Fragment fragment) {
+            mFragmentList.add(fragment);
+        }
+
         @Override
         public Fragment getItem(int position) {
-
             return mFragmentList.get(position);
         }
 
@@ -134,12 +142,13 @@ public class TabActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
+        /*
         @Override
         public CharSequence getPageTitle(int position) {
 
             return mFragmentTitleList.get(position);
         }
-
+        */
 
     }
 }

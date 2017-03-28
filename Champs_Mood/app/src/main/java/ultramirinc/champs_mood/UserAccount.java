@@ -1,15 +1,22 @@
 package ultramirinc.champs_mood;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by Étienne Bérubé on 2017-02-07.
  */
 
 public class UserAccount {
-    private long id;
+    private int id;
     private String name;
     private String mood;
+    private Collection<UserAccount> friendList = Collections.synchronizedList(new ArrayList<>());
+    private ArrayList<Break> breaks = new ArrayList<Break>();
 
-    public UserAccount(long id, String name, String mood) {
+    public UserAccount(int id, String name, String mood) {
         this.id = id;
         this.name = name;
         this.mood = mood;
@@ -25,7 +32,7 @@ public class UserAccount {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -45,4 +52,12 @@ public class UserAccount {
         this.mood = mood;
     }
 
+    public void populateFriendList(ArrayList<UserAccount> friends){ //TODO update method
+        for(UserAccount u: friends)
+            this.friendList.add(u);
+    }
+
+    public Collection<UserAccount> getFriendList() {
+        return friendList;
+    }
 }

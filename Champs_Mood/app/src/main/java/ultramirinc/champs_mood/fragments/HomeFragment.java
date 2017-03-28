@@ -106,14 +106,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.moveCamera(CameraUpdateFactory.newLatLng(champlain));//Move camera to Champlain
         CameraPosition oldPos = mMap.getCameraPosition();
 
-        CameraPosition pos = CameraPosition.builder(oldPos).bearing(-103).build(); //rotate
+        CameraPosition pos = CameraPosition.builder(oldPos).bearing(-103).build(); //rotate map
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
 
         mMap.setMinZoomPreference((float)17.3);
         mMap.setMaxZoomPreference(20);
         mMap.getUiSettings().setRotateGesturesEnabled(false);
-        mMap.getUiSettings().setScrollGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
     }
 
