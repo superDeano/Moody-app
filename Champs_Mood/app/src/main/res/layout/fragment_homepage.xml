@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="156dp"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:elevation="5dp">
+        android:elevation="10dp">
 
         <TextView
             android:id="@+id/homepage_text"
@@ -68,7 +70,7 @@
     </RelativeLayout>
 
     <fragment
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:name ="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
