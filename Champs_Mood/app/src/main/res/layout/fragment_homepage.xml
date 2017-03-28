@@ -48,7 +48,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:paddingLeft="10dp"
-            android:text="Possible mood"
+            android:hint= "Possible mood"
             android:textStyle="italic"
             android:layout_marginLeft="75dp"
             android:layout_alignStart="@+id/homepage_text" />
@@ -57,12 +57,11 @@
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/small_button"
-            android:scaleType="center"
-            android:paddingTop="10dp"
-            android:src="@drawable/ic_action_gps_update"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/editText" />
+            android:layout_alignStart="@+id/editText"
+            android:background="@drawable/small_button"
+            android:paddingTop="10dp"
+            android:src="@drawable/ic_action_gps_update" />
 
         <ImageButton
             android:id="@+id/imageView4"
