@@ -2,12 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ultramirinc.champs_mood">
 
-
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -40,7 +39,7 @@
         <activity
             android:name=".ScheduleAdder"
             android:label="@string/title_activity_schedule_adder"
-            android:theme="@android:style/Theme.Dialog" /> <!-- this have been changed from @style/AppTheme -->
+            android:theme="@style/AppTheme" /> <!-- this have been changed from @style/AppTheme -->
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -59,7 +58,8 @@
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".BreakCreator"></activity>
     </application>
 
 </manifest>
