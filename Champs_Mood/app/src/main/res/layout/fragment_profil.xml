@@ -8,8 +8,7 @@
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight= "0dp"
-    android:paddingTop="10dp"
-    android:dividerPadding="10dp">
+    android:paddingTop="10dp">
 
     <TextView
         android:id="@+id/homepageText"
