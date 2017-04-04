@@ -1,5 +1,7 @@
 package ultramirinc.champs_mood;
 
+import android.location.Location;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,11 +17,13 @@ public class UserAccount {
     private String mood;
     private Collection<UserAccount> friendList = Collections.synchronizedList(new ArrayList<>());
     private ArrayList<Break> breaks = new ArrayList<Break>();
+    private Location mLastLocation;
 
-    public UserAccount(int id, String name, String mood) {
+    public UserAccount(int id, String name, String mood, Location location) {
         this.id = id;
         this.name = name;
         this.mood = mood;
+        this.mLastLocation = location;
     }
 
     public UserAccount() {
