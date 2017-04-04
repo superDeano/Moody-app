@@ -56,11 +56,12 @@
             android:id="@+id/enterMood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/small_button"
-            android:scaleType="center"
-            android:src="@drawable/ic_action_update_mood"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:background="@drawable/small_button"
+            android:elevation="0dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_action_update_mood" />
 
     </RelativeLayout>
 
