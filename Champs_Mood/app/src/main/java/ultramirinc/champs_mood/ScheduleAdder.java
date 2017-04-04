@@ -29,13 +29,8 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_adder);
-<<<<<<< HEAD
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-=======
 
-
-                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
->>>>>>> origin/Tabbed_main_activity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
