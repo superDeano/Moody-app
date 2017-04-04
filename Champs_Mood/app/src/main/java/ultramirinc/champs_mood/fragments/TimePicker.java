@@ -39,6 +39,8 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         this.hour = hourOfDay;
         this.minute = minute;
 
+        getActivity().set
+
     }
 
     public int getHour() {

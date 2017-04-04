@@ -29,13 +29,9 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_adder);
-<<<<<<< HEAD
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-=======
 
-
-                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
->>>>>>> origin/Tabbed_main_activity
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -58,11 +54,9 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
 
                 pickTime1.setOnClickListener(v -> {
 
-                    TimePicker mTimePicker = new TimePicker();
+                    DialogFragment mTimePicker = new TimePicker();
                     mTimePicker.show(getSupportFragmentManager(), "Start time");
-                    startMinute = mTimePicker.getMinute();
-                    endMinute = mTimePicker.getHour();
-                    mTimePicker = null;
+
 
                 });
 
@@ -70,11 +64,9 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
 
                 pickTime2.setOnClickListener(v -> {
 
-                    TimePicker mTimePicker = new TimePicker();
+                    DialogFragment mTimePicker = new TimePicker();
                     mTimePicker.show(getSupportFragmentManager(), "End time");
-                    startMinute = mTimePicker.getMinute();
-                    endMinute = mTimePicker.getHour();
-                    mTimePicker = null;
+
 
                 });
 
@@ -102,4 +94,35 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         });
     }
 
+    public static int getStartMinute() {
+        return startMinute;
+    }
+
+    public static void setStartMinute(int startMinute) {
+        ScheduleAdder.startMinute = startMinute;
+    }
+
+    public static int getStartHour() {
+        return startHour;
+    }
+
+    public static void setStartHour(int startHour) {
+        ScheduleAdder.startHour = startHour;
+    }
+
+    public static int getEndHour() {
+        return endHour;
+    }
+
+    public static void setEndHour(int endHour) {
+        ScheduleAdder.endHour = endHour;
+    }
+
+    public static int getEndMinute() {
+        return endMinute;
+    }
+
+    public static void setEndMinute(int endMinute) {
+        ScheduleAdder.endMinute = endMinute;
+    }
 }
