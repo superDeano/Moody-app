@@ -38,10 +38,12 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DialogFragment mDialog = new BreakCreator();
+                mDialog.show(getSupportFragmentManager(), "start break Creator");
 
 
-                Dialog mDialog = new Dialog(context);
-                mDialog.setContentView(R.layout.activity_break_creator);
+                /*
+
 
                 TextView startTime = (TextView) mDialog.findViewById(R.id.start_time);
                 TextView endTime = (TextView) mDialog.findViewById(R.id.end_time);
@@ -87,6 +89,7 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
                 cancel.setOnClickListener( v -> {
                     mDialog.dismiss();
                 });
+                 */
 
 
 
@@ -125,4 +128,12 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
     public static void setEndMinute(int endMinute) {
         ScheduleAdder.endMinute = endMinute;
     }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        //TODO do this shit
+    }
+
+
+
 }

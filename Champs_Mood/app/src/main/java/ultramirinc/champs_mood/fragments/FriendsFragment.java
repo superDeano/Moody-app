@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import ultramirinc.champs_mood.R;
-
 /**
  * Created by Étienne Bérubé on 2017-03-23.
  */
@@ -25,7 +23,7 @@ public class FriendsFragment extends AppCompatActivity {
 
     private List<MyObject> cities = new ArrayList<>();
 
-    public void onCreateView(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

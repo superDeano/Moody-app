@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.text.format.DateFormat;
+import android.widget.TextView;
 
 import java.util.Calendar;
+
+import ultramirinc.champs_mood.R;
 
 /**
  * Created by Étienne Bérubé on 2017-04-02.
@@ -15,6 +18,11 @@ import java.util.Calendar;
 public class TimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     private int hour;
     private int minute;
+    private int id;
+
+    public interface onClockTimeSetListener {
+        void onTimeSetDialog (String inputText);
+    }
 
 
     @Override
@@ -22,10 +30,11 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         // Use the current time as the default values for the picker
         final Calendar c = Calendar.getInstance();
         Bundle bundle = this.getArguments();
+
         if (bundle != null) {
-            this.minute = bundle.getInt("minute", minute);
-            this.hour = bundle.getInt("hour", hour);
+            this.id = bundle.getInt("id", 0);
         }
+
         hour = c.get(Calendar.HOUR_OF_DAY);
         minute = c.get(Calendar.MINUTE);
 
@@ -39,7 +48,10 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         this.hour = hourOfDay;
         this.minute = minute;
 
-        getActivity().set
+        onClockTimeSetListener listener = (onClockTimeSetListener) getTargetFragment();
+        listener.onTimeSetDialog(id+":"+hour+":"+minute);
+
+        dismiss();
 
     }
 
