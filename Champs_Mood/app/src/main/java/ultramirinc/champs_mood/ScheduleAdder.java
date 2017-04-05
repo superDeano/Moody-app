@@ -16,14 +16,15 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.sql.Time;
+import java.util.ArrayList;
+
 import ultramirinc.champs_mood.fragments.TimePicker;
 
-public class ScheduleAdder extends AppCompatActivity implements DialogInterface.OnDismissListener {
+public class ScheduleAdder extends AppCompatActivity implements DialogInterface.OnDismissListener, BreakCreator.OnBreakReady {
     private Context context = this;
-    static int startMinute = 0 ;
-    static int startHour = 0;
-    static int endHour = 0;
-    static int endMinute = 0;
+    private ArrayList<Break> breakList= new ArrayList<Break>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+
+        populateList(breakList);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -97,36 +100,8 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         });
     }
 
-    public static int getStartMinute() {
-        return startMinute;
-    }
-
-    public static void setStartMinute(int startMinute) {
-        ScheduleAdder.startMinute = startMinute;
-    }
-
-    public static int getStartHour() {
-        return startHour;
-    }
-
-    public static void setStartHour(int startHour) {
-        ScheduleAdder.startHour = startHour;
-    }
-
-    public static int getEndHour() {
-        return endHour;
-    }
-
-    public static void setEndHour(int endHour) {
-        ScheduleAdder.endHour = endHour;
-    }
-
-    public static int getEndMinute() {
-        return endMinute;
-    }
-
-    public static void setEndMinute(int endMinute) {
-        ScheduleAdder.endMinute = endMinute;
+    public void populateList(ArrayList<?> list){
+        //TODO get shit from database
     }
 
     @Override
@@ -135,5 +110,15 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
     }
 
 
-
+    @Override
+    public void onBreakReadyListener(String text) {
+        String[] temp = text.split(":");
+        String day = temp[0];
+        int startMinute = Integer.parseInt(temp[1]);
+        int startHour = Integer.parseInt(temp[2]);
+        int endMinute = Integer.parseInt(temp[3]);
+        int endHour = Integer.parseInt(temp[4]);
+        Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
+                new ultramirinc.champs_mood.Time(endHour, endMinute), day);
+    }
 }
