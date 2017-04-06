@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -88,7 +89,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     public void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
-        startLocationUpdates();
+        if(mGoogleApiClient.isConnected()){
+            createGoogleMapClient(); // <- moi
+            startLocationUpdates();
+        }
+
 
     }
 
@@ -103,10 +108,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public void onResume(){
         super.onResume();
-        if(!mGoogleApiClient.isConnected())
+        if(!mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
 
-        startLocationUpdates();
+        }else{
+            createGoogleMapClient();
+            startLocationUpdates();
+        }
+
     }
 
     @Override
@@ -168,8 +177,10 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
     public void startLocationUpdates() {
         checkPermission();
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+        if(mGoogleApiClient != null) { //debug
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }
     }
 
     protected void stopLocationUpdates() {
@@ -178,7 +189,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     mGoogleApiClient,  this);
         }else{
-            Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_SHORT);
+            Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_SHORT).show();
         }
     }
 

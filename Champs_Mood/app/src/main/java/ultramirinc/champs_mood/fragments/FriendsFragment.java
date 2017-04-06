@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class FriendsFragment extends Fragment {
 
     private List<MyObject> cities = new ArrayList<>();
 
-    private Context context = getActivity();
+    private Context context = getContext();
 
 
 
@@ -41,13 +42,17 @@ public class FriendsFragment extends Fragment {
         //remplir la ville
         ajouterVilles();
 
+        for(MyObject m : cities){
+            Log.d("debug", m.getName());
+        }
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         //définit l'agencement des cellules, ici de façon verticale, comme une ListView
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        //pour adapter en grille comme une RecyclerView, avec 2 cellules par ligne
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
+
+
 
         //puis créer un MyAdapter, lui fournir notre liste de villes.
         // cet adapter servira à remplir notre recyclerview

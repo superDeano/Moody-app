@@ -1,6 +1,7 @@
 package ultramirinc.champs_mood.fragments;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +31,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return new MyViewHolder(view);
     }
 
-    //c'est ici que nous allons remplir notre cellule avec le texte/image de chaque MyObjects
+
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
-        MyObject myObject = list.get(position);
+        Log.d("debug",""+ position);
+        MyObject myObject = (MyObject) list.get(position);
+
         myViewHolder.bind(myObject);
     }
 
