@@ -2,9 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ultramirinc.champs_mood.TabActivity">
+
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:orderInCategory="200"
+        android:title="Search"
+        android:icon="@drawable/ic_action_settings"
+        app:showAsAction="always"
+        ></item>
 </menu>

@@ -76,6 +76,14 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="list_day_of_week">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+    </string-array>
+
     <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
