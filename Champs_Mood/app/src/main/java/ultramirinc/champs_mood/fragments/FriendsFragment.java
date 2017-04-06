@@ -28,7 +28,7 @@ public class FriendsFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
-    private List<MyObject> cities = new ArrayList<>();
+    private List<MyFriend> friends = new ArrayList<>();
 
     private Context context = getContext();
 
@@ -39,36 +39,25 @@ public class FriendsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        //remplir la ville
-        ajouterVilles();
-
-        for(MyObject m : cities){
-            Log.d("debug", m.getName());
-        }
+        addFriends();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
-        //définit l'agencement des cellules, ici de façon verticale, comme une ListView
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-
-
-
-        //puis créer un MyAdapter, lui fournir notre liste de villes.
-        // cet adapter servira à remplir notre recyclerview
-        recyclerView.setAdapter(new MyAdapter(cities));
+        recyclerView.setAdapter(new MyAdapter(friends));
 
         return view;
     }
 
 
-    private void ajouterVilles() {
-        cities.add(new MyObject("Owen Bross", "Hungry", "In Break"));
-        cities.add(new MyObject("Gab Cote", "Lit", "Break in 15 minutes"));
-        cities.add(new MyObject("Francois Kekesi", "Working", "In Break"));
-        cities.add(new MyObject("Dany", "Programming", "Break in 1 hour"));
-        cities.add(new MyObject("Alex", "Studying", "Break in 1.5 hour"));
-        cities.add(new MyObject("Ming", "Chilling", "In Break"));
+    private void addFriends() {
+        friends.add(new MyFriend("Owen Bross", "Hungry", "In Break"));
+        friends.add(new MyFriend("Gab Cote", "Lit", "Break in 15 minutes"));
+        friends.add(new MyFriend("Francois Kekesi", "Working", "In Break"));
+        friends.add(new MyFriend("Dany", "Programming", "Break in 1 hour"));
+        friends.add(new MyFriend("Alex", "Studying", "Break in 1.5 hour"));
+        friends.add(new MyFriend("Ming", "Chilling", "In Break"));
     }
 
 }

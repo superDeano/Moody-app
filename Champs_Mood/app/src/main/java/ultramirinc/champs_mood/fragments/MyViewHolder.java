@@ -16,23 +16,19 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
     private TextView moodView;
     private TextView breakTextView;
 
-    //itemView est la vue correspondante à 1 cellule
     public MyViewHolder(View itemView) {
         super(itemView);
-
-        //c'est ici que l'on fait nos findView
 
         nameView = (TextView) itemView.findViewById(R.id.name);
         moodView = (TextView) itemView.findViewById(R.id.mood);
         breakTextView = (TextView) itemView.findViewById(R.id.breakText);
     }
 
-    //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
-    public void bind(MyObject myObject){
-        nameView.setText(myObject.getName());
-        moodView.setText(myObject.getMood());
+    public void bind(MyFriend myFriend){
+        nameView.setText(myFriend.getName());
+        moodView.setText(myFriend.getMood());
 
-        breakTextView.setText(myObject.getBreakText());
+        breakTextView.setText(myFriend.getBreakText());
     }
 
 }

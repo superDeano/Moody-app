@@ -1,16 +1,16 @@
 package ultramirinc.champs_mood.fragments;
 
 /**
- * Created by William on 2017-04-04.
+ * Created by William on 2017-04-06.
  */
 
-public class MyObject {
+public class MyFriend {
 
     private String name;
     private String mood;
     private String breakText;
 
-    public MyObject(String name, String mood, String breakText) {
+    public MyFriend(String name, String mood, String breakText) {
         this.name = name;
         this.mood = mood;
         this. breakText = breakText;
