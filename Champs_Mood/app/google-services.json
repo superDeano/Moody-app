@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "709512063692",
+    "firebase_url": "https://booming-domain-161102.firebaseio.com",
+    "project_id": "booming-domain-161102",
+    "storage_bucket": "booming-domain-161102.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709512063692:android:dbd89cfec5026282",
+        "android_client_info": {
+          "package_name": "ultramirinc.champs_mood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709512063692-smah3iek54b2s5bj8n9c9qvu5bs5p5s0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ultramirinc.champs_mood",
+            "certificate_hash": "f92b2955dc2c9482211ae4c917c28326d8295728"
+          }
+        },
+        {
+          "client_id": "709512063692-2f0u9v3li56947lnc192iksa2u1rqoh6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWieMyQE57rCDZj3uOrDdjxJDIinaXcO4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "709512063692-2f0u9v3li56947lnc192iksa2u1rqoh6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

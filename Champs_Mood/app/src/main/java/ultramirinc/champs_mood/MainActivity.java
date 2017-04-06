@@ -86,4 +86,10 @@ public class MainActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+
+    public void startTabActivityView(View view){
+        Intent intent = new Intent(this, TabActivity.class);
+
+        startActivity(intent);
+    }
 }

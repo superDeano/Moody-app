@@ -19,7 +19,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
-        debug{
+        debug {
             debuggable true
         }
         release {
@@ -37,7 +37,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile 'com.google.android.gms:play-services-maps:10.2.0'
+    compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.android.support:cardview-v7:+'
     testCompile 'junit:junit:4.12'
 }
