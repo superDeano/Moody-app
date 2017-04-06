@@ -8,10 +8,12 @@ public class MyObject {
 
     private String name;
     private String mood;
+    private String breakText;
 
-    public MyObject(String name, String mood) {
+    public MyObject(String name, String mood, String breakText) {
         this.name = name;
         this.mood = mood;
+        this. breakText = breakText;
     }
 
     public String getName() {
@@ -28,5 +30,13 @@ public class MyObject {
 
     public void setMood(String mood) {
         this.mood = mood;
+    }
+
+    public String getBreakText() {
+        return breakText;
+    }
+
+    public void setBreakText(String breakText) {
+        this.breakText = breakText;
     }
 }
