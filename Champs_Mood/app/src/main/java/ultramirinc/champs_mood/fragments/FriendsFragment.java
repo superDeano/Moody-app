@@ -1,5 +1,6 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,35 +13,44 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
+
+import ultramirinc.champs_mood.R;
 
 /**
  * Created by Étienne Bérubé on 2017-03-23.
  */
 
-public class FriendsFragment extends AppCompatActivity {
+public class FriendsFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
     private List<MyObject> cities = new ArrayList<>();
 
-    public void onCreate(Bundle savedInstanceState) {
+    private Context context = getActivity();
+
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
         //remplir la ville
         ajouterVilles();
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         //définit l'agencement des cellules, ici de façon verticale, comme une ListView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         //pour adapter en grille comme une RecyclerView, avec 2 cellules par ligne
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
 
         //puis créer un MyAdapter, lui fournir notre liste de villes.
         // cet adapter servira à remplir notre recyclerview
         recyclerView.setAdapter(new MyAdapter(cities));
+
+        return view;
     }
 
 

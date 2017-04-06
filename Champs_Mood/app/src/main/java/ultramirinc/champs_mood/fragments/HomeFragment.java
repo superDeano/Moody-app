@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -92,6 +93,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
     }
 
+
     public void onStop() {
         super.onStop();
         stopLocationUpdates();
@@ -120,6 +122,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        if(mGoogleApiClient.isConnected()){
+            Log.d("debug", "Google_Api_Client: It was connected on (onConnected) function, working as it should.");
+        }
+        else{
+            Log.d("debug", "Google_Api_Client: It was NOT connected on (onConnected) function, It is definetly bugged.");
+        }
         createRequestLocation();
         startLocationUpdates();
     }
@@ -168,8 +176,12 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
     public void startLocationUpdates() {
         checkPermission();
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+        if(mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }else{
+            Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_SHORT);
+        }
     }
 
     protected void stopLocationUpdates() {
