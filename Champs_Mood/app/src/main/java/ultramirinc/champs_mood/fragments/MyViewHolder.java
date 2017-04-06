@@ -33,12 +33,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
         textViewView.setText(myObject.getText());
 
 
-
-
-
-
-
-        
     }
 
 }
