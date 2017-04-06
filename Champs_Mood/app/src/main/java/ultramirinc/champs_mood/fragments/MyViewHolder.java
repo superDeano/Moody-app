@@ -13,7 +13,8 @@ import ultramirinc.champs_mood.R;
 
 public class MyViewHolder extends RecyclerView.ViewHolder{
 
-    private TextView textViewView;
+    private TextView nameView;
+    private TextView moodView;
 
     //itemView est la vue correspondante à 1 cellule
     public MyViewHolder(View itemView) {
@@ -21,12 +22,15 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
 
         //c'est ici que l'on fait nos findView
 
-        textViewView = (TextView) itemView.findViewById(R.id.text);
+        nameView = (TextView) itemView.findViewById(R.id.name);
+        moodView = (TextView) itemView.findViewById(R.id.mood);
     }
 
     //puis ajouter une fonction pour remplir la cellule en fonction d'un MyObject
     public void bind(MyObject myObject){
-        textViewView.setText(myObject.getText());
+        nameView.setText(myObject.getName());
+        moodView.setText(myObject.getMood());
+
     }
 
 }

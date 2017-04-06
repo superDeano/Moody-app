@@ -6,17 +6,27 @@ package ultramirinc.champs_mood.fragments;
 
 public class MyObject {
 
-    private String text;
+    private String name;
+    private String mood;
 
-    public MyObject(String text) {
-        this.text = text;
+    public MyObject(String name, String mood) {
+        this.name = name;
+        this.mood = mood;
     }
 
-    public String getText() {
-        return text;
+    public String getName() {
+        return name;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMood() {
+        return mood;
+    }
+
+    public void setMood(String mood) {
+        this.mood = mood;
     }
 }

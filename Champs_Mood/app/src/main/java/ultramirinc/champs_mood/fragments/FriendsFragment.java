@@ -44,12 +44,12 @@ public class FriendsFragment extends AppCompatActivity {
 
 
     private void ajouterVilles() {
-        cities.add(new MyObject("France"));
-        cities.add(new MyObject("Angleterre"));
-        cities.add(new MyObject("Allemagne"));
-        cities.add(new MyObject("Espagne"));
-        cities.add(new MyObject("Italie"));
-        cities.add(new MyObject("Russie"));
+        cities.add(new MyObject("Owen Brosseau", "Hungry"));
+        cities.add(new MyObject("Gabriel Cote", "Relaxin"));
+        cities.add(new MyObject("Francois Kekesi", "Lit"));
+        cities.add(new MyObject("Dany", "Programming"));
+        cities.add(new MyObject("Ming", "Studying"));
+        cities.add(new MyObject("Alex", "Working"));
     }
 
 }
