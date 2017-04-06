@@ -3,20 +3,14 @@ package ultramirinc.champs_mood.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
-
-import ultramirinc.champs_mood.R;
 
 import ultramirinc.champs_mood.R;
 
@@ -27,12 +21,8 @@ import ultramirinc.champs_mood.R;
 public class FriendsFragment extends Fragment {
 
     private RecyclerView recyclerView;
-
     private List<MyFriend> friends = new ArrayList<>();
-
     private Context context = getContext();
-
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,7 +39,6 @@ public class FriendsFragment extends Fragment {
 
         return view;
     }
-
 
     private void addFriends() {
         friends.add(new MyFriend("Owen Bross", "Hungry", "In Break"));

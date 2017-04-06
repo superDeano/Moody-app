@@ -1,7 +1,6 @@
 package ultramirinc.champs_mood.fragments;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,28 +10,28 @@ import java.util.List;
 import ultramirinc.champs_mood.R;
 
 /**
- * Created by William on 2017-04-04.
+ * Created by William on 2017-04-06.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
 
-    List<MyFriend> list;
+    List<MyPerson> list;
 
-    public MyAdapter(List<MyFriend> list) {
+    public MyAdapterSearch(List<MyPerson> list) {
         this.list = list;
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int itemType) {
+    public MyViewHolderSearch onCreateViewHolder(ViewGroup viewGroup, int itemType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_friend,viewGroup,false);
-        return new MyViewHolder(view);
+        return new MyViewHolderSearch(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
-        MyFriend myFriend = list.get(position);
+    public void onBindViewHolder(MyViewHolderSearch myViewHolderSearch, int position) {
+        MyPerson myPerson = list.get(position);
 
-        myViewHolder.bind(myFriend);
+        myViewHolderSearch.bind(myPerson);
     }
 
     @Override
