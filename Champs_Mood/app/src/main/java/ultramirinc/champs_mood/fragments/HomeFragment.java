@@ -161,7 +161,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.getUiSettings().setCompassEnabled(false);
 
         //Add marker on my location
-        updateLocation();
+        //updateLocation();
     }
 
 
@@ -173,8 +173,13 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-                mGoogleApiClient, this);
+        checkPermission();
+        if(mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                    mGoogleApiClient,  this);
+        }else{
+            Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_SHORT);
+        }
     }
 
     private void checkPermission(){
