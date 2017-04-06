@@ -4,14 +4,14 @@ package ultramirinc.champs_mood.fragments;
  * Created by William on 2017-04-06.
  */
 
-public class MyPerson {
+public class Person {
 
     private String name;
     private String mood;
     private String breakText;
     private boolean isFriend;
 
-    public MyPerson(String name, String mood, String breakText, boolean isFriend) {
+    public Person(String name, String mood, String breakText, boolean isFriend) {
         this.name = name;
         this.mood = mood;
         this.breakText = breakText;

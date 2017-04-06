@@ -21,7 +21,7 @@ import ultramirinc.champs_mood.R;
 public class FriendsFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private List<MyFriend> friends = new ArrayList<>();
+    private List<Person> friends = new ArrayList<>();
     private Context context = getContext();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,12 +41,12 @@ public class FriendsFragment extends Fragment {
     }
 
     private void addFriends() {
-        friends.add(new MyFriend("Owen Bross", "Hungry", "In Break"));
-        friends.add(new MyFriend("Gab Cote", "Lit", "Break in 15 minutes"));
-        friends.add(new MyFriend("Francois Kekesi", "Working", "In Break"));
-        friends.add(new MyFriend("Dany", "Programming", "Break in 1 hour"));
-        friends.add(new MyFriend("Alex", "Studying", "Break in 1.5 hour"));
-        friends.add(new MyFriend("Ming", "Chilling", "In Break"));
+        friends.add(new Person("Owen Bross", "Hungry", "In Break", true));
+        friends.add(new Person("Gab Cote", "Lit", "Break in 15 minutes", true));
+        friends.add(new Person("Francois Kekesi", "Working", "In Break", true));
+        friends.add(new Person("Dany", "Programming", "Break in 1 hour", true));
+        friends.add(new Person("Alex", "Studying", "Break in 1.5 hour", true));
+        friends.add(new Person("Ming", "Chilling", "In Break", true));
     }
 
 }

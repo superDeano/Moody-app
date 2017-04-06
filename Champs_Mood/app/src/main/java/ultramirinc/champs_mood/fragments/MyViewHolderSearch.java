@@ -26,11 +26,11 @@ public class MyViewHolderSearch extends RecyclerView.ViewHolder{
         isFriendView = (TextView) itemView.findViewById(R.id.poke);
     }
 
-    public void bind(MyPerson myPerson){
-        nameView.setText(myPerson.getName());
-        moodView.setText(myPerson.getMood());
-        breakTextView.setText(myPerson.getBreakText());
-        isFriendView.setText(myPerson.getFriendStatus());
+    public void bind(Person person){
+        nameView.setText(person.getName());
+        moodView.setText(person.getMood());
+        breakTextView.setText(person.getBreakText());
+        isFriendView.setText(person.getFriendStatus());
     }
 
 }

@@ -16,9 +16,9 @@ import ultramirinc.champs_mood.R;
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-    List<MyFriend> list;
+    List<Person> list;
 
-    public MyAdapter(List<MyFriend> list) {
+    public MyAdapter(List<Person> list) {
         this.list = list;
     }
 
@@ -30,7 +30,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
-        MyFriend myFriend = list.get(position);
+        Person myFriend = list.get(position);
 
         myViewHolder.bind(myFriend);
     }

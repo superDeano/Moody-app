@@ -15,9 +15,9 @@ import ultramirinc.champs_mood.R;
 
 public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
 
-    List<MyPerson> list;
+    List<Person> list;
 
-    public MyAdapterSearch(List<MyPerson> list) {
+    public MyAdapterSearch(List<Person> list) {
         this.list = list;
     }
 
@@ -29,9 +29,9 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
 
     @Override
     public void onBindViewHolder(MyViewHolderSearch myViewHolderSearch, int position) {
-        MyPerson myPerson = list.get(position);
+        Person person = list.get(position);
 
-        myViewHolderSearch.bind(myPerson);
+        myViewHolderSearch.bind(person);
     }
 
     @Override

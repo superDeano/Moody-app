@@ -21,7 +21,7 @@ import ultramirinc.champs_mood.R;
 public class SearchFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private List<MyPerson> people = new ArrayList<>();
+    private List<Person> people = new ArrayList<>();
     private Context context = getContext();
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,12 +41,12 @@ public class SearchFragment extends Fragment {
     }
 
     private void addPeople() {
-        people.add(new MyPerson("Owen Bross", "Hungry", "In Break", true));
-        people.add(new MyPerson("Gab Cote", "Lit", "Break in 15 minutes", false));
-        people.add(new MyPerson("Francois Kekesi", "Working", "In Break", true));
-        people.add(new MyPerson("Dany", "Programming", "Break in 1 hour", true));
-        people.add(new MyPerson("Alex", "Studying", "Break in 1.5 hour", false));
-        people.add(new MyPerson("Ming", "Chilling", "In Break", false));
+        people.add(new Person("Owen Bross", "Hungry", "In Break", true));
+        people.add(new Person("Gab Cote", "Lit", "Break in 15 minutes", false));
+        people.add(new Person("Francois Kekesi", "Working", "In Break", true));
+        people.add(new Person("Dany", "Programming", "Break in 1 hour", true));
+        people.add(new Person("Alex", "Studying", "Break in 1.5 hour", false));
+        people.add(new Person("Ming", "Chilling", "In Break", false));
     }
 
 }
