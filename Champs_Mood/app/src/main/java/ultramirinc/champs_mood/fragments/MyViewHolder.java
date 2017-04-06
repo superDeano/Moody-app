@@ -30,6 +30,15 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
     public void bind(MyObject myObject){
         //textViewView.setText(myObject.getText());
         //Picasso.with(imageView.getContext()).load(myObject.getImageUrl()).centerCrop().fit().into(imageView);
+        textViewView.setText(myObject.getText());
+
+
+
+
+
+
+
+        
     }
 
 }

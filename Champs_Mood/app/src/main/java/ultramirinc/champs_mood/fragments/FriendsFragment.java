@@ -17,6 +17,8 @@ import java.util.zip.Inflater;
 
 import ultramirinc.champs_mood.R;
 
+import ultramirinc.champs_mood.R;
+
 /**
  * Created by Étienne Bérubé on 2017-03-23.
  */
