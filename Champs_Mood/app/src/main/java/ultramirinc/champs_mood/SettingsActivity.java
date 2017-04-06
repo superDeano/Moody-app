@@ -10,12 +10,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
         setContentView(R.layout.activity_settings);
+        Intent intent = getIntent();
+
     }
 
     public void startBreakCreatorActivity(View view){
-        Intent intent = new Intent(this, BreakCreator.class);
+        Intent intent = new Intent(this, ScheduleAdder.class);
 
         startActivity(intent);
     }

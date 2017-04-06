@@ -1,5 +1,6 @@
 package ultramirinc.champs_mood;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import ultramirinc.champs_mood.fragments.TimePicker;
 
 public class BreakCreator extends DialogFragment implements AdapterView.OnItemSelectedListener, TimePicker.onClockTimeSetListener{
 
+
     private String day;
     private int startHour = -1;
     private int startMinute = -1;
@@ -29,7 +31,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     private int endMinute = -1;
     private TextView startTime;
     private TextView endTime;
-    private Context context= getActivity();
+    private Context context;
     private Spinner listDay;
 
     public static BreakCreator newInstance(int title) {
@@ -40,20 +42,6 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         return frag;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //SetContentView(R.layout.activity_break_creator);
-
-        Spinner spinner = (Spinner) getActivity().findViewById(R.id.spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.list_day_of_week, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-       adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-    }
 
     public static BreakCreator newInstance(String title) {
         BreakCreator frag = new BreakCreator();
@@ -64,45 +52,70 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        Activity a;
+
+        if (context instanceof Activity){
+            a=(Activity) context;
+        }
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_break_creator, container);
+        View view = inflater.inflate(R.layout.activity_break_creator, container);
+        //SetContentView(R.layout.activity_break_creator);
+        /*
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.list_day_of_week, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        */
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        context = getActivity();
+
         startTime = (TextView) view.findViewById(R.id.start_time);
         endTime = (TextView) view.findViewById(R.id.end_time);
 
         Button pickTime1 = (Button) view.findViewById(R.id.button1);
 
-        pickTime1.setOnClickListener(v -> {
-
-            TimePicker mTimePicker = new TimePicker();
-            Bundle bundle = new Bundle();
-            bundle.putInt("id", 1);
-            mTimePicker.setArguments(bundle);
-            mTimePicker.setTargetFragment(BreakCreator.this, 0);
-            mTimePicker.show(getFragmentManager(), "Start time");
-
-
-
+        pickTime1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePicker mTimePicker = new TimePicker();
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", 1);
+                mTimePicker.setArguments(bundle);
+                mTimePicker.setTargetFragment(BreakCreator.this, 0);
+                mTimePicker.show(getFragmentManager(), "Start time");
+            }
         });
 
         Button pickTime2 = (Button) view.findViewById(R.id.button2);
 
-        pickTime2.setOnClickListener(v -> {
-
-            DialogFragment mTimePicker = new TimePicker();
-            Bundle bundle = new Bundle();
-            bundle.putInt("id", 2);
-            mTimePicker.setArguments(bundle);
-            mTimePicker.setTargetFragment(BreakCreator.this, 0);
-            mTimePicker.show(getFragmentManager(), "End time");
-
-
+        pickTime2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePicker mTimePicker = new TimePicker();
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", 2);
+                mTimePicker.setArguments(bundle);
+                mTimePicker.setTargetFragment(BreakCreator.this, 0);
+                mTimePicker.show(getFragmentManager(), "Start time");
+            }
         });
 
 

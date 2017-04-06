@@ -36,7 +36,7 @@
         <activity
             android:name=".ScheduleAdder"
             android:label="@string/title_activity_schedule_adder"
-            android:theme="@android:style/Theme.Dialog" /> <!-- this have been changed from @style/AppTheme -->
+            android:theme="@style/AppTheme" /> <!-- this have been changed from @style/AppTheme -->
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -52,6 +52,7 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
+
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
