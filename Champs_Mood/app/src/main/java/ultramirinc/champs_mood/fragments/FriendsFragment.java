@@ -1,5 +1,6 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
+
+import ultramirinc.champs_mood.R;
 
 import ultramirinc.champs_mood.R;
 
@@ -19,37 +23,47 @@ import ultramirinc.champs_mood.R;
  * Created by Étienne Bérubé on 2017-03-23.
  */
 
-public class FriendsFragment extends AppCompatActivity {
+public class FriendsFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
     private List<MyObject> cities = new ArrayList<>();
 
-    public void onCreate(Bundle savedInstanceState) {
+    private Context context = getActivity();
+
+
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
         //remplir la ville
         ajouterVilles();
 
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         //définit l'agencement des cellules, ici de façon verticale, comme une ListView
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        //pour adapter en grille comme une RecyclerView, avec 2 cellules par ligne
+        recyclerView.setLayoutManager(new GridLayoutManager(context, 2));
 
         //puis créer un MyAdapter, lui fournir notre liste de villes.
         // cet adapter servira à remplir notre recyclerview
         recyclerView.setAdapter(new MyAdapter(cities));
+
+        return view;
     }
 
 
     private void ajouterVilles() {
-        cities.add(new MyObject("Owen Brosseau", "Hungry", "Break in 15 minutes"));
-        cities.add(new MyObject("Gabriel Cote", "Relaxin", "In break"));
-        cities.add(new MyObject("Francois Kekesi", "Lit", "Break in 1 hour"));
-        cities.add(new MyObject("Dany", "Programming", "Break in 45 minutes"));
-        cities.add(new MyObject("Ming", "Studying", "Break in 1.5 hours"));
-        cities.add(new MyObject("Alex", "Working", "In break"));
+        cities.add(new MyObject("France","http://www.telegraph.co.uk/travel/destination/article130148.ece/ALTERNATES/w620/parisguidetower.jpg"));
+        cities.add(new MyObject("Angleterre","http://www.traditours.com/images/Photos%20Angleterre/ForumLondonBridge.jpg"));
+        cities.add(new MyObject("Allemagne","http://tanned-allemagne.com/wp-content/uploads/2012/10/pano_rathaus_1280.jpg"));
+        cities.add(new MyObject("Espagne","http://www.sejour-linguistique-lec.fr/wp-content/uploads/espagne-02.jpg"));
+        cities.add(new MyObject("Italie","http://retouralinnocence.com/wp-content/uploads/2013/05/Hotel-en-Italie-pour-les-Vacances2.jpg"));
+        cities.add(new MyObject("Russie","http://www.choisir-ma-destination.com/uploads/_large_russie-moscou2.jpg"));
     }
 
 }
