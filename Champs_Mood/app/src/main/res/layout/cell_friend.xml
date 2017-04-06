@@ -26,13 +26,6 @@
          pour avoir une organisation verticale nous devons
          donc rajouter un LinearLayout -->
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            tools:src="@drawable/gps_update_128" />
-
         <TextView
             android:id="@+id/text"
             android:layout_width="match_parent"
