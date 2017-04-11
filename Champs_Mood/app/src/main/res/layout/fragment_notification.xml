@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.v7.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recyclerView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/homepage_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="notif"
-        android:textSize="65dp"/>
-
-</LinearLayout>
+    android:layout_height="match_parent"/>

@@ -7,27 +7,30 @@ import android.widget.TextView;
 import ultramirinc.champs_mood.R;
 
 /**
- * Created by William on 2017-04-04.
+ * Created by William on 2017-04-06.
  */
 
-public class MyViewHolder extends RecyclerView.ViewHolder{
+public class MyViewHolderSearch extends RecyclerView.ViewHolder{
 
     private TextView nameView;
     private TextView moodView;
     private TextView breakTextView;
+    private TextView isFriendView;
 
-    public MyViewHolder(View itemView) {
+    public MyViewHolderSearch(View itemView) {
         super(itemView);
 
         nameView = (TextView) itemView.findViewById(R.id.name);
         moodView = (TextView) itemView.findViewById(R.id.mood);
         breakTextView = (TextView) itemView.findViewById(R.id.breakText);
+        isFriendView = (TextView) itemView.findViewById(R.id.poke);
     }
 
-    public void bind(Person myFriend){
-        nameView.setText(myFriend.getName());
-        moodView.setText(myFriend.getMood());
-        breakTextView.setText(myFriend.getBreakText());
+    public void bind(Person person){
+        nameView.setText(person.getName());
+        moodView.setText(person.getMood());
+        breakTextView.setText(person.getBreakText());
+        isFriendView.setText(person.getFriendStatus());
     }
 
 }
