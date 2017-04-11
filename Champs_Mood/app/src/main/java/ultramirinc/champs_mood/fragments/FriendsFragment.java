@@ -2,6 +2,7 @@ package ultramirinc.champs_mood.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,15 +33,16 @@ public class FriendsFragment extends Fragment {
 
     private Context context = getContext();
 
-
+    public FriendsFragment(){
+        addFriends();
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
 
-        //remplir la ville
-        ajouterVilles();
+
 
         for(MyObject m : cities){
             Log.d("debug", m.getName());
@@ -61,8 +63,27 @@ public class FriendsFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        Handler h = new Handler();
+        /*h.postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-    private void ajouterVilles() {
+
+
+                h.postDelayed(this, time)
+            }
+        }, 5 min);
+        */
+
+        h.removeCallbacksAndMessages(null);
+    }
+
+
+    private void addFriends() {
+
         cities.add(new MyObject("Owen Bross", "Hungry", "In Break"));
         cities.add(new MyObject("Gab Cote", "Lit", "Break in 15 minutes"));
         cities.add(new MyObject("Francois Kekesi", "Working", "In Break"));

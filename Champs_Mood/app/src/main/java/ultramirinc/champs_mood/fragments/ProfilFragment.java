@@ -11,11 +11,16 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
@@ -34,7 +39,7 @@ import ultramirinc.champs_mood.R;
  */
 
 public class ProfilFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, View.OnTouchListener, LocationListener {
 
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
@@ -44,7 +49,9 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     private String mLatitudeText;
     private String mLongitudeText;
     private View view;
+    private ImageButton mGpsUpdate;
     private LocationRequest mLocationRequest;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,35 +59,75 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null)
                 parent.removeView(view);
-        }
-        try {
-            view = inflater.inflate(R.layout.fragment_profil, container, false);
-        } catch (InflateException e) {
-            return view;
-        } finally {
-            SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
-                    .findFragmentById(R.id.map);
 
 
-            createGoogleMapClient(); // <- moi
-            Log.d("debug", "in");
-            mMap.getMapAsync(this);
-            return view;
+        }else{
+            view = inflater.inflate(R.layout.fragment_homepage, container, false);
         }
+
+        SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mGpsUpdate = (ImageButton) view.findViewById(R.id.update_gps);
+        mGpsUpdate.setEnabled(false);//TODO make it class field
+
+        Log.d("debug", "after inflater");
+        mGpsUpdate.setOnClickListener(this);
+
+        createGoogleMapClient(); // <- moi
+
+        mMap.getMapAsync(this);
+
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        return view;
     }
 
     public void onStart() {
-        mGoogleApiClient.connect();
         super.onStart();
+        if(mGoogleApiClient == null)
+            createGoogleMapClient();
+
+        if(mGoogleApiClient.isConnected()){
+            createGoogleMapClient(); // <- moi
+            startLocationUpdates();
+        }
     }
 
     public void onStop() {
-        mGoogleApiClient.disconnect();
         super.onStop();
+        stopLocationUpdates();
+
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if(!mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.connect();
+
+        }else{
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            stopLocationUpdates();
+        }
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        createRequestLocation();
+        startLocationUpdates();
+        mGpsUpdate.setEnabled(true);
     }
 
     private void createGoogleMapClient(){
-
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -88,7 +135,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 .build();
     }
 
-    private void createLocationRequest() {
+    private void createRequestLocation() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(30000);
         mLocationRequest.setFastestInterval(5000);
@@ -107,10 +154,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(champlain));//Move camera to Champlain
-        CameraPosition oldPos = mMap.getCameraPosition();
-
-        CameraPosition pos = CameraPosition.builder(oldPos).bearing(-103).build(); //rotate map
+        CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
 
@@ -120,20 +164,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         mMap.getUiSettings().setCompassEnabled(false);
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        checkPermission();
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLastLocation != null) {
-            mLatitudeText = String.valueOf(mLastLocation.getLatitude());
-            mLongitudeText = String.valueOf(mLastLocation.getLongitude());
-            Log.d("Coordinates",(mLatitudeText + ", " + mLongitudeText));
-            LatLng me = new LatLng(Double.parseDouble(mLatitudeText), Double.parseDouble(mLongitudeText));
-            mMap.addMarker(new MarkerOptions().position(me).title("me"));
-        }
-
-    }
 
     private void checkPermission(){
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -154,6 +184,26 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
     }
 
+    public void startLocationUpdates() {
+        checkPermission();
+        if(mGoogleApiClient != null) { //debug
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }else{
+            Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    protected void stopLocationUpdates() {
+        checkPermission();
+        if(mGoogleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                    mGoogleApiClient,  this);
+        }else{
+            //Toast.makeText(getActivity(), "something went wrong in stop", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onDestroyView() {
 
@@ -167,4 +217,18 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         super.onDestroyView();
     }
 
+    @Override
+    public void onClick(View v) {
+        //TODO do this
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return false;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        //Do Nothing
+    }
 }

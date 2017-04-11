@@ -2,12 +2,15 @@ package ultramirinc.champs_mood;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import java.util.Calendar;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +18,16 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import ultramirinc.champs_mood.fragments.TimePicker;
 
-public class BreakCreator extends DialogFragment implements AdapterView.OnItemSelectedListener, TimePicker.onClockTimeSetListener{
+public class BreakCreator extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
-
+    private boolean isCancelled = false;
     private String day;
     private int startHour = -1;
     private int startMinute = -1;
@@ -33,7 +37,11 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     private TextView endTime;
     private Context context;
     private Spinner listDay;
+    private TimePickerDialog start;
+    private TimePickerDialog end;
 
+    //OLD DO NOT DELETE
+    /*
     public static BreakCreator newInstance(int title) {
         BreakCreator frag = new BreakCreator();
         Bundle args = new Bundle();
@@ -41,15 +49,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         frag.setArguments(args);
         return frag;
     }
-
-
-    public static BreakCreator newInstance(String title) {
-        BreakCreator frag = new BreakCreator();
-        Bundle args = new Bundle();
-        args.putString("Break Creator", title);
-        frag.setArguments(args);
-        return frag;
-    }
+    */
 
     @Override
     public void onAttach(Context context) {
@@ -67,17 +67,8 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_break_creator, container);
-        //SetContentView(R.layout.activity_break_creator);
-        /*
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.list_day_of_week, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        */
+
+
         return view;
     }
 
@@ -90,31 +81,61 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         startTime = (TextView) view.findViewById(R.id.start_time);
         endTime = (TextView) view.findViewById(R.id.end_time);
 
-        Button pickTime1 = (Button) view.findViewById(R.id.button1);
+        ImageButton pickTime1 = (ImageButton) view.findViewById(R.id.button1);
 
-        pickTime1.setOnClickListener(new View.OnClickListener() {
+        pickTime1.setOnClickListener(new View.OnClickListener() {//TODO optimize
             @Override
             public void onClick(View v) {
-                TimePicker mTimePicker = new TimePicker();
+                TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
+                        startHour = hourOfDay;
+                        startMinute = minute;
+                        setStartTimeView();
+                    }
+                };
+
+                start = new TimePickerDialog(context, listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
+
+                start.show();
+                //Old
+                /*TimePicker mTimePicker = new TimePicker();
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", 1);
                 mTimePicker.setArguments(bundle);
                 mTimePicker.setTargetFragment(BreakCreator.this, 0);
                 mTimePicker.show(getFragmentManager(), "Start time");
+                */
             }
         });
 
-        Button pickTime2 = (Button) view.findViewById(R.id.button2);
+        ImageButton pickTime2 = (ImageButton) view.findViewById(R.id.button2);
 
         pickTime2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
+                        endHour = hourOfDay;
+                        endMinute = minute;
+                        setEndTimeView();
+                    }
+                };
+
+                end = new TimePickerDialog(context, listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
+
+                end.show();
+
+                /*
                 TimePicker mTimePicker = new TimePicker();
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", 2);
                 mTimePicker.setArguments(bundle);
                 mTimePicker.setTargetFragment(BreakCreator.this, 0);
                 mTimePicker.show(getFragmentManager(), "Start time");
+                */
             }
         });
 
@@ -133,8 +154,11 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
         save.setOnClickListener(v -> {
             if(checkIfComplete()){
+                //OLD
+                /*
                 OnBreakReady listener = (OnBreakReady) getActivity();
                 listener.onBreakReadyListener(day+":"+startHour+":"+startMinute+":"+endHour+":"+endMinute);
+                */
                 dismiss();
             }else {
                 Toast toast = Toast.makeText(context, "Unable to create Break, check again", Toast.LENGTH_LONG);
@@ -146,6 +170,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
         cancel.setOnClickListener( v -> {
             //Nothing happens
+            isCancelled = true;
             dismiss();
         });
         getDialog().getWindow().setSoftInputMode(
@@ -165,7 +190,8 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
     }
 
-
+    //Change the implements to add this again (TimePicker.SetOnClockSomething)
+    /*
     @Override
     public void onTimeSetDialog(String inputText) {
         String[] temp = inputText.split(":");
@@ -185,6 +211,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         }
 
     }
+    */
 
     public void setStartTimeView(){
         if(startMinute != -1 && startMinute != -1){
@@ -211,8 +238,33 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
 
     //ONE TIME USE INTERFACE
+    /*
     public interface OnBreakReady{
         public void onBreakReadyListener(String text);
     }
+    */
 
+    public boolean isCancelled() {
+        return isCancelled;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public int getStartHour() {
+        return startHour;
+    }
+
+    public int getStartMinute() {
+        return startMinute;
+    }
+
+    public int getEndHour() {
+        return endHour;
+    }
+
+    public int getEndMinute() {
+        return endMinute;
+    }
 }

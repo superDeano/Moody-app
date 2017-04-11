@@ -15,6 +15,12 @@ import ultramirinc.champs_mood.R;
  * Created by Étienne Bérubé on 2017-04-02.
  */
 
+/**
+ * MIGHT NOT USE ANYMORE! Possible deletion eventually
+ *
+ * KEEP INTACT IN CASE OF REUSE
+ */
+
 public class TimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
     private int hour;
     private int minute;

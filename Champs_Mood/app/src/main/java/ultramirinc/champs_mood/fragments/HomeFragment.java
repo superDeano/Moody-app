@@ -16,6 +16,7 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     private String mLatitudeText;
     private String mLongitudeText;
     private View view;
+    private ImageButton mGpsUpdate;
     private LocationRequest mLocationRequest;
     private Location mLastLocation;
 
@@ -63,45 +65,43 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null)
                 parent.removeView(view);
-        }
-        try {
-            Log.d("debug", "inside TRy");
+
+
+        }else{
             view = inflater.inflate(R.layout.fragment_homepage, container, false);
-
-
-        } catch (Exception e) {
-            Log.d("debug", "error inside try:"+e.toString());
-        } finally {
-            SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
-                    .findFragmentById(R.id.map);
-            ImageButton mGpsUpdate = (ImageButton) view.findViewById(R.id.update_gps);
-            Log.d("debug", "after inflater");
-            mGpsUpdate.setOnClickListener(this);
-
-            createGoogleMapClient(); // <- moi
-
-            mMap.getMapAsync(this);
-            return view;
         }
+
+        SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mGpsUpdate = (ImageButton) view.findViewById(R.id.update_gps);
+        mGpsUpdate.setEnabled(false);//TODO make it class field
+        Log.d("debug", "after inflater");
+        mGpsUpdate.setOnClickListener(this);
+
+        createGoogleMapClient(); // <- moi
+
+        mMap.getMapAsync(this);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        return view;
     }
 
 
     public void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        if(mGoogleApiClient == null)
+            createGoogleMapClient();
+
         if(mGoogleApiClient.isConnected()){
             createGoogleMapClient(); // <- moi
             startLocationUpdates();
         }
-
-
     }
 
     public void onStop() {
         super.onStop();
         stopLocationUpdates();
-        mGoogleApiClient.disconnect();
-
 
     }
 
@@ -112,25 +112,24 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             mGoogleApiClient.connect();
 
         }else{
-            createGoogleMapClient();
             startLocationUpdates();
         }
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
         if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
             stopLocationUpdates();
         }
+        mGoogleApiClient.disconnect();
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         createRequestLocation();
         startLocationUpdates();
+        mGpsUpdate.setEnabled(true);
     }
 
 
@@ -157,12 +156,15 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
         // Add a marker in Sydney and move the camera
         LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(champlain));//Move camera to Champlain
+
         mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
 
-        CameraPosition oldPos = mMap.getCameraPosition();
-        CameraPosition pos = CameraPosition.builder(oldPos).bearing(-103).build(); //rotate map
+        CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
+
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(champlain));//Move camera to Champlain
+        mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
 
         mMap.setMinZoomPreference((float)17.3);
         mMap.setMaxZoomPreference(20);
@@ -180,6 +182,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         if(mGoogleApiClient != null) { //debug
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
+        }else{
+            Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -189,7 +193,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     mGoogleApiClient,  this);
         }else{
-            Toast.makeText(getActivity(), "something went wrong", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "something went wrong in stop", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -202,6 +206,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                     MY_PERMISSION_ACCESS_FINE_LOCATION );
         }
     }
+
+
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -226,26 +232,32 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         super.onDestroyView();
     }
 
-    public void updateLocation(){
+    public void updateLocation(){ //TODO add parameter true/false
         checkPermission();
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-            mGoogleApiClient);
+        if(mGoogleApiClient.isConnected()) {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                    mGoogleApiClient);
 
-        if (mLastLocation != null) {
+            if (mLastLocation != null) {
 
-            mLatitudeText = String.valueOf(mLastLocation.getLatitude());
-            mLongitudeText = String.valueOf(mLastLocation.getLongitude());
+                mLatitudeText = String.valueOf(mLastLocation.getLatitude());
+                mLongitudeText = String.valueOf(mLastLocation.getLongitude());
 
-            Log.d("Coordinates",(mLatitudeText + ", " + mLongitudeText));
+                Log.d("Coordinates",(mLatitudeText + ", " + mLongitudeText));
 
 
-            LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(me).title("me"));
+                LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(me).title("me"));
 
-        }else {
-            Log.d("debug", "fused not working");
+            }else {
+                Log.d("debug", "fused not working");
 
+            }
+        } else{
+            Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     @Override
