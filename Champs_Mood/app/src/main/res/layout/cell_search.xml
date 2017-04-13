@@ -49,7 +49,7 @@
                 android:background="@drawable/small_button"
                 android:scaleType="center"
                 android:textColor="@color/white"
-                android:text="Poke !"
+                android:text="Add"
                 android:textStyle="bold" />
 
         </RelativeLayout>

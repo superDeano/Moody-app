@@ -15,7 +15,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -62,7 +67,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
 
         }else{
-            view = inflater.inflate(R.layout.fragment_homepage, container, false);
+            view = inflater.inflate(R.layout.fragment_profil, container, false);
         }
 
         SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
@@ -77,6 +82,43 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         mMap.getMapAsync(this);
 
+        TextView name = (TextView)view.findViewById(R.id.profil_text);
+
+        name.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
+
+        Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
+        mSwitch.setChecked(false);
+
+        RadioButton button1 = (RadioButton) view.findViewById(R.id.radioButton1);
+        RadioButton button2 = (RadioButton) view.findViewById(R.id.radioButton2);
+        RadioButton button3 = (RadioButton) view.findViewById(R.id.radioButton3);
+        button1.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+
+        //TODO change this for databse
+        mSwitch.setChecked(false);
+
+
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(!isChecked){
+                    button1.setEnabled(false);
+                    button2.setEnabled(false);
+                    button3.setEnabled(false);
+                }else{
+                    button1.setEnabled(true);
+                    button2.setEnabled(true);
+                    button3.setEnabled(true);
+                }
+            }
+        });
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 

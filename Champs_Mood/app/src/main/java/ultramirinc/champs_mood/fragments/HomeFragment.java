@@ -14,11 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -54,7 +56,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     private String mLatitudeText;
     private String mLongitudeText;
     private View view;
-    private ImageButton mGpsUpdate;
+
     private LocationRequest mLocationRequest;
     private Location mLastLocation;
 
@@ -73,14 +75,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
         SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
-        mGpsUpdate = (ImageButton) view.findViewById(R.id.update_gps);
-        mGpsUpdate.setEnabled(false);//TODO make it class field
-        Log.d("debug", "after inflater");
-        mGpsUpdate.setOnClickListener(this);
 
         createGoogleMapClient(); // <- moi
 
         mMap.getMapAsync(this);
+
+        TextView name = (TextView)view.findViewById(R.id.mood);
+
+        name.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
+            }
+        });
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -129,7 +136,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     public void onConnected(@Nullable Bundle bundle) {
         createRequestLocation();
         startLocationUpdates();
-        mGpsUpdate.setEnabled(true);
+
     }
 
 

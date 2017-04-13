@@ -68,6 +68,8 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_break_creator, container);
 
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
 
         return view;
     }
@@ -217,14 +219,8 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
 
         if(startMinute != -1 && startMinute != -1){
-            String stringStartHour;
+            String stringStartHour = "" + startHour;
             String stringStartMinute;
-
-            if(startHour < 10) {
-                stringStartHour = "0" + startHour;
-            }else{
-                stringStartHour = "" + startHour;
-            }
 
             if(startMinute < 10) {
                 stringStartMinute = "0" + startMinute;
@@ -240,14 +236,9 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
     public void setEndTimeView(){
         if(endMinute != -1 && endMinute != -1){
-            String stringEndHour;
+            String stringEndHour = "" + endHour;
             String stringEndMinute;
 
-            if(endHour < 10) {
-                stringEndHour = "0" + endHour;
-            }else{
-                stringEndHour = "" + endHour;
-            }
 
             if(endMinute < 10) {
                 stringEndMinute = "0" + endMinute;
