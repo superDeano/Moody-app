@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -86,10 +87,11 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if(dialog instanceof BreakCreator){
-            BreakCreator mBreakCreator = (BreakCreator) dialog;
+        Log.d("debug", "in onDismiss");
+            BreakCreator mBreakCreator = BreakCreator.class.cast(dialog);// This MIGHT not work
+        //TODO cast and shit
 
-            if(!mBreakCreator.isCancelled()){
+            if(!mBreakCreator.isCancelled() ){
                 int startMinute = mBreakCreator.getStartMinute();
                 int startHour = mBreakCreator.getStartHour();
                 int endMinute = mBreakCreator.getEndMinute();
@@ -99,8 +101,11 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
                 Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
                         new ultramirinc.champs_mood.Time(endHour, endMinute), day);
                 breakList.add(mBreak);
-                //getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
-            }
+                Log.d("created", "break added");
+                recyclerView.invalidate();
+
+            }else{
+                Log.d("debug", "is not cancelled");
         }
     }
 
