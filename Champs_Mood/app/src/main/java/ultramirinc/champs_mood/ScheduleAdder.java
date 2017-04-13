@@ -98,7 +98,11 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
 
                 Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
                         new ultramirinc.champs_mood.Time(endHour, endMinute), day);
+                breakList.add(mBreak);
+                //getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
             }
         }
     }
+
+    
 }

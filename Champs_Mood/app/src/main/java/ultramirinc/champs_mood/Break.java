@@ -1,12 +1,14 @@
 package ultramirinc.champs_mood;
 
+import android.support.annotation.NonNull;
+
 import java.util.Date;
 
 /**
  * Created by Étienne Bérubé on 2017-03-28.
  */
 
-class Break {
+class Break implements Comparable<Break>{
     private Time start;
     private Time end;
     private String day;
@@ -61,4 +63,9 @@ class Break {
         return getDay().equals(aBreak.getDay());
     }
 
+    @Override
+    public int compareTo(@NonNull Break o) {
+       //TODO this
+        return 0;
+    }
 }
