@@ -25,12 +25,20 @@ class Break {
         this.start = start;
     }
 
+    public String getFromTime(){
+        return start.getHour() + ":" + start.getMinute();
+    }
+
     public Time getEnd() {
         return end;
     }
 
     public void setEnd(Time end) {
         this.end = end;
+    }
+
+    public String getToTime(){
+        return end.getHour() + ":" + end.getMinute();
     }
 
     public String getDay() {
