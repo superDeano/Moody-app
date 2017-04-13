@@ -24,12 +24,14 @@ public class NotificationFragment extends Fragment {
     private List<Notification> nofications = new ArrayList<>();
     private Context context = getContext();
 
+    public NotificationFragment(){
+        addNotifications();
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
-        addNotifications();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 

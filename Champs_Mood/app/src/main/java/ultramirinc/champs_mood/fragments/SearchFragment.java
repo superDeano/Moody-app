@@ -24,12 +24,14 @@ public class SearchFragment extends Fragment {
     private List<Person> people = new ArrayList<>();
     private Context context = getContext();
 
+    public SearchFragment(){
+        addPeople();
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
-        addPeople();
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
