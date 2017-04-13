@@ -214,18 +214,50 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     */
 
     public void setStartTimeView(){
+
+
         if(startMinute != -1 && startMinute != -1){
-            startTime.setText(startHour+":"+startMinute);
+            String stringStartHour;
+            String stringStartMinute;
+
+            if(startHour < 10) {
+                stringStartHour = "0" + startHour;
+            }else{
+                stringStartHour = "" + startHour;
+            }
+
+            if(startMinute < 10) {
+                stringStartMinute = "0" + startMinute;
+            }else{
+                stringStartMinute = "" + startMinute;
+            }
+                startTime.setText(stringStartHour + ":" + stringStartMinute);
+
         }else{
-            startTime.setText("Hour:Minute");
+            startTime.setText("Hr:Min");
         }
     }
 
     public void setEndTimeView(){
         if(endMinute != -1 && endMinute != -1){
-            endTime.setText(endHour+":"+endMinute);
+            String stringEndHour;
+            String stringEndMinute;
+
+            if(endHour < 10) {
+                stringEndHour = "0" + endHour;
+            }else{
+                stringEndHour = "" + endHour;
+            }
+
+            if(endMinute < 10) {
+                stringEndMinute = "0" + endMinute;
+            }else{
+                stringEndMinute = "" + endMinute;
+            }
+            endTime.setText(stringEndHour + ":" + stringEndMinute);
+
         }else{
-            endTime.setText("Hour:Minute");
+            endTime.setText("Hr:Min");
         }
     }
 
