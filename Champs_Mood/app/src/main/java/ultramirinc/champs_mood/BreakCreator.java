@@ -39,9 +39,13 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     private Spinner listDay;
     private TimePickerDialog start;
     private TimePickerDialog end;
+    private OnBreakReadyListener mListener;
 
-    //OLD DO NOT DELETE
-    /*
+    public interface OnBreakReadyListener {
+        void onBreakReady(String breakString);
+    }
+
+
     public static BreakCreator newInstance(int title) {
         BreakCreator frag = new BreakCreator();
         Bundle args = new Bundle();
@@ -49,7 +53,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         frag.setArguments(args);
         return frag;
     }
-    */
+
 
     @Override
     public void onAttach(Context context) {
@@ -157,10 +161,10 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         save.setOnClickListener(v -> {
             if(checkIfComplete()){
                 //OLD
-                /*
-                OnBreakReady listener = (OnBreakReady) getActivity();
-                listener.onBreakReadyListener(day+":"+startHour+":"+startMinute+":"+endHour+":"+endMinute);
-                */
+                day = listDay.getSelectedItem().toString();
+                OnBreakReadyListener parent = (OnBreakReadyListener) getActivity();
+                parent.onBreakReady(day+":"+startHour+":"+startMinute+":"+endHour+":"+endMinute);
+
                 dismiss();
             }else {
                 Toast toast = Toast.makeText(context, "Unable to create Break, check again", Toast.LENGTH_LONG);
@@ -289,5 +293,13 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
     public int getEndMinute() {
         return endMinute;
+    }
+
+    public OnBreakReadyListener getmListener() {
+        return mListener;
+    }
+
+    public void setmListener(OnBreakReadyListener mListener) {
+        this.mListener = mListener;
     }
 }
