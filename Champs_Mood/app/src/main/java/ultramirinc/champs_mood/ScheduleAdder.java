@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,7 +26,7 @@ import ultramirinc.champs_mood.fragments.MyAdapter;
 import ultramirinc.champs_mood.fragments.Person;
 import ultramirinc.champs_mood.fragments.TimePicker;
 
-public class ScheduleAdder extends AppCompatActivity implements DialogInterface.OnDismissListener{
+public class ScheduleAdder extends AppCompatActivity implements DialogInterface.OnDismissListener, BreakCreator.OnBreakReadyListener{
 
     private Context context = this;
     private List<Break> breakList= new ArrayList<>();
@@ -84,8 +85,9 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
     }
     */
 
-    @Override
+    @Override//Is not used anymore
     public void onDismiss(DialogInterface dialog) {
+        /*
         if(dialog instanceof BreakCreator){
             BreakCreator mBreakCreator = (BreakCreator) dialog;
 
@@ -101,8 +103,22 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
                 breakList.add(mBreak);
                 //getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
             }
-        }
+        }*/
     }
 
-    
+
+    @Override
+    public void onBreakReady(String breakString) {
+        String[] temp = breakString.split(":");
+        String day = temp[0];
+        Log.d("debug", ""+day);
+        int startMinute = Integer.parseInt(temp[2]);
+        int startHour = Integer.parseInt(temp[1]);
+        int endMinute = Integer.parseInt(temp[4]);
+        int endHour = Integer.parseInt(temp[3]);
+        Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
+                new ultramirinc.champs_mood.Time(endHour, endMinute), day);
+        breakList.add(mBreak);
+        Log.d("Debug", "breakCreated");
+    }
 }
