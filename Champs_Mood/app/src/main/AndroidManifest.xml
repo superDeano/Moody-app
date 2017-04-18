@@ -56,7 +56,8 @@
             android:label="@string/title_activity_tab"
             android:theme="@style/AppTheme" />
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".NotificationObject"></activity>
+        <activity android:name=".NotificationObject" />
+        <activity android:name=".FriendProfilActivity"></activity>
     </application>
 
 </manifest>
