@@ -206,15 +206,20 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         mMap.getUiSettings().setCompassEnabled(false);
     }
 
+    private boolean checkPermission() {
 
-    private void checkPermission(){
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
                     MY_PERMISSION_ACCESS_COARSE_LOCATION );
+
             ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
                     MY_PERMISSION_ACCESS_FINE_LOCATION );
+            return false;
         }
+
+        return true;
     }
 
     @Override
@@ -227,8 +232,8 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     public void startLocationUpdates() {
-        checkPermission();
-        if(mGoogleApiClient != null) { //debug
+
+        if(checkPermission() && mGoogleApiClient != null) { //debug
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
         }else{
@@ -237,8 +242,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     protected void stopLocationUpdates() {
-        checkPermission();
-        if(mGoogleApiClient.isConnected()) {
+        if(checkPermission() && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     mGoogleApiClient,  this);
         }else{

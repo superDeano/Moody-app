@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.InflateException;
@@ -67,16 +68,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null)
                 parent.removeView(view);
-
-
-        }else{
+        } else {
             view = inflater.inflate(R.layout.fragment_homepage, container, false);
         }
 
         SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
 
-        createGoogleMapClient(); // <- moi
+        createGoogleMapClient();
 
         mMap.getMapAsync(this);
 
@@ -97,11 +96,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
     public void onStart() {
         super.onStart();
-        if(mGoogleApiClient == null)
+        if (mGoogleApiClient == null)
             createGoogleMapClient();
 
-        if(mGoogleApiClient.isConnected()){
-            createGoogleMapClient(); // <- moi
+        if (mGoogleApiClient.isConnected()) {
+            createGoogleMapClient();
             startLocationUpdates();
         }
     }
@@ -204,16 +203,38 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
-    private void checkPermission(){
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    private boolean checkPermission() {
+
+        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
                     MY_PERMISSION_ACCESS_COARSE_LOCATION );
+
             ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
                     MY_PERMISSION_ACCESS_FINE_LOCATION );
+            return false;
         }
+
+        return true;
     }
 
+    // Get permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSION_ACCESS_FINE_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    updateLocation();
+                } else {
+                    // permission was denied
+                }
+                return;
+            }
+        }
+    }
 
 
     @Override
@@ -240,25 +261,19 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     public void updateLocation(){ //TODO add parameter true/false
-        checkPermission();
-        if(mGoogleApiClient.isConnected()) {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                    mGoogleApiClient);
+        if(checkPermission() && mGoogleApiClient.isConnected()) {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
             if (mLastLocation != null) {
-
                 mLatitudeText = String.valueOf(mLastLocation.getLatitude());
                 mLongitudeText = String.valueOf(mLastLocation.getLongitude());
 
                 Log.d("Coordinates",(mLatitudeText + ", " + mLongitudeText));
 
-
                 LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(me).title("me"));
-
-            }else {
+            } else {
                 Log.d("debug", "fused not working");
-
             }
         } else{
             Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
