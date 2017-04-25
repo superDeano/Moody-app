@@ -126,6 +126,7 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         int endHour = Integer.parseInt(temp[3]);
         Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
                 new ultramirinc.champs_mood.Time(endHour, endMinute), day);
+        //TODO debug this...doesn't work all the time
         breakList.add(mBreak);
         Collections.sort(breakList);
         recyclerView.invalidate();//Try <--------------------------------------------------------------
