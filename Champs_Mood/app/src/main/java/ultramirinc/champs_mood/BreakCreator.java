@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +46,12 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         void onBreakReady(String breakString);
     }
 
+    @Override
+    public void onResume(){
+      super.onResume();
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+    }
+
 
     public static BreakCreator newInstance(int title) {
         BreakCreator frag = new BreakCreator();
@@ -71,8 +78,9 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_break_creator, container);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle("Create Your break");
 
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
         return view;
@@ -160,15 +168,20 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
         save.setOnClickListener(v -> {
             if(checkIfComplete()){
-                //OLD
                 day = listDay.getSelectedItem().toString();
                 OnBreakReadyListener parent = (OnBreakReadyListener) getActivity();
                 parent.onBreakReady(day+":"+startHour+":"+startMinute+":"+endHour+":"+endMinute);
 
                 dismiss();
             }else {
-                Toast toast = Toast.makeText(context, "Unable to create Break, check again", Toast.LENGTH_LONG);
-                toast.show();
+                if(startHour > endHour){
+                    Toast toast = Toast.makeText(context, "Careful, your break is quite long", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                if(startMinute == -1 && startHour == -1 && endMinute == -1 && endHour == -1) {
+                    Toast toast = Toast.makeText(context, "Unable to create Break, check again", Toast.LENGTH_LONG);
+                    toast.show();
+                }
             }
         });
 
@@ -258,7 +271,15 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
     public boolean checkIfComplete(){
         if(listDay.getSelectedItem() != null && startMinute != -1 && startHour != -1 && endMinute != -1 && endHour != -1){
-            return true;
+
+            if(startHour<endHour)
+                return true;
+            else{
+                if(startMinute < endMinute)
+                    return true;
+                else
+                    return false;
+            }
         }else
             return false;
     }
