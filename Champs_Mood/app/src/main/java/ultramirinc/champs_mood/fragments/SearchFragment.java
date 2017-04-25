@@ -26,7 +26,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import ultramirinc.champs_mood.MainActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.TabActivity;
 
