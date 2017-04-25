@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:paddingRight="10dp"
+        android:paddingRight="15dp"
         android:titleMargin="0dp"
         android:contentInsetLeft="0dp"
         android:contentInsetStart="0dp"
@@ -28,6 +28,7 @@
         android:id="@+id/sv2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
         android:queryHint="Search"
         android:theme="@style/MySearchViewStyle"
 
