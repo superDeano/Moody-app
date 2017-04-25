@@ -47,4 +47,9 @@ public class Time implements Comparable<Time>{
         else
             return 0;
     }
+
+    @Override
+    public String toString(){
+        return hour + ":" + ((minute < 10) ? " " : "")+ minute;
+    }
 }

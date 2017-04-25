@@ -2,7 +2,9 @@ package ultramirinc.champs_mood;
 
 import android.support.annotation.NonNull;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Étienne Bérubé on 2017-03-28.
@@ -103,4 +105,26 @@ class Break implements Comparable<Break>{
            return this.getStart().compareTo(o.getStart());
        }
     }
+
+    public Time getTimeDifference(){
+
+        GregorianCalendar current = new GregorianCalendar();
+
+        int currentHour = current.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = current.get(Calendar.MINUTE);
+
+        int breakHour = start.getHour();
+        int breakMinute = start.getMinute();
+        int minuteDif;
+
+        int hourDif = (breakHour - currentHour)%24;
+        minuteDif = (breakMinute - currentMinute)%60;
+
+        if((breakMinute - currentMinute) < 0){
+            hourDif--;
+        }
+
+        return new Time(hourDif, minuteDif);
+    }
+
 }

@@ -1,10 +1,12 @@
 package ultramirinc.champs_mood;
 
+import java.util.Calendar;
 import android.location.Location;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -12,6 +14,8 @@ import java.util.List;
  */
 
 public class UserAccount {
+    public static final int IN_BREAK = 0;
+    public static final int NOT_IN_BREAK = 1;
     private int id;
     private String name;
     private String mood;
@@ -63,5 +67,25 @@ public class UserAccount {
 
     public Collection<UserAccount> getFriendList() {
         return friendList;
+    }
+
+    public String getBreakStatus(){
+        GregorianCalendar cal = new GregorianCalendar();
+        int currentDay = cal.get(Calendar.DAY_OF_WEEK);
+        String today;
+
+        switch (currentDay){
+            case 2: today = "Monday"; break;
+            case 3: today = "Tuesday"; break;
+            case 4: today = "Wednesday"; break;
+            case 5: today = "Thursday"; break;
+            case 6: today = "Friday"; break;
+                default: today = "else";
+        }
+
+
+
+
+        return "";
     }
 }
