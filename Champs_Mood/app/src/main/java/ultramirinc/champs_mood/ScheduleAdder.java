@@ -14,12 +14,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import ultramirinc.champs_mood.fragments.MyAdapter;
@@ -33,6 +37,7 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
 
     public ScheduleAdder(){
         populateList();
+        Collections.sort(breakList);
     }
 
     @Override
@@ -54,7 +59,10 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
             @Override
             public void onClick(View view) {
                 BreakCreator mDialog = new BreakCreator();
+                //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
                 mDialog.show(getSupportFragmentManager(), "start break Creator");
+                InputMethodManager input = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                input.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
 
             }
         });
@@ -118,6 +126,8 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
                 new ultramirinc.champs_mood.Time(endHour, endMinute), day);
         breakList.add(mBreak);
+        Collections.sort(breakList);
+        recyclerView.invalidate();//Try <--------------------------------------------------------------
         Log.d("Debug", "breakCreated");
     }
 }

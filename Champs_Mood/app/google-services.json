@@ -1,35 +1,66 @@
 {
   "project_info": {
-    "project_number": "709512063692",
-    "firebase_url": "https://booming-domain-161102.firebaseio.com",
-    "project_id": "booming-domain-161102",
-    "storage_bucket": "booming-domain-161102.appspot.com"
+    "project_number": "409433781782",
+    "firebase_url": "https://moodsv1.firebaseio.com",
+    "project_id": "moodsv1",
+    "storage_bucket": "moodsv1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:709512063692:android:dbd89cfec5026282",
+        "mobilesdk_app_id": "1:409433781782:android:82ccff3113d2a8bd",
         "android_client_info": {
-          "package_name": "ultramirinc.champs_mood"
+          "package_name": "com.moods.www"
         }
       },
       "oauth_client": [
         {
-          "client_id": "709512063692-smah3iek54b2s5bj8n9c9qvu5bs5p5s0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ultramirinc.champs_mood",
-            "certificate_hash": "f92b2955dc2c9482211ae4c917c28326d8295728"
-          }
-        },
-        {
-          "client_id": "709512063692-2f0u9v3li56947lnc192iksa2u1rqoh6.apps.googleusercontent.com",
+          "client_id": "409433781782-8cgf47f7hehur4ogb2fnisru1ksc73ca.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAWieMyQE57rCDZj3uOrDdjxJDIinaXcO4"
+          "current_key": "AIzaSyCUHZLMDmnREZNKpSXbLClU01cxeEezp2o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409433781782:android:8c6a90478ea811c6",
+        "android_client_info": {
+          "package_name": "www.moods.com.moodsv1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409433781782-hmj9ec78mb3tp6a8vkn0160ijmvs7h26.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "www.moods.com.moodsv1",
+            "certificate_hash": "3bfb474b11ae21ff55127d6919e713ed5e4a1c3d"
+          }
+        },
+        {
+          "client_id": "409433781782-8cgf47f7hehur4ogb2fnisru1ksc73ca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUHZLMDmnREZNKpSXbLClU01cxeEezp2o"
         }
       ],
       "services": {
@@ -40,7 +71,51 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "709512063692-2f0u9v3li56947lnc192iksa2u1rqoh6.apps.googleusercontent.com",
+              "client_id": "409433781782-8cgf47f7hehur4ogb2fnisru1ksc73ca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409433781782:android:dbd89cfec5026282",
+        "android_client_info": {
+          "package_name": "ultramirinc.champs_mood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "409433781782-toku8t9gmkod61s48v48cb9e67t3vdh6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ultramirinc.champs_mood",
+            "certificate_hash": "11858298e212d57bc83b400a209dd7dccf83217e"
+          }
+        },
+        {
+          "client_id": "409433781782-8cgf47f7hehur4ogb2fnisru1ksc73ca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUHZLMDmnREZNKpSXbLClU01cxeEezp2o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "409433781782-8cgf47f7hehur4ogb2fnisru1ksc73ca.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

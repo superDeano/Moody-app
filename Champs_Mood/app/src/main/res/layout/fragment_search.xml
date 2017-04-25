@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:paddingRight="10dp"
+        android:theme="?attr/actionBarTheme" />
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/sv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:searchIcon="@drawable/ic_action_search"
+        android:theme="@style/MySearchViewStyle"
+        android:goIcon="@drawable/ic_action_search"
+        android:searchHintIcon="@drawable/ic_action_search"/>
+
+    <android.support.v7.widget.RecyclerView
+
     android:id="@+id/recyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
+
+</LinearLayout>

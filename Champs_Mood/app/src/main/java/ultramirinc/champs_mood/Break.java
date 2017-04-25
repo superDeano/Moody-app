@@ -13,11 +13,21 @@ class Break implements Comparable<Break>{
     private Time start;
     private Time end;
     private String day;
+    private int intDay;
 
     public Break(Time start, Time end, String day){
         this.start = start;
         this.end = end;
         this.day = day;
+
+        switch (day){
+            case ("Monday"): intDay = 1; break;
+            case ("Tuesday"): intDay = 2; break;
+            case ("Wednesday"): intDay = 3; break;
+            case ("Thursday"): intDay = 4; break;
+            case ("Friday"): intDay = 5; break;
+        }
+
     }
 
     public Time getStart() {
@@ -29,7 +39,10 @@ class Break implements Comparable<Break>{
     }
 
     public String getFromTime(){
-        return start.getHour() + ":" + start.getMinute();
+        if(start.getMinute() >= 10)
+            return start.getHour() + ":" + start.getMinute();
+        else
+            return start.getHour() + ":0" + start.getMinute();
     }
 
     public Time getEnd() {
@@ -41,7 +54,10 @@ class Break implements Comparable<Break>{
     }
 
     public String getToTime(){
-        return end.getHour() + ":" + end.getMinute();
+        if(end.getMinute() >= 10)
+            return end.getHour() + ":" + end.getMinute();
+        else
+            return end.getHour() + ":0" + end.getMinute();
     }
 
     public String getDay() {
@@ -52,6 +68,14 @@ class Break implements Comparable<Break>{
         this.day = day;
     }
 
+    public int getIntDay() {
+        return intDay;
+    }
+
+    public void setIntDay(int intDay) {
+        this.intDay = intDay;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,14 +83,24 @@ class Break implements Comparable<Break>{
 
         Break aBreak = (Break) o;
 
-        if (!getStart().equals(aBreak.getStart())) return false;
-        if (!getEnd().equals(aBreak.getEnd())) return false;
-        return getDay().equals(aBreak.getDay());
+        if (getIntDay() != aBreak.getIntDay()) return false;
+        if (getStart() != null ? !getStart().equals(aBreak.getStart()) : aBreak.getStart() != null)
+            return false;
+        if (getEnd() != null ? !getEnd().equals(aBreak.getEnd()) : aBreak.getEnd() != null)
+            return false;
+        return getDay() != null ? getDay().equals(aBreak.getDay()) : aBreak.getDay() == null;
+
     }
 
-    @Override
+
+    @Override//Might change symbole;
     public int compareTo(@NonNull Break o) {
-       //TODO this
-        return 0;
+       if (this.intDay > o.getIntDay())
+           return 1;
+       else if(this.intDay < o.getIntDay())
+           return -1;
+       else {
+           return this.getStart().compareTo(o.getStart());
+       }
     }
 }

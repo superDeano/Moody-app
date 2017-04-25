@@ -1,10 +1,12 @@
 package ultramirinc.champs_mood;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by Étienne Bérubé on 2017-04-04.
  */
 
-public class Time {
+public class Time implements Comparable<Time>{
 
     private int minute;
     private int hour;
@@ -33,5 +35,16 @@ public class Time {
 
     public void setMinute(int minute) {
         this.minute = minute;
+    }
+
+
+    @Override
+    public int compareTo(@NonNull Time o) {
+        if(this.hour > o.getHour())
+            return 1;
+        else if(this.hour < o.getHour())
+            return -1;
+        else
+            return 0;
     }
 }

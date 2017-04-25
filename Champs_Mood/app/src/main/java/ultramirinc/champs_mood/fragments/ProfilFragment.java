@@ -37,13 +37,18 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by Étienne Bérubé on 2017-03-23.
  */
 
-public class ProfilFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class ProfilFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, Observer,
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, View.OnTouchListener, LocationListener {
 
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
@@ -56,7 +61,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     private View view;
     private ImageButton mGpsUpdate;
     private LocationRequest mLocationRequest;
-
+    private User current_user;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -122,7 +127,28 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        LoadProfile();
+
+
         return view;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+        SetUserAndPaintProfile((User) arg);
+    }
+
+    private void LoadProfile() {
+        UserManager um = new UserManager();
+        um.addObserver(this);
+        um.getUserInformations();
+    }
+
+    public void SetUserAndPaintProfile(User u) {
+        this.current_user = u;
+        TextView profileName = (TextView) getView().findViewById(R.id.profil_text);
+        profileName.setText("Hello " + this.current_user.getFirstName());
     }
 
     public void onStart() {
@@ -206,15 +232,21 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         mMap.getUiSettings().setCompassEnabled(false);
     }
 
+    private boolean checkPermission() {
 
-    private void checkPermission(){
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+          /* if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
                     MY_PERMISSION_ACCESS_COARSE_LOCATION );
+
             ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
                     MY_PERMISSION_ACCESS_FINE_LOCATION );
+            return false;
         }
+
+        return true;*/
+        return false;
     }
 
     @Override
@@ -227,8 +259,8 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     public void startLocationUpdates() {
-        checkPermission();
-        if(mGoogleApiClient != null) { //debug
+
+        if(checkPermission() && mGoogleApiClient != null) { //debug
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
         }else{
@@ -237,8 +269,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     protected void stopLocationUpdates() {
-        checkPermission();
-        if(mGoogleApiClient.isConnected()) {
+        if(checkPermission() && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(
                     mGoogleApiClient,  this);
         }else{
