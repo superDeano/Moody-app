@@ -34,4 +34,27 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
         breakTextView.setText(myFriend.getBreakTextTemp());
     }
 
+    public TextView getNameView() {
+        return nameView;
+    }
+
+    public void setNameView(TextView nameView) {
+        this.nameView = nameView;
+    }
+
+    public TextView getMoodView() {
+        return moodView;
+    }
+
+    public void setMoodView(TextView moodView) {
+        this.moodView = moodView;
+    }
+
+    public TextView getBreakTextView() {
+        return breakTextView;
+    }
+
+    public void setBreakTextView(TextView breakTextView) {
+        this.breakTextView = breakTextView;
+    }
 }

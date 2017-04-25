@@ -39,7 +39,7 @@ public class FriendsFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_friends, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        recyclerView.setAdapter(new MyAdapter(friends));
+        recyclerView.setAdapter(new MyAdapter(friends, getContext()));
 
         /*TextView textName = (TextView)view.findViewById(R.id.name);
 

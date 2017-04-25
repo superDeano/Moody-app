@@ -1,5 +1,7 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.UserAccount;
 
@@ -18,9 +21,11 @@ import ultramirinc.champs_mood.UserAccount;
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     List<UserAccount> list;
+    private Context context;
 
-    public MyAdapter(List<UserAccount> list) {
+    public MyAdapter(List<UserAccount> list, Context context) {
         this.list = list;
+        this.context = context;
     }
 
     @Override
@@ -32,7 +37,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
         UserAccount myFriend = list.get(position);
-
+        myViewHolder.getNameView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FriendProfilActivity.class);
+                context.startActivity(intent);
+            }
+        });
         myViewHolder.bind(myFriend);
     }
 
