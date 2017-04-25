@@ -20,6 +20,7 @@ public class UserAccount {
     public static final int IN_BREAK = 0;
     public static final int NOT_IN_BREAK = 1;
 
+
     private String id;
     private String name;
     private String mood;
@@ -28,6 +29,7 @@ public class UserAccount {
     private Collection<UserAccount> friendList = Collections.synchronizedList(new ArrayList<>());
     private ArrayList<Break> breaks = new ArrayList<Break>();
     private Location mLastLocation;
+    private int floor;
 
     public UserAccount() {
         this.name = "DEFAULT";
