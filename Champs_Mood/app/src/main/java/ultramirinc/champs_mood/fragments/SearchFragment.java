@@ -54,14 +54,14 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.search_bar);
-        toolbar.setTitle("");
-        toolbar.inflateMenu(R.menu.search_menu);
+        //Toolbar toolbar = (Toolbar) view.findViewById(R.id.search_bar);
+        //toolbar.setTitle("");
+        //toolbar.inflateMenu(R.menu.search_menu);
 
-        MenuItem item = toolbar.getMenu().findItem(R.id.search);
+        //MenuItem item = toolbar.getMenu().findItem(R.id.search);
 
 
-
+        /*
         android.support.v7.widget.SearchView sv = (android.support.v7.widget.SearchView) view.findViewById(R.id.sv);
         int color = ContextCompat.getColor(getContext(), R.color.colorPrimary);
         sv.setBackgroundColor(color);
@@ -85,7 +85,7 @@ public class SearchFragment extends Fragment {
 
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setIconifiedByDefault(false);
-        searchView.setPadding(0,2,0,0);
+        searchView.setPadding(0,0,0,0);
 
 
 
@@ -111,6 +111,15 @@ public class SearchFragment extends Fragment {
         });
 
         //getActivity().getActionBar().setDisplayShowHomeEnabled(false);
+        */
+
+        SearchView sv = (SearchView) view.findViewById(R.id.search_bar_2).findViewById(R.id.sv2);
+        sv.setIconifiedByDefault(false);
+
+        Toolbar parent =(Toolbar) view.findViewById(R.id.search_bar_2);
+        parent.setPadding(0,0,0,0);//for tab otherwise give space in tab
+        parent.setContentInsetsAbsolute(0,0);
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
