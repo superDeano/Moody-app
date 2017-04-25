@@ -178,18 +178,18 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.getUiSettings().setCompassEnabled(false);
 
         //Add marker on my location
-        //updateLocation();
+        updateLocation();
     }
 
 
 
     public void startLocationUpdates() {
-        checkPermission();
-        if(mGoogleApiClient != null) { //debug
+
+        if(checkPermission() && mGoogleApiClient != null) { //debug
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
         }else{
-            Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -205,7 +205,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
     private boolean checkPermission() {
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+       /* if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
@@ -216,7 +216,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             return false;
         }
 
-        return true;
+        return true;*/
+       return false;
     }
 
     // Get permission result
@@ -276,7 +277,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                 Log.d("debug", "fused not working");
             }
         } else{
-            Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
         }
 
 
