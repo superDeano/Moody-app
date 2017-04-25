@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.UserAccount;
 
 /**
  * Created by Étienne Bérubé on 2017-03-23.
@@ -22,7 +24,7 @@ import ultramirinc.champs_mood.R;
 public class FriendsFragment extends Fragment{
 
     private RecyclerView recyclerView;
-    private List<Person> friends = new ArrayList<>();
+    private List<UserAccount> friends = new ArrayList<>();
     private Context context = getContext();
 
 
@@ -39,27 +41,26 @@ public class FriendsFragment extends Fragment{
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(new MyAdapter(friends));
 
-        TextView textName = (TextView)view.findViewById(R.id.name);
+        /*TextView textName = (TextView)view.findViewById(R.id.name);
 
-        /*textName.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(getActivity(), FriendProfilActivity.class);
-                startActivity(intent);
-            }
-        });*/
+        Iterator<UserAccount> it = friends.iterator();
+
+        while(it.hasNext()){
+            UserAccount p = it.next();
+            p.
+        }*/
 
         return view;
 
     }
 
     private void addFriends() {
-        friends.add(new Person("Owen Bross", "Hungry", "In Break", true));
-        friends.add(new Person("Gab Cote", "Lit", "Break in 15 minutes", true));
-        friends.add(new Person("Francois Kekesi", "Working", "In Break", true));
-        friends.add(new Person("Dany", "Programming", "Break in 1 hour", true));
-        friends.add(new Person("Alex", "Studying", "Break in 1.5 hour", true));
-        friends.add(new Person("Ming", "Chilling", "In Break", true));
+        friends.add(new UserAccount("Owen Bross", "Hungry", "In Break", true));
+        friends.add(new UserAccount("Gab Cote", "Lit", "Break in 15 minutes", true));
+        friends.add(new UserAccount("Francois Kekesi", "Working", "In Break", true));
+        friends.add(new UserAccount("Dany", "Programming", "Break in 1 hour", true));
+        friends.add(new UserAccount("Alex", "Studying", "Break in 1.5 hour", true));
+        friends.add(new UserAccount("Ming", "Chilling", "In Break", true));
     }
 
 }
