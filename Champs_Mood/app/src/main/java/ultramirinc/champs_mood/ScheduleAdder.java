@@ -27,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 
 import ultramirinc.champs_mood.fragments.MyAdapter;
-import ultramirinc.champs_mood.fragments.Person;
 import ultramirinc.champs_mood.fragments.TimePicker;
 
 public class ScheduleAdder extends AppCompatActivity implements DialogInterface.OnDismissListener, BreakCreator.OnBreakReadyListener{

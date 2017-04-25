@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.UserAccount;
 
 /**
  * Created by William on 2017-04-06.
@@ -15,9 +16,9 @@ import ultramirinc.champs_mood.R;
 
 public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
 
-    List<Person> list;
+    List<UserAccount> list;
 
-    public MyAdapterSearch(List<Person> list) {
+    public MyAdapterSearch(List<UserAccount> list) {
         this.list = list;
     }
 
@@ -29,7 +30,7 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
 
     @Override
     public void onBindViewHolder(MyViewHolderSearch myViewHolderSearch, int position) {
-        Person person = list.get(position);
+        UserAccount person = list.get(position);
 
         myViewHolderSearch.bind(person);
     }
