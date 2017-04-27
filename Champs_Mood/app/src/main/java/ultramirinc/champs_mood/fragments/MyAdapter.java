@@ -44,7 +44,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 Intent intent = new Intent(context, FriendProfilActivity.class);
 
                 intent.putExtra("NAME", myViewHolder.getNameView().getText().toString());
-
+                //TODO pass id instead of name
                 context.startActivity(intent);
             }
         });
