@@ -6,23 +6,36 @@
     android:orientation="vertical">
 
 
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:paddingRight="10dp"
-        android:theme="?attr/actionBarTheme" />
+        android:paddingRight="15dp"
+        android:titleMargin="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetStart="0dp"
+        android:contentInsetRight="0dp"
+        android:contentInsetEnd="0dp"
+        android:title=""
+        android:theme="?attr/actionBarTheme" >
 
-    <android.support.v7.widget.SearchView
+
+    <android.widget.SearchView
         android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:searchIcon="@drawable/ic_action_search"
+        android:layout_marginRight="10dp"
+        android:queryHint="Search"
         android:theme="@style/MySearchViewStyle"
-        android:goIcon="@drawable/ic_action_search"
-        android:searchHintIcon="@drawable/ic_action_search"/>
+
+
+       />
+
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
 

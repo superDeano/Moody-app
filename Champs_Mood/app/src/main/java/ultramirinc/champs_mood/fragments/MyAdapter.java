@@ -40,8 +40,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         myViewHolder.getNameView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("listener Debug", "Coucou");
                 Intent intent = new Intent(context, FriendProfilActivity.class);
+
                 intent.putExtra("NAME", myViewHolder.getNameView().getText().toString());
+
                 context.startActivity(intent);
             }
         });

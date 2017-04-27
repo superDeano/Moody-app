@@ -11,6 +11,8 @@ public class User {
     private String uId;
     private String firstName;
     private String lastName;
+
+
     public User(){
         //this constructor is required
     }
