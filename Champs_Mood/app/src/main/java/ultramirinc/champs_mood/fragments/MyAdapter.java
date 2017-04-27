@@ -41,6 +41,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, FriendProfilActivity.class);
+                intent.putExtra("NAME", myViewHolder.getNameView().getText().toString());
                 context.startActivity(intent);
             }
         });
