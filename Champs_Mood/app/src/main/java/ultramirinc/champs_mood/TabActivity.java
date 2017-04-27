@@ -68,6 +68,7 @@ public class TabActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         setupViewPager(mViewPager);
 
+
         mViewPager.setOnTouchListener((v, event) -> {return true;});
 
         mViewPager.setAdapter(mSectionsPagerAdapter);

@@ -8,9 +8,10 @@
     android:paddingBottom="0dp"
     android:paddingLeft="0dp"
     android:paddingRight= "0dp"
-    android:paddingTop="10dp">
+    android:paddingTop="0dp">
 
     <LinearLayout
+        android:paddingTop="10dp"
         android:id="@+id/profil_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
