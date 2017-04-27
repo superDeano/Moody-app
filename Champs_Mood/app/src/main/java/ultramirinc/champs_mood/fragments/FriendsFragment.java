@@ -41,15 +41,6 @@ public class FriendsFragment extends Fragment{
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(new MyAdapter(friends, getContext()));
 
-        /*TextView textName = (TextView)view.findViewById(R.id.name);
-
-        Iterator<UserAccount> it = friends.iterator();
-
-        while(it.hasNext()){
-            UserAccount p = it.next();
-            p.
-        }*/
-
         return view;
 
     }
