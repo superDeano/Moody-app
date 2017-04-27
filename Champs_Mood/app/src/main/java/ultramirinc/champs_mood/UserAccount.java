@@ -140,7 +140,7 @@ public class UserAccount {
         }
     }
 
-    public String getFriendStatusTemp(){ //TODO temporary
+    public String getFriendStatusTemp(){ //temporary
         if(isFriend){
             return "Poke !";
         }
@@ -149,9 +149,76 @@ public class UserAccount {
         }
     }
 
-    public String getBreakTextTemp() {
+    public String getBreakTextTemp(){ //temporary
         return breakText;
-    } //TODO temporary
+    }
+
+    public String getBreakText() {//TODO debug
+        ArrayList<Break> temp = new ArrayList<>();
+
+        Collections.sort(breaks);
+        Iterator<Break> iterator = this.breaks.iterator();
+
+        GregorianCalendar mCalendar = new GregorianCalendar();
+        int dayInt = mCalendar.get(Calendar.DAY_OF_WEEK);
+        int currentHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = mCalendar.get(Calendar.MINUTE);
+
+        String dayName = "";
+
+        switch (dayInt){
+            case (1): dayName = "Monday"; break;
+            case (2): dayName = "Tuesday"; break;
+            case (3): dayName = "Wednesday"; break;
+            case (4): dayName = "Thursday"; break;
+            case (5): dayName = "Friday"; break;
+            default: dayName = "Other";break;
+        }
+
+        //find subset of Elements with same day
+        while(iterator.hasNext()){
+            Break tempBreak = iterator.next();
+            if(tempBreak.getDay().equals(dayName)){
+                temp.add(tempBreak);
+            }
+        }
+
+        for(int i = 0; i < temp.size(); i++){
+            Break tempBreak = temp.get(i);
+
+            if(currentHour < tempBreak.getStart().getHour()){
+                    breakText = "Break in" + tempBreak.getTimeDifference() + " minutes";
+                    break;
+            }
+            if (currentHour == tempBreak.getStart().getHour()){
+                if(currentMinute < tempBreak.getStart().getMinute()){
+                    breakText = "Break in" + tempBreak.getTimeDifference() + " minutes";
+                    break;
+                }else{
+                    breakText = "In break";
+                    break;
+                }
+            }
+            if(currentHour > tempBreak.getStart().getHour() && currentHour < tempBreak.getEnd().getHour()){
+                breakText = "In break";
+                break;
+            }
+
+            if(currentHour == tempBreak.getEnd().getHour()){
+                if(currentMinute < tempBreak.getEnd().getMinute()){
+                    breakText = "In break";
+                    break;
+                }
+            }
+            if(i == (temp.size() - 1) && (((currentHour == tempBreak.getEnd().getHour())
+                    && (currentMinute > tempBreak.getEnd().getMinute())) || (currentHour > tempBreak.getEnd().getHour()))){
+                breakText = "No more breaks today";
+                break;
+            }
+        }
+
+        return breakText;
+    }
 
     public ArrayList<Break> getBreaks() {
         return breaks;

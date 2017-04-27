@@ -112,14 +112,6 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
                 start = new TimePickerDialog(context, listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
 
                 start.show();
-                //Old
-                /*TimePicker mTimePicker = new TimePicker();
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", 1);
-                mTimePicker.setArguments(bundle);
-                mTimePicker.setTargetFragment(BreakCreator.this, 0);
-                mTimePicker.show(getFragmentManager(), "Start time");
-                */
             }
         });
 
@@ -141,15 +133,6 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
                 end = new TimePickerDialog(context, listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
 
                 end.show();
-
-                /*
-                TimePicker mTimePicker = new TimePicker();
-                Bundle bundle = new Bundle();
-                bundle.putInt("id", 2);
-                mTimePicker.setArguments(bundle);
-                mTimePicker.setTargetFragment(BreakCreator.this, 0);
-                mTimePicker.show(getFragmentManager(), "Start time");
-                */
             }
         });
 
@@ -174,7 +157,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
                 dismiss();
             }else {
-                if(startHour > endHour){
+                if(startHour >= endHour){
                     Toast toast = Toast.makeText(context, "Careful, your break is quite long", Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -270,12 +253,13 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     }
 
     public boolean checkIfComplete(){
-        if(listDay.getSelectedItem() != null && startMinute != -1 && startHour != -1 && endMinute != -1 && endHour != -1){
+        if((listDay.getSelectedItem() != null && startMinute != -1 && startHour != -1 && endMinute != -1 && endHour != -1)
+            || (startHour == endHour && startMinute == endMinute)){
 
             if(startHour<endHour)
                 return true;
             else{
-                if(startMinute < endMinute)
+                if((startMinute < endMinute) && (startHour == endHour))
                     return true;
                 else
                     return false;
@@ -283,14 +267,6 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         }else
             return false;
     }
-
-
-    //ONE TIME USE INTERFACE
-    /*
-    public interface OnBreakReady{
-        public void onBreakReadyListener(String text);
-    }
-    */
 
     public boolean isCancelled() {
         return isCancelled;

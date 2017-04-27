@@ -3,7 +3,6 @@ package ultramirinc.champs_mood;
 import android.support.annotation.NonNull;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**

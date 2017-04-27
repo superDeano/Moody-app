@@ -52,7 +52,7 @@ public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule
                     notifyItemRemoved(list.indexOf(myBreak));
                     list.remove(myBreak);
                 }
-            },600);
+            },300);
 
 
 
