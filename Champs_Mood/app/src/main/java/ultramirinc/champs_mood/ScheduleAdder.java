@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -29,7 +30,7 @@ import java.util.List;
 import ultramirinc.champs_mood.fragments.MyAdapter;
 import ultramirinc.champs_mood.fragments.TimePicker;
 
-public class ScheduleAdder extends AppCompatActivity implements DialogInterface.OnDismissListener, BreakCreator.OnBreakReadyListener{
+public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnBreakReadyListener{
 
     private Context context = this;
     private List<Break> breakList= new ArrayList<>();
@@ -49,8 +50,15 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new MyAdapterSchedule(breakList));
 
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Breaks");
+
+        ViewGroup.MarginLayoutParams marginLayoutParams =
+                (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
+        marginLayoutParams.setMargins(0, toolbar.getHeight() , 0,0);
+        recyclerView.setLayoutParams(marginLayoutParams);
 
         setSupportActionBar(toolbar);
 
@@ -77,41 +85,8 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Wednesday"));
         breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Friday"));
     }
-    //Change implements OnBreakReady
-    /*
-    @Override
-    public void onBreakReadyListener(String text) {
-        String[] temp = text.split(":");
-        String day = temp[0];
-        int startMinute = Integer.parseInt(temp[1]);
-        int startHour = Integer.parseInt(temp[2]);
-        int endMinute = Integer.parseInt(temp[3]);
-        int endHour = Integer.parseInt(temp[4]);
-        Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
-                new ultramirinc.champs_mood.Time(endHour, endMinute), day);
-    }
-    */
 
-    @Override//Is not used anymore
-    public void onDismiss(DialogInterface dialog) {
-        /*
-        if(dialog instanceof BreakCreator){
-            BreakCreator mBreakCreator = (BreakCreator) dialog;
 
-            if(!mBreakCreator.isCancelled()){
-                int startMinute = mBreakCreator.getStartMinute();
-                int startHour = mBreakCreator.getStartHour();
-                int endMinute = mBreakCreator.getEndMinute();
-                int endHour = mBreakCreator.getEndHour();
-                String day = mBreakCreator.getDay();
-
-                Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
-                        new ultramirinc.champs_mood.Time(endHour, endMinute), day);
-                breakList.add(mBreak);
-                //getWindow().getDecorView().findViewById(android.R.id.content).invalidate();
-            }
-        }*/
-    }
 
 
     @Override
@@ -125,10 +100,10 @@ public class ScheduleAdder extends AppCompatActivity implements DialogInterface.
         int endHour = Integer.parseInt(temp[3]);
         Break mBreak = new Break(new ultramirinc.champs_mood.Time(startHour, startMinute),
                 new ultramirinc.champs_mood.Time(endHour, endMinute), day);
-        //TODO debug this...doesn't work all the time
+        //TODO send information to DATABASE
         breakList.add(mBreak);
         Collections.sort(breakList);
-        recyclerView.invalidate();//Try <--------------------------------------------------------------
+        recyclerView.getAdapter().notifyDataSetChanged();//Try <--------------------------------------------------------------
         Log.d("Debug", "breakCreated");
     }
 }

@@ -79,7 +79,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_break_creator, container);
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setTitle("Create Your break");
+        toolbar.setTitle("Create your break");
 
 
 
