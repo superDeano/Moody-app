@@ -21,25 +21,25 @@
 
     <LinearLayout
         android:id="@+id/email_login_form"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="0dp"
-        android:dividerPadding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:dividerPadding="10dp"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:paddingTop="0dp">
 
         <Button
             android:id="@+id/modifySchedule"
-            android:background="@drawable/login_button_1"
-            android:textColor="@color/white"
             android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_marginTop="20dp"
-            android:text="Modify Schedule"
+            android:background="@drawable/login_button_1"
             android:onClick="startBreakCreatorActivity"
-            android:textStyle="bold"
-            android:layout_height="45dp" />
+            android:text="Modify Schedule"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -63,25 +63,35 @@
 
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/logOut"
-            android:background="@drawable/login_button_1"
-            android:textColor="@color/white"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="100dp"
-            android:text="Log Out"
-            android:textStyle="bold"
-            android:layout_height="45dp" />
+            android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/credits"
-            android:background="@drawable/login_button_1"
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:text="Credits"
-            android:textStyle="bold"
-            android:layout_height="45dp" />
+            <Button
+                android:id="@+id/logOut"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/login_button_1"
+                android:text="Log Out"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_above="@+id/credits"
+                android:layout_alignParentStart="true" />
+
+            <Button
+                android:id="@+id/credits"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="@drawable/login_button_1"
+                android:text="Credits"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginBottom="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

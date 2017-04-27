@@ -15,8 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".MainActivity"
-            android:label="@string/app_name" >
+
+
+
+        <activity android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".LoginActivity"
-            android:label="@string/app_name" />
+        
 
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -34,11 +37,13 @@
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ScheduleAdder"
             android:label="@string/title_activity_schedule_adder"
-            android:theme="@style/AppTheme" /> <!-- this have been changed from @style/AppTheme -->
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/> <!-- this have been changed from @style/AppTheme -->
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -53,11 +58,13 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -66,9 +73,15 @@
                 android:resource="@xml/searchable" />
 
         </activity>
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".NotificationObject" />
-        <activity android:name=".FriendProfilActivity"/>
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".NotificationObject"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".FriendProfilActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

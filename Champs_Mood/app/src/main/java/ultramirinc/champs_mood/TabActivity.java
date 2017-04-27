@@ -1,27 +1,16 @@
 package ultramirinc.champs_mood;
 
 import android.content.Intent;
-import android.media.audiofx.BassBoost;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
-import android.support.v7.widget.RecyclerView.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +20,7 @@ import ultramirinc.champs_mood.fragments.HomeFragment;
 import ultramirinc.champs_mood.fragments.NotificationFragment;
 import ultramirinc.champs_mood.fragments.ProfilFragment;
 import ultramirinc.champs_mood.fragments.SearchFragment;
+import ultramirinc.champs_mood.fragments.MyViewPager;
 
 public class TabActivity extends AppCompatActivity {
 
@@ -47,7 +37,7 @@ public class TabActivity extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
 
-    private ViewPager mViewPager;
+    private MyViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     @Override
@@ -65,11 +55,9 @@ public class TabActivity extends AppCompatActivity {
 
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (MyViewPager) findViewById(R.id.container);
+        mViewPager.setPagingEnabled(false);
         setupViewPager(mViewPager);
-
-
-        mViewPager.setOnTouchListener((v, event) -> {return true;});
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -90,7 +78,7 @@ public class TabActivity extends AppCompatActivity {
 
     }
 
-    private void setupViewPager(ViewPager viewPager){
+    private void setupViewPager(MyViewPager viewPager){
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mSectionsPagerAdapter.addFragment(new HomeFragment());
         mSectionsPagerAdapter.addFragment(new FriendsFragment());
