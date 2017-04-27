@@ -3,10 +3,18 @@ package ultramirinc.champs_mood;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
-public class FriendProfilActivity extends AppCompatActivity {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+public class FriendProfilActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private GoogleMap mMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -14,5 +22,25 @@ public class FriendProfilActivity extends AppCompatActivity {
         Intent intent = getIntent();
         TextView v = (TextView)findViewById(R.id.profil_text);
         v.setText("bitch");
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        Log.d("debug", "in");
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
+
+        mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
+
+        CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
+
+
+        mMap.setMinZoomPreference((float)17.3);
+        mMap.setMaxZoomPreference(20);
+        mMap.getUiSettings().setRotateGesturesEnabled(false);
+        mMap.getUiSettings().setCompassEnabled(false);
     }
 }
