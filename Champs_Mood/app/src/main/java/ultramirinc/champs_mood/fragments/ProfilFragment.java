@@ -246,7 +246,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         }
 
         return true;*/
-        return false;
+        return true;
     }
 
     @Override

@@ -42,7 +42,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
         SupportMapFragment mMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMap.getMapAsync(this);
-        
+
         TextView name = (TextView) findViewById(R.id.profil_text);
         name.setText(userName);
 

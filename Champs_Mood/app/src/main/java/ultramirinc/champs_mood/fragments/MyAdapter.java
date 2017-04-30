@@ -20,7 +20,7 @@ import ultramirinc.champs_mood.UserAccount;
 
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
-    List<UserAccount> list;
+    private List<UserAccount> list;
     private Context context;
 
     public MyAdapter(List<UserAccount> list, Context context) {
@@ -46,6 +46,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 intent.putExtra("NAME", myViewHolder.getNameView().getText().toString());
                 //TODO pass id instead of name
                 context.startActivity(intent);
+            }
+        });
+
+        myViewHolder.getButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO implement poke
             }
         });
         myViewHolder.bind(myFriend);

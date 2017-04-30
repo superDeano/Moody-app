@@ -2,8 +2,10 @@ package ultramirinc.champs_mood.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import ultramirinc.champs_mood.FriendProfilActivity;
@@ -19,13 +21,15 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
     private TextView nameView;
     private TextView moodView;
     private TextView breakTextView;
+    private Button mButton;
 
     public MyViewHolder(View itemView) {
         super(itemView);
-
+        mButton = (Button) itemView.findViewById(R.id.poke);
         nameView = (TextView) itemView.findViewById(R.id.name);
         moodView = (TextView) itemView.findViewById(R.id.mood);
         breakTextView = (TextView) itemView.findViewById(R.id.breakText);
+
     }
 
     public void bind(UserAccount myFriend){
@@ -56,5 +60,13 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
 
     public void setBreakTextView(TextView breakTextView) {
         this.breakTextView = breakTextView;
+    }
+
+    public Button getButton() {
+        return mButton;
+    }
+
+    public void setButton(Button mButton) {
+        this.mButton = mButton;
     }
 }

@@ -1,12 +1,16 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
+import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
 
 /**
@@ -15,10 +19,12 @@ import ultramirinc.champs_mood.R;
 
 public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNotification> {
 
-    List<Notification> list;
+    private Context context;
+    private List<Notification> list;
 
-    public MyAdapterNotification(List<Notification> list) {
+    public MyAdapterNotification(List<Notification> list, Context context) {
         this.list = list;
+        this.context = context;
     }
 
     @Override
@@ -30,6 +36,25 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
     @Override
     public void onBindViewHolder(MyViewHolderNotification myViewHolderNotification, int position) {
         Notification notification = list.get(position);
+
+        myViewHolderNotification.getSentByView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("listener Debug", "Coucou");
+                Intent intent = new Intent(context, FriendProfilActivity.class);
+
+                intent.putExtra("NAME", myViewHolderNotification.getSentByView().getText().toString());
+                //TODO pass id instead of name
+                context.startActivity(intent);
+            }
+        });
+
+        myViewHolderNotification.getButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO implement poke / add
+            }
+        });
 
         myViewHolderNotification.bind(notification);
     }

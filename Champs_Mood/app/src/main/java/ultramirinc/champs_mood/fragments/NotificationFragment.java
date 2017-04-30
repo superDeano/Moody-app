@@ -37,7 +37,7 @@ public class NotificationFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        recyclerView.setAdapter(new MyAdapterNotification(nofications));
+        recyclerView.setAdapter(new MyAdapterNotification(nofications, getContext()));
 
         return view;
     }

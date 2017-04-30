@@ -69,7 +69,7 @@ public class SearchFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        recyclerView.setAdapter(new MyAdapterSearch(people));
+        recyclerView.setAdapter(new MyAdapterSearch(people, getContext()));
 
         return view;
     }
