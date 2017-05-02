@@ -7,11 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.managers.NotificationManager;
+import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.Notification;
+import ultramirinc.champs_mood.models.Notification_type;
 import ultramirinc.champs_mood.models.User;
 
 /**
@@ -49,10 +54,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         myViewHolder.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO implement poke
+               if (myFriend.isFriend(UserManager.getInstance().getCurrentUser())) {
+                   Poke(myFriend);
+               }
+               else {
+                   if (myFriend.getId().equals(UserManager.getInstance().getCurrentUser().getId())) {
+                       Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_LONG).show();
+                   }
+                   else {
+                       Toast.makeText(context, "Can't poke this user because this user isn't following you back", Toast.LENGTH_LONG).show();
+                   }
+               }
             }
         });
         myViewHolder.bind(myFriend);
+    }
+
+    private void Poke(User user) {
+        User currentUser = UserManager.getInstance().getCurrentUser();
+        Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());
+        NotificationManager nm = new NotificationManager();
+        nm.saveNotification(n);
     }
 
     @Override

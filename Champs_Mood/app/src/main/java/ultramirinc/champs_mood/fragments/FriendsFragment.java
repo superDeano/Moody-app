@@ -49,12 +49,12 @@ public class FriendsFragment extends Fragment{
     }
 
     private void addFriends() {
-        friends.add(new User("Owen Bross", "Hungry", "In Break", true));
+        /*friends.add(new User("Owen Bross", "Hungry", "In Break", true));
         friends.add(new User("Gab Cote", "Lit", "Break in 15 minutes", true));
         friends.add(new User("Francois Kekesi", "Working", "In Break", true));
         friends.add(new User("Dany", "Programming", "Break in 1 hour", true));
         friends.add(new User("Alex", "Studying", "Break in 1.5 hour", true));
-        friends.add(new User("Ming", "Chilling", "In Break", true));
+        friends.add(new User("Ming", "Chilling", "In Break", true));*/
     }
 
 }

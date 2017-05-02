@@ -1,4 +1,4 @@
-package ultramirinc.champs_mood.fragments;
+package ultramirinc.champs_mood.models;
 
 /**
  * Created by William on 2017-04-06.
@@ -12,22 +12,25 @@ public class Notification {
     private static final int NOW_FRIEND = 2;
     private static final int POKED_YOU = 3;
     private String message;
+    private String id;
+    private String recipientId;
     private String senderId;
     private boolean isFriend;
 
-    public Notification(String sentBy, int type, boolean isFriend) {
+    public Notification() {}
+
+    public Notification(String sentBy, int type, boolean isFriend, String senderId, String recipientId) {
 
         this.sentBy = sentBy;
         this.type = type;
         this.isFriend = isFriend;
+        this.recipientId = recipientId;
+        this.senderId = senderId;
 
-        if(this.type == 1){
-            message = "Friend request !";
+        if(this.type == Notification_type.followed_you.getNumVal()) {
+            message = "Followed you!";
         }
-        else if(this.type == 2){
-            message = "Now your friend !";
-        }
-        else if(this.type == 3){
+        else if(this.type == Notification_type.poked_you.getNumVal()){
             message = "Poked you !";
         }
         else{
@@ -81,7 +84,23 @@ public class Notification {
     }
 
     public String getSenderId(){
-       return senderId;
+       return this.senderId;
+    }
+    public void setSenderId(String senderId){
+         this.senderId = senderId;
+    }
+    public String getRecipientId(){
+        return this.recipientId;
+    }
+    public void setRecipientId(String recipientId){
+        this.recipientId = recipientId;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return this.id;
     }
 
     public String getFriendStatus(){
@@ -89,7 +108,7 @@ public class Notification {
             return "Poke !";
         }
         else{
-            return "Add";
+            return "Follow";
         }
     }
 

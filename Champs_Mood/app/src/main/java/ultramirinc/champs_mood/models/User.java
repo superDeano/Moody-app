@@ -25,7 +25,6 @@ public class User {
     private String name;
     private String mood;
     private String breakText; //TODO temporary
-    private boolean isFriend; //TODO temporary
     private ArrayList<User> friendList = new ArrayList<>();
     private ArrayList<Break> breaks = new ArrayList<>();
     private Location mLastLocation;
@@ -40,11 +39,10 @@ public class User {
         this.name = name;
     }
 
-    public User(String name, String mood, String breakText, boolean isFriend) { //TODO temporary
+    public User(String name, String mood, String breakText) { //TODO temporary
         this.name = name;
         this.mood = mood;
         this.breakText = breakText;
-        this.isFriend = isFriend;
     }
 
     public User(String id, String name, String mood, Location location) { //Possible change
@@ -105,6 +103,25 @@ public class User {
         }
         return false;
     }
+    public boolean removeFromFriendList(User user){
+        if (isFriend(user))
+        {
+            boolean found = false;
+            int i = 0;
+            for (User u : friendList) {
+                if (u.getId().equals(user.getId())){
+                    found = true;
+                    break;
+                }
+                i++;
+            }
+            if (found)
+            friendList.remove(i);
+
+            return true;
+        }
+        return false;
+    }
 
     public ArrayList<User> getFriendList() {
         return friendList;
@@ -159,21 +176,12 @@ public class User {
             return "Poke !";
         }
         else{
-            return "Add";
+            return "Follow";
         }
     }
 
     public void setBreakText(String breakText){
         this.breakText = breakText;
-    }
-
-    public String getFriendStatusTemp(){ //temporary
-        if(isFriend){
-            return "Poke !";
-        }
-        else{
-            return "Add";
-        }
     }
 
     public String getBreakTextTemp(){ //temporary
