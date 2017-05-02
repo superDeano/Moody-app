@@ -1,4 +1,4 @@
-package ultramirinc.champs_mood;
+package ultramirinc.champs_mood.models;
 
 import android.support.annotation.NonNull;
 
@@ -10,7 +10,7 @@ import java.util.GregorianCalendar;
  * test
  */
 
-class Break implements Comparable<Break>{
+public class Break implements Comparable<Break>{
     private Time start;
     private Time end;
     private String day;

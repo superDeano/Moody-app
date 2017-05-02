@@ -5,6 +5,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import ultramirinc.champs_mood.models.Break;
+
+
 /**
  * Created by William on 2017-04-13.
  */

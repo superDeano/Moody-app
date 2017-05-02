@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ultramirinc.champs_mood.R;
-import ultramirinc.champs_mood.UserAccount;
+import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-06.
@@ -29,7 +29,7 @@ public class MyViewHolderSearch extends RecyclerView.ViewHolder{
         isFriendView = (TextView) itemView.findViewById(R.id.poke);
     }
 
-    public void bind(UserAccount person){
+    public void bind(User person){
         nameView.setText(person.getName());
         moodView.setText(person.getMood());
         breakTextView.setText(person.getBreakTextTemp());

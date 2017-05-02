@@ -43,8 +43,8 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
                 Log.d("listener Debug", "Coucou");
                 Intent intent = new Intent(context, FriendProfilActivity.class);
 
-                intent.putExtra("NAME", myViewHolderNotification.getSentByView().getText().toString());
-                //TODO pass id instead of name
+                intent.putExtra("userId", notification.getSenderId());
+
                 context.startActivity(intent);
             }
         });

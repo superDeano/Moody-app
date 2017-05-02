@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -15,7 +17,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -61,7 +65,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     private View view;
     private ImageButton mGpsUpdate;
     private LocationRequest mLocationRequest;
-    private User current_user;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,9 +109,32 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         button2.setEnabled(false);
         button3.setEnabled(false);
 
+        ImageButton mMoodButton = (ImageButton) view.findViewById(R.id.enterMood);
+        mMoodButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText editMoodInput = (EditText) getView().findViewById(R.id.editMoodText);
+                String enteredMood = editMoodInput.getText().toString();
+                setMood(enteredMood);
+            }
+        });
+        EditText editBreakText = (EditText) view.findViewById(R.id.editBreakText);
+        editBreakText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                setBreakText(s.toString());
+            }
+        });
+
         //TODO change this for databse
         mSwitch.setChecked(false);
-
 
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -129,7 +155,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         LoadProfile();
 
-
         return view;
     }
 
@@ -139,16 +164,32 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         SetUserAndPaintProfile((User) arg);
     }
 
+    private void setMood(String mood) {
+        UserManager.getInstance().getCurrentUser().setMood(mood);
+
+        UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+        Toast.makeText(getActivity(), "Mood updated!", Toast.LENGTH_SHORT);
+    }
+
+    private void setBreakText(String breakText) {
+        UserManager.getInstance().getCurrentUser().setBreakText(breakText);
+        UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+        Toast.makeText(getActivity(), "Break text updated!", Toast.LENGTH_SHORT);
+    }
+
     private void LoadProfile() {
-        UserManager um = new UserManager();
-        um.addObserver(this);
-        um.getUserInformations();
+        UserManager.getInstance().deleteObservers();
+        UserManager.getInstance().addObserver(this);
+        UserManager.getInstance().getUserInformations();
     }
 
     public void SetUserAndPaintProfile(User u) {
-        this.current_user = u;
-        TextView profileName = (TextView) getView().findViewById(R.id.profil_text);
-        profileName.setText("Hello " + this.current_user.getFirstName());
+        TextView profileName = (TextView) view.findViewById(R.id.profil_text);
+        profileName.setText("Hello " +  UserManager.getInstance().getCurrentUser().getName());
+        EditText editMood = (EditText) view.findViewById(R.id.editMoodText);
+        editMood.setText( UserManager.getInstance().getCurrentUser().getMood());
+        EditText editBreakText = (EditText) view.findViewById(R.id.editBreakText);
+        editBreakText.setText( UserManager.getInstance().getCurrentUser().getBreakText());
     }
 
     public void onStart() {
@@ -233,20 +274,13 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     private boolean checkPermission() {
-
-          /* if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        /*if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    MY_PERMISSION_ACCESS_COARSE_LOCATION );
 
             ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
                     MY_PERMISSION_ACCESS_FINE_LOCATION );
-            return false;
-        }
-
-        return true;*/
-        return true;
+        }*/
+        return false;
     }
 
     @Override
@@ -263,7 +297,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         if(checkPermission() && mGoogleApiClient != null) { //debug
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
-        }else{
+        } else {
             Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
         }
     }

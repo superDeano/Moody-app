@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,12 +13,21 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import ultramirinc.champs_mood.models.User;
 
 
 public class FriendProfilActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private String userName;
+
+    private User friendProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,25 +36,43 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
         Intent intent = getIntent();
 
-
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                userName= null;
-            } else {
-                userName= extras.getString("NAME");
-            }
-        } else {
-            userName= (String) savedInstanceState.getSerializable("NAME");
+        try {
+            String userId = intent.getExtras().get("userId").toString();
+            LoadFriendProfile(userId);
+        }
+        catch (Exception e) {
+            //error occured, don't do nothing.
         }
 
         SupportMapFragment mMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMap.getMapAsync(this);
 
-        TextView name = (TextView) findViewById(R.id.profil_text);
-        name.setText(userName);
+    }
 
+    public void LoadFriendProfile(String userId) {
+        DatabaseReference databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+        Query userQuery = databaseUsers.orderByChild("id").equalTo(userId);
+        ValueEventListener loadInfoListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User friendProfile = null;
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    friendProfile = singleSnapshot.getValue(User.class);
+                }
+                TextView name = (TextView) findViewById(R.id.profil_text);
+                name.setText(friendProfile.getName());
+                TextView mood = (TextView) findViewById(R.id.mood);
+                mood.setText(friendProfile.getMood());
+                TextView breakText = (TextView) findViewById(R.id.breakText);
+                breakText.setText(friendProfile.getBreakText());
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        userQuery.addListenerForSingleValueEvent(loadInfoListener);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ultramirinc.champs_mood;
+package ultramirinc.champs_mood.models;
 
 import android.support.annotation.NonNull;
 

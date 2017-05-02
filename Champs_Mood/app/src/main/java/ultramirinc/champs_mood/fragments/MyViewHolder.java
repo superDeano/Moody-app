@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
-import ultramirinc.champs_mood.UserAccount;
+import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-04.
@@ -32,7 +32,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
 
     }
 
-    public void bind(UserAccount myFriend){
+    public void bind(User myFriend){
         nameView.setText(myFriend.getName());
         moodView.setText(myFriend.getMood());
         breakTextView.setText(myFriend.getBreakTextTemp());

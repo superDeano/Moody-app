@@ -42,7 +42,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/editMood"
+            android:id="@+id/editMoodText"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/mood"
@@ -66,22 +66,31 @@
             android:background="@drawable/small_button"
             android:elevation="0dp"
             android:scaleType="center"
-            android:src="@drawable/ic_action_update_mood" />
+            android:src="@drawable/ic_action_update_mood"
+            />
 
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/breakText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginStart="12dp"
-        android:text="Break Text"
-        android:textSize="20sp" />
+        <TextView
+            android:id="@+id/breakText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="12dp"
+            android:text="Break Text:"
+            android:textSize="20sp" />
 
 
-    <RelativeLayout
+        <EditText
+            android:id="@+id/editBreakText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="What's on your break?" />
+
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp">

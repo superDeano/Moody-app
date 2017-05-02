@@ -12,6 +12,7 @@ public class Notification {
     private static final int NOW_FRIEND = 2;
     private static final int POKED_YOU = 3;
     private String message;
+    private String senderId;
     private boolean isFriend;
 
     public Notification(String sentBy, int type, boolean isFriend) {
@@ -77,6 +78,10 @@ public class Notification {
 
     public void setFriend(boolean friend) {
         isFriend = friend;
+    }
+
+    public String getSenderId(){
+       return senderId;
     }
 
     public String getFriendStatus(){

@@ -8,6 +8,8 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import ultramirinc.champs_mood.managers.UserManager;
+
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
@@ -27,6 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void logOut() {
         FirebaseAuth.getInstance().signOut();
+        UserManager.getInstance().ClearCurrentUser();
         finish();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

@@ -1,45 +1,244 @@
 package ultramirinc.champs_mood.models;
 
 
+import android.location.Location;
+
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+
 
 /**
  * Created by admin on 2017-04-23.
  */
 @IgnoreExtraProperties
 public class User {
+    public static final int IN_BREAK = 0;
+    public static final int NOT_IN_BREAK = 1;
+
     private String uId;
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String mood;
+    private String breakText; //TODO temporary
+    private boolean isFriend; //TODO temporary
+    private ArrayList<User> friendList = new ArrayList<>();
+    private ArrayList<Break> breaks = new ArrayList<Break>();
+    private Location mLastLocation;
+    private int floor;
 
-
-    public User(){
-        //this constructor is required
+    public User() {
     }
 
-    public User(String userId, String firstName, String lastName) {
+    public User(String userId, String name) {
         this.uId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
     }
 
-    public String getUserId() {
+    public User(String name, String mood, String breakText, boolean isFriend) { //TODO temporary
+        this.name = name;
+        this.mood = mood;
+        this.breakText = breakText;
+        this.isFriend = isFriend;
+    }
+
+    public User(String id, String name, String mood, Location location) { //Possible change
+        this.uId = id;
+        this.name = name;
+        this.mood = mood;
+        this.mLastLocation = location;
+    }
+
+    public String getId() {
         return uId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public void setId(String id) {
+        this.uId = id;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getMood() {
+        return mood;
+    }
+
+    public void setMood(String mood) {
+        this.mood = mood;
+    }
+
+    // TODO verify behaviour of this
+    public void populateFriendList(ArrayList<User> friends){ //TODO update method
+        for(User u: friends)
+            this.friendList.add(u);
+    }
+
+    public boolean addToFriendList(User user){
+        if (!isFriend(user))
+        {
+            friendList.add(user);
+            return true;
+        }
+        return false;
+    }
+
+    public ArrayList<User> getFriendList() {
+        return friendList;
+    }
+
+
+    public String getBreakStatus() {
+        GregorianCalendar cal = new GregorianCalendar();
+        int currentDay = cal.get(Calendar.DAY_OF_WEEK);
+        String today;
+
+        switch (currentDay) {
+            case 2:
+                today = "Monday";
+                break;
+            case 3:
+                today = "Tuesday";
+                break;
+            case 4:
+                today = "Wednesday";
+                break;
+            case 5:
+                today = "Thursday";
+                break;
+            case 6:
+                today = "Friday";
+                break;
+            default:
+                today = "else";
+        }
+
+
+        return "";
+    }
+
+    public boolean isFriend(User user){
+
+        Iterator<User> it = friendList.iterator();
+
+        while(it.hasNext()){
+            User friend = it.next();
+
+            if(friend.getId().equals(user.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getFriendStatus(User user){
+        if(isFriend(user)){
+            return "Poke !";
+        }
+        else{
+            return "Add";
+        }
+    }
+
+    public void setBreakText(String breakText){
+        this.breakText = breakText;
+    }
+
+    public String getFriendStatusTemp(){ //temporary
+        if(isFriend){
+            return "Poke !";
+        }
+        else{
+            return "Add";
+        }
+    }
+
+    public String getBreakTextTemp(){ //temporary
+        return breakText;
+    }
+
+    public String getBreakText() {//TODO debug
+        ArrayList<Break> temp = new ArrayList<>();
+
+        Collections.sort(breaks);
+        Iterator<Break> iterator = this.breaks.iterator();
+
+        GregorianCalendar mCalendar = new GregorianCalendar();
+        int dayInt = mCalendar.get(Calendar.DAY_OF_WEEK);
+        int currentHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = mCalendar.get(Calendar.MINUTE);
+
+        String dayName = "";
+
+        switch (dayInt){
+            case (1): dayName = "Monday"; break;
+            case (2): dayName = "Tuesday"; break;
+            case (3): dayName = "Wednesday"; break;
+            case (4): dayName = "Thursday"; break;
+            case (5): dayName = "Friday"; break;
+            default: dayName = "Other";break;
+        }
+
+        //find subset of Elements with same day
+        while(iterator.hasNext()){
+            Break tempBreak = iterator.next();
+            if(tempBreak.getDay().equals(dayName)){
+                temp.add(tempBreak);
+            }
+        }
+
+        for(int i = 0; i < temp.size(); i++){
+            Break tempBreak = temp.get(i);
+
+            if(currentHour < tempBreak.getStart().getHour()){
+                breakText = "Break in" + tempBreak.getTimeDifference() + " minutes";
+                break;
+            }
+            if (currentHour == tempBreak.getStart().getHour()){
+                if(currentMinute < tempBreak.getStart().getMinute()){
+                    breakText = "Break in" + tempBreak.getTimeDifference() + " minutes";
+                    break;
+                }else{
+                    breakText = "In break";
+                    break;
+                }
+            }
+            if(currentHour > tempBreak.getStart().getHour() && currentHour < tempBreak.getEnd().getHour()){
+                breakText = "In break";
+                break;
+            }
+
+            if(currentHour == tempBreak.getEnd().getHour()){
+                if(currentMinute < tempBreak.getEnd().getMinute()){
+                    breakText = "In break";
+                    break;
+                }
+            }
+            if(i == (temp.size() - 1) && (((currentHour == tempBreak.getEnd().getHour())
+                    && (currentMinute > tempBreak.getEnd().getMinute())) || (currentHour > tempBreak.getEnd().getHour()))){
+                breakText = "No more breaks today";
+                break;
+            }
+        }
+
+        return breakText;
+    }
+
+    public ArrayList<Break> getBreaks() {
+        return breaks;
+    }
+
+    public void setBreaks(ArrayList<Break> breaks) {
+        this.breaks = breaks;
+
     }
 }

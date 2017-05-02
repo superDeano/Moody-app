@@ -7,9 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 
 import java.util.List;
+
+import ultramirinc.champs_mood.models.Break;
 
 /**
  * Created by William on 2017-04-13.

@@ -12,7 +12,8 @@ import java.util.List;
 
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
-import ultramirinc.champs_mood.UserAccount;
+import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-06.
@@ -20,9 +21,9 @@ import ultramirinc.champs_mood.UserAccount;
 
 public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
     private Context context;
-    private List<UserAccount> list;
+    private List<User> list;
 
-    public MyAdapterSearch(List<UserAccount> list, Context context) {
+    public MyAdapterSearch(List<User> list, Context context) {
         this.list = list;
         this.context = context;
     }
@@ -35,24 +36,28 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
 
     @Override
     public void onBindViewHolder(MyViewHolderSearch myViewHolderSearch, int position) {
-        UserAccount person = list.get(position);
+        User person = list.get(position);
 
+        //load profile
         myViewHolderSearch.getNameView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("listener Debug", "Coucou");
                 Intent intent = new Intent(context, FriendProfilActivity.class);
-
-                intent.putExtra("NAME", myViewHolderSearch.getNameView().getText().toString());
+                intent.putExtra("userId", person.getId());
                 //TODO pass id instead of name
                 context.startActivity(intent);
             }
         });
-
+        //handle action link (add or poke)
         myViewHolderSearch.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO implement poke or add
+                Boolean added = UserManager.getInstance().getCurrentUser().addToFriendList(person);
+                if (added) {
+                    // will update our friend list.
+                    UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+                }
             }
         });
         myViewHolderSearch.bind(person);

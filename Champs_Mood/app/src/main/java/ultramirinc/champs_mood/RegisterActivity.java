@@ -164,11 +164,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                         if (task.isSuccessful()) {
                             finish();
                             //create user informations object...
-                            UserManager um = new UserManager();
+                            UserManager um = UserManager.getInstance();
 
                             FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                            um.addUserInformations(new User(user.getUid(),  mNameView.getText().toString(), ""));
+                            um.addUserInformations(new User(user.getUid(), mNameView.getText().toString()));
                             startActivity(new Intent(getApplicationContext(), TabActivity.class));
                         } else {
                             //display some message here
