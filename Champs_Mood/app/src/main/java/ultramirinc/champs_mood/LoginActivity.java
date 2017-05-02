@@ -352,5 +352,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed(){
+        //Doesn't do anything in login (In order to prevent bugs)
+    }
 }
 

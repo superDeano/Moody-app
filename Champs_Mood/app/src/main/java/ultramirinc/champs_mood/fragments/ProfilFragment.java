@@ -1,8 +1,10 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +68,12 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     private View view;
     private ImageButton mGpsUpdate;
     private LocationRequest mLocationRequest;
+    private Context context;
+
+    public ProfilFragment(){
+        context = getContext();
+    }
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,15 +89,41 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
+        mMap.getMapAsync(this);
+
+        EditText editText = (EditText) view.findViewById(R.id.editMoodText);
+        editText.clearFocus();
+
+
         mGpsUpdate = (ImageButton) view.findViewById(R.id.update_gps);
         mGpsUpdate.setEnabled(false);//TODO make it class field
 
-        Log.d("debug", "after inflater");
-        mGpsUpdate.setOnClickListener(this);
+
+        mGpsUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tempMood = view.findViewById(R.id.editMoodText).toString();
+                Toast t = Toast.makeText(context, "Mood cannot be empty!", Toast.LENGTH_SHORT);
+                if(tempMood != null && tempMood != "")
+                    setMood(tempMood);
+            }
+        });
+
+
+        ImageButton mMoodUpdate = (ImageButton) view.findViewById(R.id.enterMood);
+        mMoodUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tempMood = view.findViewById(R.id.editMoodText).toString();
+                Toast t = Toast.makeText(context, "Mood cannot be empty!", Toast.LENGTH_SHORT);
+                if(tempMood != null && tempMood != "")
+                    setMood(tempMood);
+            }
+        });
 
         createGoogleMapClient(); // <- moi
 
-        mMap.getMapAsync(this);
+
 
         TextView name = (TextView)view.findViewById(R.id.profil_text);
 
@@ -102,6 +137,26 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
         mSwitch.setChecked(false);
 
+        RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.floor_group);
+
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                if(checkedId == R.id.radioButton1){
+                    Log.d("Database debug:", "Floor changed to: 1");
+                    UserManager.getInstance().getCurrentUser().setFloor(1);
+                    UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+                }else if(checkedId == R.id.radioButton2){
+                    Log.d("Database debug:", "Floor changed to: 2");
+                    UserManager.getInstance().getCurrentUser().setFloor(2);
+                    UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+                }else if(checkedId == R.id.radioButton3){
+                    Log.d("Database debug:", "Floor changed to: 3");
+                    UserManager.getInstance().getCurrentUser().setFloor(3);
+                    UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+                }
+            }
+        });
         RadioButton button1 = (RadioButton) view.findViewById(R.id.radioButton1);
         RadioButton button2 = (RadioButton) view.findViewById(R.id.radioButton2);
         RadioButton button3 = (RadioButton) view.findViewById(R.id.radioButton3);
@@ -118,20 +173,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 setMood(enteredMood);
             }
         });
-        EditText editBreakText = (EditText) view.findViewById(R.id.editBreakText);
-        editBreakText.addTextChangedListener(new TextWatcher() {
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                setBreakText(s.toString());
-            }
-        });
 
         //TODO change this for databse
         mSwitch.setChecked(false);
@@ -140,20 +182,25 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(!isChecked){
+
+                    UserManager.getInstance().getCurrentUser().setLocationShared(false);
                     button1.setEnabled(false);
                     button2.setEnabled(false);
                     button3.setEnabled(false);
                 }else{
+
+                    UserManager.getInstance().getCurrentUser().setLocationShared(true);
                     button1.setEnabled(true);
                     button2.setEnabled(true);
                     button3.setEnabled(true);
                 }
+                UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
             }
         });
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        LoadProfile();
+        loadProfile();
 
         return view;
     }
@@ -164,7 +211,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         SetUserAndPaintProfile((User) arg);
     }
 
-    private void setMood(String mood) {
+    private void setMood(String mood) { //TODO change this
         UserManager.getInstance().getCurrentUser().setMood(mood);
 
         UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
@@ -177,7 +224,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         Toast.makeText(getActivity(), "Break text updated!", Toast.LENGTH_SHORT);
     }
 
-    private void LoadProfile() {
+    private void loadProfile() {
         UserManager.getInstance().deleteObservers();
         UserManager.getInstance().addObserver(this);
         UserManager.getInstance().getUserInformations();
@@ -188,8 +235,24 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         profileName.setText("Hello " +  UserManager.getInstance().getCurrentUser().getName());
         EditText editMood = (EditText) view.findViewById(R.id.editMoodText);
         editMood.setText( UserManager.getInstance().getCurrentUser().getMood());
-        EditText editBreakText = (EditText) view.findViewById(R.id.editBreakText);
-        editBreakText.setText( UserManager.getInstance().getCurrentUser().getBreakText());
+        Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
+        RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.floor_group);
+        RadioButton button1 = (RadioButton) view.findViewById(R.id.radioButton1);
+        RadioButton button2 = (RadioButton) view.findViewById(R.id.radioButton2);
+        RadioButton button3 = (RadioButton) view.findViewById(R.id.radioButton3);
+
+        if(u.isLocationShared()) {
+            mSwitch.setChecked(true);
+            int tempFloor = u.getFloor();
+            switch (tempFloor){
+                case 1: button1.setChecked(true); break;
+                case 2: button2.setChecked(true); break;
+                case 3: button3.setChecked(true); break;
+            }
+
+        }
+        else
+            mSwitch.setChecked(false);
     }
 
     public void onStart() {
@@ -298,7 +361,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
         } else {
-            Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -337,5 +400,15 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     @Override
     public void onLocationChanged(Location location) {
         //Do Nothing
+    }
+
+    public boolean checkConnection(){
+        Toast t;
+        if(false) {// TODO
+            t = Toast.makeText(getContext(), "No internet Connection", Toast.LENGTH_LONG);
+            t.show();
+            return false;
+        }else
+            return true;
     }
 }

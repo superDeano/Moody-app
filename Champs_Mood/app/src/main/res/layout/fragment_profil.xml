@@ -18,15 +18,14 @@
         android:elevation="5dp"
         android:background="@color/white">
 
-    <TextView
-        android:id="@+id/profil_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="Name LastName"
-        android:textSize="25sp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/profil_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textColor="@android:color/black"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,17 +77,9 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:layout_marginStart="12dp"
-            android:text="Break Text:"
+            android:text="Break Text"
             android:textSize="20sp" />
 
-
-        <EditText
-            android:id="@+id/editBreakText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="What's on your break?" />
 
         <RelativeLayout
         android:layout_width="match_parent"
@@ -141,30 +132,33 @@
                 android:text="Floor:"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="2dp"/>
+
             <RadioGroup
+                android:id="@+id/floor_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/radioButton1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="1st" />
 
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="2nd" />
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1st" />
 
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="3rd" />
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2nd" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="3rd" />
             </RadioGroup>
 
         </LinearLayout>

@@ -19,8 +19,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,16 +42,21 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import ultramirinc.champs_mood.MapsActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.TabActivity;
+import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.User;
 
 
 /**
  * Created by Étienne Bérubé on 2017-03-23.
  */
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class HomeFragment extends Fragment implements Observer, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, LocationListener {
 
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
@@ -89,6 +98,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         });
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        loadProfile();
 
         return view;
     }
@@ -303,5 +314,23 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(me).title("me"));
         */
+    }
+
+    private void loadProfile() {
+        UserManager.getInstance().deleteObservers();
+        UserManager.getInstance().addObserver(this);
+        UserManager.getInstance().getUserInformations();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
+        SetUserAndPaintProfile((User) arg);
+    }
+
+    public void SetUserAndPaintProfile(User u) {
+        TextView mMood = (TextView) view.findViewById(R.id.mood);
+        mMood.setText(UserManager.getInstance().getCurrentUser().getMood());
+
     }
 }

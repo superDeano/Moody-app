@@ -24,6 +24,7 @@ public class User {
     private String uId;
     private String name;
     private String mood;
+    private boolean isLocationShared;
     private String breakText; //TODO temporary
     private boolean isFriend; //TODO temporary
     private ArrayList<User> friendList = new ArrayList<>();
@@ -37,6 +38,8 @@ public class User {
     public User(String userId, String name) {
         this.uId = userId;
         this.name = name;
+        this.isLocationShared = true;
+        this.floor = 1;
     }
 
     public User(String name, String mood, String breakText, boolean isFriend) { //TODO temporary
@@ -44,6 +47,7 @@ public class User {
         this.mood = mood;
         this.breakText = breakText;
         this.isFriend = isFriend;
+        this.isLocationShared = true;
     }
 
     public User(String id, String name, String mood, Location location) { //Possible change
@@ -51,6 +55,7 @@ public class User {
         this.name = name;
         this.mood = mood;
         this.mLastLocation = location;
+        this.isLocationShared = true;
     }
 
     public String getId() {
@@ -240,5 +245,67 @@ public class User {
     public void setBreaks(ArrayList<Break> breaks) {
         this.breaks = breaks;
 
+    }
+
+    public boolean checkIsFriend(User possibleFriend){
+        boolean status = false;
+
+        if(friendList.contains(possibleFriend)){
+            status = true;
+        }
+
+        return status;
+    }
+
+    public static int getInBreak() {
+        return IN_BREAK;
+    }
+
+    public static int getNotInBreak() {
+        return NOT_IN_BREAK;
+    }
+
+    public String getuId() {
+        return uId;
+    }
+
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    public boolean isLocationShared() {
+        return isLocationShared;
+    }
+
+    public void setLocationShared(boolean locationShared) {
+        isLocationShared = locationShared;
+    }
+
+    public boolean isFriend() {
+        return isFriend;
+    }
+
+    public void setFriend(boolean friend) {
+        isFriend = friend;
+    }
+
+    public void setFriendList(ArrayList<User> friendList) {
+        this.friendList = friendList;
+    }
+
+    public Location getmLastLocation() {
+        return mLastLocation;
+    }
+
+    public void setmLastLocation(Location mLastLocation) {
+        this.mLastLocation = mLastLocation;
+    }
+
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
     }
 }

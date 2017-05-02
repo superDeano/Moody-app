@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.SearchView;
 
@@ -55,15 +56,27 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        recyclerView.setAdapter(new MyAdapterSearch(people, getContext()));
+
         SearchView sv = (SearchView) view.findViewById(R.id.search_bar).findViewById(R.id.sv);
         sv.setIconifiedByDefault(false);
 
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                 Log.d("search debug", "worked i guess");
                 people.clear();
                 SearchUsers(query);
+                recyclerView.getAdapter().notifyDataSetChanged();
+
                 return true;
             }
             @Override
@@ -77,42 +90,11 @@ public class SearchFragment extends Fragment {
         parent.setPadding(0,0,0,0);
         parent.setContentInsetsAbsolute(0,0);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-        recyclerView.setAdapter(new MyAdapterSearch(people, getContext()));
-
-        /*
-        SearchView editBreakText = (SearchView) view.findViewById(R.id.sv);
-        editBreakText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        */
-
         return view;
     }
-    /*
-    private void addPeople() {
-        people.add(new User("Owen Bross", "Hungry", "In Break", true));
-        people.add(new User("Gab Cote", "Lit", "Break in 15 minutes", false));
-        people.add(new User("Francois Kekesi", "Working", "In Break", true));
-        people.add(new User("Dany", "Programming", "Break in 1 hour", true));
-        people.add(new User("Alex", "Studying", "Break in 1.5 hour", false));
-        people.add(new User("Ming", "Chilling", "In Break", false));
-    }*/
 
-    public void SearchUsers(String query) {
+
+    public void SearchUsers(String query) { //TODO non case sensitive
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query searchQuery = this.databaseUsers.orderByChild("name").startAt(query);
 
