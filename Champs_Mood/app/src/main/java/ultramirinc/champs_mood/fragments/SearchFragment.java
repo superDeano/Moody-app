@@ -1,5 +1,6 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -38,8 +39,7 @@ public class SearchFragment extends Fragment {
     private List<User> people = new ArrayList<>();
     private Context context = getContext();
     DatabaseReference databaseUsers;
-
-
+    ProgressDialog progressDialog;
     public SearchFragment(){
         //addPeople();
     }
@@ -47,6 +47,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
     }
 
@@ -57,11 +58,11 @@ public class SearchFragment extends Fragment {
 
         SearchView sv = (SearchView) view.findViewById(R.id.search_bar).findViewById(R.id.sv);
         sv.setIconifiedByDefault(false);
-
+        progressDialog = new ProgressDialog(getActivity());
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("search debug", "worked i guess");
+                SearchUsers(query);
                 return false;
             }
             @Override
@@ -81,21 +82,6 @@ public class SearchFragment extends Fragment {
 
         recyclerView.setAdapter(new MyAdapterSearch(people, getContext()));
 
-        SearchView editBreakText = (SearchView) view.findViewById(R.id.sv);
-        editBreakText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                SearchUsers(query);
-
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
         return view;
     }
 
@@ -107,10 +93,13 @@ public class SearchFragment extends Fragment {
         people.add(new User("Alex", "Studying", "Break in 1.5 hour", false));
         people.add(new User("Ming", "Chilling", "In Break", false));
     }
+
     public void SearchUsers(String query) {
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query searchQuery = this.databaseUsers.orderByChild("name").startAt(query);
 
+        progressDialog.setMessage("Searching...");
+        progressDialog.show();
         ValueEventListener valuesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -118,6 +107,7 @@ public class SearchFragment extends Fragment {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     people.add(singleSnapshot.getValue(User.class));
                 }
+                progressDialog.hide();
             }
 
             @Override

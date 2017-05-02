@@ -102,13 +102,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
         mSwitch.setChecked(false);
 
-        RadioButton button1 = (RadioButton) view.findViewById(R.id.radioButton1);
-        RadioButton button2 = (RadioButton) view.findViewById(R.id.radioButton2);
-        RadioButton button3 = (RadioButton) view.findViewById(R.id.radioButton3);
-        button1.setEnabled(false);
-        button2.setEnabled(false);
-        button3.setEnabled(false);
-
         ImageButton mMoodButton = (ImageButton) view.findViewById(R.id.enterMood);
         mMoodButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,21 +126,12 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             }
         });
 
-        //TODO change this for databse
         mSwitch.setChecked(false);
 
         mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(!isChecked){
-                    button1.setEnabled(false);
-                    button2.setEnabled(false);
-                    button3.setEnabled(false);
-                }else{
-                    button1.setEnabled(true);
-                    button2.setEnabled(true);
-                    button3.setEnabled(true);
-                }
+                HandleFloorStates(isChecked);
             }
         });
 
@@ -168,13 +152,13 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         UserManager.getInstance().getCurrentUser().setMood(mood);
 
         UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-        Toast.makeText(getActivity(), "Mood updated!", Toast.LENGTH_SHORT);
+        Toast.makeText(getActivity(), "Mood updated!", Toast.LENGTH_SHORT).show();
     }
 
     private void setBreakText(String breakText) {
         UserManager.getInstance().getCurrentUser().setBreakText(breakText);
         UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-        Toast.makeText(getActivity(), "Break text updated!", Toast.LENGTH_SHORT);
+        Toast.makeText(getActivity(), "Break text updated!", Toast.LENGTH_SHORT).show();
     }
 
     private void LoadProfile() {
@@ -183,13 +167,81 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         UserManager.getInstance().getUserInformations();
     }
 
+    private void HandleFloorStates(boolean isChecked) {
+        User currentUser = UserManager.getInstance().getCurrentUser();
+
+        if (currentUser == null)
+            return;
+
+        RadioButton floor1 = (RadioButton) view.findViewById(R.id.radioButton1);
+        RadioButton floor2 = (RadioButton) view.findViewById(R.id.radioButton2);
+        RadioButton floor3 = (RadioButton) view.findViewById(R.id.radioButton3);
+
+
+
+        if (isChecked) {
+            currentUser.setShareFloor(true);
+            if (floor1.isChecked()){
+                currentUser.setFloorLevel(1);
+            }
+            if (floor2.isChecked()){
+                currentUser.setFloorLevel(2);
+            }
+            if (floor3.isChecked()){
+                currentUser.setFloorLevel(3);
+            }
+        }
+        else {
+            currentUser.setShareFloor(false);
+            floor1.setEnabled(false);
+            floor2.setEnabled(false);
+            floor3.setEnabled(false);
+        }
+        //save changes
+        UserManager.getInstance().editUserInformations(currentUser);
+    }
+
     public void SetUserAndPaintProfile(User u) {
+
         TextView profileName = (TextView) view.findViewById(R.id.profil_text);
         profileName.setText("Hello " +  UserManager.getInstance().getCurrentUser().getName());
         EditText editMood = (EditText) view.findViewById(R.id.editMoodText);
         editMood.setText( UserManager.getInstance().getCurrentUser().getMood());
         EditText editBreakText = (EditText) view.findViewById(R.id.editBreakText);
         editBreakText.setText( UserManager.getInstance().getCurrentUser().getBreakText());
+
+        Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
+        mSwitch.setChecked(u.getShareFloor());
+
+        RadioButton floor1 = (RadioButton) view.findViewById(R.id.radioButton1);
+        RadioButton floor2 = (RadioButton) view.findViewById(R.id.radioButton2);
+        RadioButton floor3 = (RadioButton) view.findViewById(R.id.radioButton3);
+
+
+
+        if (u.getShareFloor()){
+            switch (u.getFloorLevel()) {
+                case 1:
+                    floor1.setChecked(true);
+                    break;
+                case 2:
+                    floor2.setChecked(true);
+                    break;
+                case 3:
+                    floor3.setChecked(true);
+                    break;
+                default:
+                    //default value is floor 1.
+                    floor1.setChecked(true);
+                    break;
+
+            }
+        }
+        else {
+            floor1.setChecked(false);
+            floor2.setChecked(false);
+            floor3.setChecked(false);
+        }
     }
 
     public void onStart() {

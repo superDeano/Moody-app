@@ -12,12 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.Break;
 import ultramirinc.champs_mood.models.Time;
+import ultramirinc.champs_mood.models.User;
 
 public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnBreakReadyListener{
 
@@ -66,13 +76,30 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
     }
 
     public void populateList(){
-        //TODO get shit from database
-        breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Monday"));
-        breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Monday"));
-        breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Tuesday"));
-        breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Wednesday"));
-        breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Wednesday"));
-        breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Friday"));
+        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Monday"));
+        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Monday"));
+        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Tuesday"));
+        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Wednesday"));
+        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Wednesday"));
+        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Friday"));
+
+        //Loading things from db
+        DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("breaks");
+        Query breakQuery = breaksReference.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    breakList.add(singleSnapshot.getValue(Break.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        breakQuery.addListenerForSingleValueEvent(postListener);
     }
 
 
@@ -80,6 +107,12 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
 
     @Override
     public void onBreakReady(String breakString) {
+        User currentUser = UserManager.getInstance().getCurrentUser();
+
+        if (currentUser == null) {
+            return;
+        }
+
         String[] temp = breakString.split(":");
         String day = temp[0];
         Log.d("debug", ""+day);
@@ -88,11 +121,18 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
         int endMinute = Integer.parseInt(temp[4]);
         int endHour = Integer.parseInt(temp[3]);
         Break mBreak = new Break(new Time(startHour, startMinute),
-                new Time(endHour, endMinute), day);
-        //TODO send information to DATABASE
+                new Time(endHour, endMinute), day, currentUser.getId());
         breakList.add(mBreak);
+        SaveBreakToDb(mBreak);
         Collections.sort(breakList);
         recyclerView.getAdapter().notifyDataSetChanged();//Try <--------------------------------------------------------------
         Log.d("Debug", "breakCreated");
+    }
+
+    private void SaveBreakToDb(Break breakItem) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("breaks");
+        DatabaseReference generatedId = ref.push();
+        breakItem.setId(generatedId.getKey());
+        ref.child(generatedId.getKey()).setValue(breakItem);
     }
 }

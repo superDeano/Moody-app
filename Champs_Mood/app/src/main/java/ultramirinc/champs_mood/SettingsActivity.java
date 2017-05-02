@@ -5,10 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.w3c.dom.Text;
+
 import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.User;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -19,6 +23,14 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Button mEmailSignInButton = (Button) findViewById(R.id.logOut);
+
+
+        User theUser = UserManager.getInstance().getCurrentUser();
+        if (theUser != null) {
+            TextView view = (TextView) findViewById(R.id.homepageText);
+            view.setText(theUser.getName());
+        }
+
         mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

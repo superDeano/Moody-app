@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,16 +39,23 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.w3c.dom.Text;
+
+import java.util.Observable;
+import java.util.Observer;
+
 import ultramirinc.champs_mood.MapsActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.TabActivity;
+import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.User;
 
 
 /**
  * Created by Étienne Bérubé on 2017-03-23.
  */
 
-public class HomeFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+public class HomeFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, Observer,
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, LocationListener {
 
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
@@ -89,10 +97,31 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         });
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        LoadProfile();
 
         return view;
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        try {
+            UpdateView((User) arg);
+        }
+        catch (Exception e) {
+            //error not handeled
+        }
+    }
+
+    public void UpdateView(User u) {
+        TextView myMood = (TextView)view.findViewById(R.id.mood);
+        myMood.setText(u.getMood());
+    }
+
+    private void LoadProfile() {
+        UserManager.getInstance().deleteObservers();
+        UserManager.getInstance().addObserver(this);
+        UserManager.getInstance().getUserInformations();
+    }
 
     public void onStart() {
         super.onStart();
@@ -131,13 +160,11 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         mGoogleApiClient.disconnect();
     }
 
-    @Override
     public void onConnected(@Nullable Bundle bundle) {
         createRequestLocation();
         startLocationUpdates();
 
     }
-
 
     private void createGoogleMapClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -237,8 +264,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         }
     }
 
-
-    @Override
     public void onConnectionSuspended(int i) {
     }
 

@@ -81,8 +81,6 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         toolbar.setTitle("Create your break");
 
-
-
         return view;
     }
 
@@ -152,7 +150,11 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         save.setOnClickListener(v -> {
             if(checkIfComplete()){
                 day = listDay.getSelectedItem().toString();
+
                 OnBreakReadyListener parent = (OnBreakReadyListener) getActivity();
+
+
+
                 parent.onBreakReady(day+":"+startHour+":"+startMinute+":"+endHour+":"+endMinute);
 
                 dismiss();

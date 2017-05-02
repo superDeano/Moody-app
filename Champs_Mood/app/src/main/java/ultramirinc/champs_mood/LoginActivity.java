@@ -87,11 +87,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if(firebaseAuth.getCurrentUser() != null) {
             //close this activity
             UserManager.getInstance().getUserInformations();
-            try {
-                Thread.sleep(1000);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
             finish();
             Intent intent = new Intent(this, TabActivity.class);
             startActivity(intent);

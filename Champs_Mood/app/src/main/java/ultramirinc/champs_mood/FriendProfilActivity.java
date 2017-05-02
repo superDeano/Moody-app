@@ -55,7 +55,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         ValueEventListener loadInfoListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User friendProfile = null;
+
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendProfile = singleSnapshot.getValue(User.class);
                 }
@@ -65,6 +65,18 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 mood.setText(friendProfile.getMood());
                 TextView breakText = (TextView) findViewById(R.id.breakText);
                 breakText.setText(friendProfile.getBreakText());
+                try {
+                    TextView floor = (TextView) findViewById(R.id.floorLevel);
+                    if (friendProfile.getShareFloor()) {
+                        floor.setText(Integer.toString(friendProfile.getFloorLevel()));
+                    }
+                    else {
+                        floor.setText("Floor not shared");
+                    }
+                }catch (Exception e) {
+
+                }
+
             }
 
             @Override
