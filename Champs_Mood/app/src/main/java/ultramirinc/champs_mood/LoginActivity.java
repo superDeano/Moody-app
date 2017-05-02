@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,7 +85,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         firebaseAuth = FirebaseAuth.getInstance();
         //if the objects getcurrentuser method is not null
         //means user is already logged in
+
         if(firebaseAuth.getCurrentUser() != null) {
+            Log.d("Login debug", "current user: " + firebaseAuth.getCurrentUser().toString());
             //close this activity
             UserManager.getInstance().getUserInformations();
             finish();

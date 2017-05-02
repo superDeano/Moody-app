@@ -62,8 +62,10 @@ public class SearchFragment extends Fragment {
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.d("search debug", "worked i guess");
+                people.clear();
                 SearchUsers(query);
-                return false;
+                return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -84,7 +86,7 @@ public class SearchFragment extends Fragment {
 
         return view;
     }
-
+    /*
     private void addPeople() {
         people.add(new User("Owen Bross", "Hungry", "In Break", true));
         people.add(new User("Gab Cote", "Lit", "Break in 15 minutes", false));
@@ -92,7 +94,11 @@ public class SearchFragment extends Fragment {
         people.add(new User("Dany", "Programming", "Break in 1 hour", true));
         people.add(new User("Alex", "Studying", "Break in 1.5 hour", false));
         people.add(new User("Ming", "Chilling", "In Break", false));
+<<<<<<< HEAD
     }
+=======
+    }*/
+
 
     public void SearchUsers(String query) {
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
