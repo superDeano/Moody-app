@@ -62,7 +62,9 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.d("search debug", "worked i guess");
-                return false;
+                people.clear();
+                SearchUsers(query);
+                return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -81,11 +83,12 @@ public class SearchFragment extends Fragment {
 
         recyclerView.setAdapter(new MyAdapterSearch(people, getContext()));
 
+        /*
         SearchView editBreakText = (SearchView) view.findViewById(R.id.sv);
         editBreakText.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                SearchUsers(query);
+
 
                 return true;
             }
@@ -95,10 +98,11 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+        */
 
         return view;
     }
-
+    /*
     private void addPeople() {
         people.add(new User("Owen Bross", "Hungry", "In Break", true));
         people.add(new User("Gab Cote", "Lit", "Break in 15 minutes", false));
@@ -106,7 +110,8 @@ public class SearchFragment extends Fragment {
         people.add(new User("Dany", "Programming", "Break in 1 hour", true));
         people.add(new User("Alex", "Studying", "Break in 1.5 hour", false));
         people.add(new User("Ming", "Chilling", "In Break", false));
-    }
+    }*/
+
     public void SearchUsers(String query) {
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query searchQuery = this.databaseUsers.orderByChild("name").startAt(query);
