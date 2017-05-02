@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.List;
 
 import ultramirinc.champs_mood.models.Break;
@@ -52,14 +55,18 @@ public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule
                 public void run() {
                     notifyItemRemoved(list.indexOf(myBreak));
                     list.remove(myBreak);
+                    DeleteBreakFromDb(myBreak);
                 }
             },300);
-
-
 
         });
 
         myViewHolderSchedule.bind(myBreak);
+    }
+
+    private void DeleteBreakFromDb(Break breakToDelete) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("breaks");
+        ref.child(breakToDelete.getId()).removeValue();
     }
 
     @Override

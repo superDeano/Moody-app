@@ -41,13 +41,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.util.Observable;
 import java.util.Observer;
-
-import ultramirinc.champs_mood.MapsActivity;
 import ultramirinc.champs_mood.R;
-import ultramirinc.champs_mood.TabActivity;
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
@@ -56,8 +52,8 @@ import ultramirinc.champs_mood.models.User;
  * Created by Étienne Bérubé on 2017-03-23.
  */
 
-public class HomeFragment extends Fragment implements Observer, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, LocationListener {
+
+public class HomeFragment extends Fragment implements Observer, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
@@ -98,12 +94,33 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         });
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        LoadProfile();
 
         loadProfile();
 
         return view;
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        try {
+            UpdateView((User) arg);
+        }
+        catch (Exception e) {
+            //error not handeled
+        }
+    }
+
+    public void UpdateView(User u) {
+        TextView myMood = (TextView)view.findViewById(R.id.mood);
+        myMood.setText(u.getMood());
+    }
+
+    private void LoadProfile() {
+        UserManager.getInstance().deleteObservers();
+        UserManager.getInstance().addObserver(this);
+        UserManager.getInstance().getUserInformations();
+    }
 
     public void onStart() {
         super.onStart();
@@ -112,13 +129,13 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
 
         if (mGoogleApiClient.isConnected()) {
             createGoogleMapClient();
-            startLocationUpdates();
+            //startLocationUpdates();
         }
     }
 
     public void onStop() {
         super.onStop();
-        stopLocationUpdates();
+        //stopLocationUpdates();
 
     }
 
@@ -129,7 +146,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
             mGoogleApiClient.connect();
 
         }else{
-            startLocationUpdates();
+            //startLocationUpdates();
         }
     }
 
@@ -137,18 +154,16 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     public void onPause() {
         super.onPause();
         if (mGoogleApiClient.isConnected()) {
-            stopLocationUpdates();
+          //  stopLocationUpdates();
         }
         mGoogleApiClient.disconnect();
     }
 
-    @Override
     public void onConnected(@Nullable Bundle bundle) {
         createRequestLocation();
-        startLocationUpdates();
+        //startLocationUpdates();
 
     }
-
 
     private void createGoogleMapClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -193,7 +208,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     }
 
 
-
+    /*
     public void startLocationUpdates() {
 
         if(checkPermission() && mGoogleApiClient != null) { //debug
@@ -213,6 +228,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
             //Toast.makeText(getActivity(), "something went wrong in stop", Toast.LENGTH_SHORT).show();
         }
     }
+    */
 
     private boolean checkPermission() {
 
@@ -248,8 +264,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         }
     }
 
-
-    @Override
     public void onConnectionSuspended(int i) {
     }
 
@@ -306,15 +320,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        /*
-        mMap.clear();
-        mLastLocation = location;
-        LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(me).title("me"));
-        */
-    }
+
 
     private void loadProfile() {
         UserManager.getInstance().deleteObservers();
@@ -322,11 +328,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         UserManager.getInstance().getUserInformations();
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-
-        SetUserAndPaintProfile((User) arg);
-    }
 
     public void SetUserAndPaintProfile(User u) {
         TextView mMood = (TextView) view.findViewById(R.id.mood);

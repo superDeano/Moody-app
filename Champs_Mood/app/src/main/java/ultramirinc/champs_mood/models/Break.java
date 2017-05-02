@@ -14,13 +14,17 @@ public class Break implements Comparable<Break>{
     private Time start;
     private Time end;
     private String day;
+    private String userId;
     private int intDay;
+    private String Id;
 
-    public Break(Time start, Time end, String day){
+    public Break() {}
+
+    public Break(Time start, Time end, String day, String relatedUserId){
         this.start = start;
         this.end = end;
         this.day = day;
-
+        this.userId = relatedUserId;
         switch (day){
             case ("Monday"): intDay = 1; break;
             case ("Tuesday"): intDay = 2; break;
@@ -28,9 +32,14 @@ public class Break implements Comparable<Break>{
             case ("Thursday"): intDay = 4; break;
             case ("Friday"): intDay = 5; break;
         }
-
     }
 
+    public void setId(String id ) {
+        this.Id = id;
+    }
+    public String getId() {
+        return this.Id;
+    }
     public Time getStart() {
         return start;
     }
@@ -126,4 +135,7 @@ public class Break implements Comparable<Break>{
         return new Time(hourDif, minuteDif);
     }
 
+    public String getUserId() {
+        return this.userId;
+    }
 }

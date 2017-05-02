@@ -28,9 +28,10 @@ public class User {
     private String breakText; //TODO temporary
     private boolean isFriend; //TODO temporary
     private ArrayList<User> friendList = new ArrayList<>();
-    private ArrayList<Break> breaks = new ArrayList<Break>();
+    private ArrayList<Break> breaks = new ArrayList<>();
     private Location mLastLocation;
     private int floor;
+    private boolean shareFloor;
 
     public User() {
     }
@@ -78,6 +79,19 @@ public class User {
         return mood;
     }
 
+    public void setShareFloor(boolean value) {
+        this.shareFloor = value;
+    }
+    public boolean getShareFloor() {
+        return this.shareFloor;
+    }
+
+    public void setFloorLevel(int value) {
+        this.floor = value;
+    }
+    public int getFloorLevel() {
+        return this.floor;
+    }
     public void setMood(String mood) {
         this.mood = mood;
     }
@@ -244,7 +258,6 @@ public class User {
 
     public void setBreaks(ArrayList<Break> breaks) {
         this.breaks = breaks;
-
     }
 
     public boolean checkIsFriend(User possibleFriend){

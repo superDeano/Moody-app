@@ -1,5 +1,6 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -39,8 +40,7 @@ public class SearchFragment extends Fragment {
     private List<User> people = new ArrayList<>();
     private Context context = getContext();
     DatabaseReference databaseUsers;
-
-
+    ProgressDialog progressDialog;
     public SearchFragment(){
         //addPeople();
     }
@@ -48,6 +48,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
     }
 
@@ -64,7 +65,7 @@ public class SearchFragment extends Fragment {
 
         SearchView sv = (SearchView) view.findViewById(R.id.search_bar).findViewById(R.id.sv);
         sv.setIconifiedByDefault(false);
-
+        progressDialog = new ProgressDialog(getActivity());
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -90,14 +91,24 @@ public class SearchFragment extends Fragment {
         parent.setPadding(0,0,0,0);
         parent.setContentInsetsAbsolute(0,0);
 
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        recyclerView.setAdapter(new MyAdapterSearch(people, getContext()));
+
         return view;
+
     }
 
 
     public void SearchUsers(String query) { //TODO non case sensitive
+
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query searchQuery = this.databaseUsers.orderByChild("name").startAt(query);
 
+        progressDialog.setMessage("Searching...");
+        progressDialog.show();
         ValueEventListener valuesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -105,6 +116,7 @@ public class SearchFragment extends Fragment {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     people.add(singleSnapshot.getValue(User.class));
                 }
+                progressDialog.hide();
             }
 
             @Override
