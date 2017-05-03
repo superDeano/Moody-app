@@ -321,4 +321,10 @@ public class User {
     public void setFloor(int floor) {
         this.floor = floor;
     }
+
+    public boolean removeFromFriendList(User user){
+        friendList.remove(user);
+        return true;
+    }
+
 }

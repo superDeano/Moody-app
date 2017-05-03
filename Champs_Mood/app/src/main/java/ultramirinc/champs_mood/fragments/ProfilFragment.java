@@ -196,7 +196,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 }
                 UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
 
-                HandleFloorStates(isChecked);//****************************************************************************
+                //HandleFloorStates(isChecked);
 
             }
         });
@@ -232,7 +232,8 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         UserManager.getInstance().addObserver(this);
         UserManager.getInstance().getUserInformations();
     }
-
+    //Maybe not necessary
+    /*
     private void HandleFloorStates(boolean isChecked) {
         User currentUser = UserManager.getInstance().getCurrentUser();
 
@@ -266,6 +267,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         //save changes
         UserManager.getInstance().editUserInformations(currentUser);
     }
+    */
 
     public void SetUserAndPaintProfile(User u) {
 
@@ -280,14 +282,15 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         RadioButton button2 = (RadioButton) view.findViewById(R.id.radioButton2);
         RadioButton button3 = (RadioButton) view.findViewById(R.id.radioButton3);
 
+        int tempFloor = u.getFloor();
+        switch (tempFloor){
+            case 1: button1.setChecked(true); break;
+            case 2: button2.setChecked(true); break;
+            case 3: button3.setChecked(true); break;
+        }
+
         if(u.isLocationShared()) {
             mSwitch.setChecked(true);
-            int tempFloor = u.getFloor();
-            switch (tempFloor){
-                case 1: button1.setChecked(true); break;
-                case 2: button2.setChecked(true); break;
-                case 3: button3.setChecked(true); break;
-            }
 
         }
         else

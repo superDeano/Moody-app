@@ -109,17 +109,19 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
     private boolean UnFollow(User userToUnfollow) {
         boolean done = UserManager.getInstance().getCurrentUser().removeFromFriendList(userToUnfollow);
         //save
-        if (done)
-        UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-        UpdateFriendShipButton(false);
+        if (done) {
+            UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+            UpdateFriendShipButton(false);
+        }
         return done;
     }
     private void Follow(User userToFollow) {
         boolean done = UserManager.getInstance().getCurrentUser().addToFriendList(userToFollow);
         //save
-        if (done)
+        if (done) {
             UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-        UpdateFriendShipButton(true);
+            UpdateFriendShipButton(true);
+        }
     }
     public void UpdateFriendShipButton(boolean isFriend) {
         Button button = (Button) findViewById(R.id.friendShipButton);

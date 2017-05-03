@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.models.User;
@@ -65,24 +68,41 @@ public class SearchFragment extends Fragment {
 
         SearchView sv = (SearchView) view.findViewById(R.id.search_bar).findViewById(R.id.sv);
         sv.setIconifiedByDefault(false);
+
+
         progressDialog = new ProgressDialog(getActivity());
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
                 Log.d("search debug", "worked i guess");
                 people.clear();
                 SearchUsers(query);
                 recyclerView.getAdapter().notifyDataSetChanged();
 
+
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+                FragmentManager f = getActivity().getSupportFragmentManager();
+                List<Fragment> pageList = f.getFragments();
+                Iterator<Fragment> fragmentIterator = pageList.iterator();
+
+                while(fragmentIterator.hasNext()){
+                    Fragment frg = fragmentIterator.next();
+                    final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                    ft.detach(frg);
+                    ft.attach(frg);
+                    ft.commit();
+                }
+
+                sv.clearFocus();
+
                 return true;
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("search debug", "worked i guess");
                 return false;
             }
         });
