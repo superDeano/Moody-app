@@ -7,12 +7,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.managers.NotificationManager;
 import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.Notification;
+import ultramirinc.champs_mood.models.Notification_type;
 import ultramirinc.champs_mood.models.User;
 
 /**
@@ -57,11 +61,23 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
                 if (added) {
                     // will update our friend list.
                     UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+                    Toast.makeText(context, "Friend request sent.", Toast.LENGTH_SHORT).show();
+
+                    Notification n = new Notification(UserManager.getInstance().getCurrentUser().getName(),
+                                                        Notification_type.followed_you.getNumVal(),
+                                                        person.isFriend(UserManager.getInstance().getCurrentUser()),
+                                                        UserManager.getInstance().getCurrentUser().getId(),
+                                                        person.getId());
+
+                    NotificationManager nm = new NotificationManager();
+                    nm.saveNotification(n);
                 }
             }
         });
         myViewHolderSearch.bind(person);
     }
+
+
 
     @Override
     public int getItemCount() {

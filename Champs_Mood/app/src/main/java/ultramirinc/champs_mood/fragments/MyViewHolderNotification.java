@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.models.Notification;
 
 /**
  * Created by William on 2017-04-06.

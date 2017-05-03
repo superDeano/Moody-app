@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
 /**
@@ -33,7 +34,7 @@ public class MyViewHolderSearch extends RecyclerView.ViewHolder{
         nameView.setText(person.getName());
         moodView.setText(person.getMood());
         breakTextView.setText(person.getBreakTextTemp());
-        isFriendView.setText(person.getFriendStatusTemp());
+        isFriendView.setText(person.getFriendStatus(UserManager.getInstance().getCurrentUser()));
     }
 
     public TextView getNameView() {

@@ -44,7 +44,7 @@
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/enterMood"
+                android:id="@+id/friendShipButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -81,17 +81,6 @@
                 android:layout_marginTop="10dp"
                 android:text="FloorNumber"
                 android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/update_gps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:background="@drawable/small_button"
-                android:text="Friends"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
 
         </RelativeLayout>
 

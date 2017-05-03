@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
 
@@ -36,6 +39,21 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
         Intent intent = getIntent();
 
+        Button button = (Button) findViewById(R.id.friendShipButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (button.getText().toString().equals("Follow")) {
+                    Follow(friendProfile);
+                }
+                else {
+                    UnFollow(friendProfile);
+                }
+            }
+        });
+
+
+
         try {
             String userId = intent.getExtras().get("userId").toString();
             LoadFriendProfile(userId);
@@ -46,7 +64,6 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
         SupportMapFragment mMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMap.getMapAsync(this);
-
     }
 
     public void LoadFriendProfile(String userId) {
@@ -65,6 +82,8 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 mood.setText(friendProfile.getMood());
                 TextView breakText = (TextView) findViewById(R.id.breakText);
                 breakText.setText(friendProfile.getBreakText());
+
+                UpdateFriendShipButton(UserManager.getInstance().getCurrentUser().isFriend(friendProfile));
                 try {
                     TextView floor = (TextView) findViewById(R.id.floorLevel);
                     if (friendProfile.getShareFloor()) {
@@ -85,6 +104,28 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
             }
         };
         userQuery.addListenerForSingleValueEvent(loadInfoListener);
+    }
+
+    private boolean UnFollow(User userToUnfollow) {
+        boolean done = UserManager.getInstance().getCurrentUser().removeFromFriendList(userToUnfollow);
+        //save
+        if (done)
+        UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+        UpdateFriendShipButton(false);
+        return done;
+    }
+    private void Follow(User userToFollow) {
+        boolean done = UserManager.getInstance().getCurrentUser().addToFriendList(userToFollow);
+        //save
+        if (done)
+            UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+        UpdateFriendShipButton(true);
+    }
+    public void UpdateFriendShipButton(boolean isFriend) {
+        Button button = (Button) findViewById(R.id.friendShipButton);
+
+        String textButton = isFriend ? "Unfollow" : "Follow";
+        button.setText(textButton);
     }
 
     @Override
