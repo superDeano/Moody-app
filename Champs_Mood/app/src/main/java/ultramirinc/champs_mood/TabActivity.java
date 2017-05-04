@@ -175,6 +175,8 @@ public class TabActivity extends AppCompatActivity {
 
 
 
+
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -219,6 +221,11 @@ public class TabActivity extends AppCompatActivity {
         }
         */
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        finish();
     }
 
 
