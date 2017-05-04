@@ -4,10 +4,17 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
+    <Space
+        android:id="@+id/space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="186dp"
+        android:layout_above="@+id/space"
         android:layout_centerInParent="true"
         android:src="@drawable/logo" />
 
@@ -17,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="For Champlain Students"
         android:textColor="@color/white"
-        android:layout_below="@+id/logo"
+        android:layout_below="@+id/space"
         android:layout_centerInParent="true"/>
 
 </RelativeLayout>

@@ -23,6 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         Button mEmailSignInButton = (Button) findViewById(R.id.logOut);
+        Button mCreditsButton = (Button) findViewById(R.id.credits);
 
 
         User theUser = UserManager.getInstance().getCurrentUser();
@@ -37,6 +38,15 @@ public class SettingsActivity extends AppCompatActivity {
                logOut();
             }
         });
+
+        mCreditsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, CreditsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void logOut() {

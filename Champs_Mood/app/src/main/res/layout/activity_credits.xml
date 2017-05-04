@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/thanks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="Thanks To"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/prog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/thanks"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:text="Programmers:"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/amy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/prog"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="Amir Osman"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/eti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/amy"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="Étienne Bérubé"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/will"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/eti"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="William Perron-Lafleur"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/men"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/will"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:text="Mentor:"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/sam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/men"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="Samuel Dionne"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/ico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/sam"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:text="Icons:"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/oli"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/ico"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="Madebyoliver"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/free"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/oli"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="Freepik"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+</RelativeLayout>

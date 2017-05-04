@@ -86,6 +86,10 @@
         <activity
             android:name=".FriendProfilActivity"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CreditsActivity"
+            android:screenOrientation="portrait"/>
+
     </application>
 
 </manifest>
