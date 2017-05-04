@@ -23,11 +23,12 @@ public class User {
 
     private String uId;
     private String name;
+    private String nameLowered;
     private String mood;
     private boolean isLocationShared;
     private String breakText; //TODO temporary
     private boolean isFriend; //TODO temporary
-    private ArrayList<User> friendList = new ArrayList<>();
+    private ArrayList<String> friendList = new ArrayList<>();
     private ArrayList<Break> breaks = new ArrayList<>();
     private Location mLastLocation;
     private int floor;
@@ -39,24 +40,9 @@ public class User {
     public User(String userId, String name) {
         this.uId = userId;
         this.name = name;
+        this.nameLowered = name.toLowerCase();
         this.isLocationShared = true;
         this.floor = 1;
-    }
-
-    public User(String name, String mood, String breakText, boolean isFriend) { //TODO temporary
-        this.name = name;
-        this.mood = mood;
-        this.breakText = breakText;
-        this.isFriend = isFriend;
-        this.isLocationShared = true;
-    }
-
-    public User(String id, String name, String mood, Location location) { //Possible change
-        this.uId = id;
-        this.name = name;
-        this.mood = mood;
-        this.mLastLocation = location;
-        this.isLocationShared = true;
     }
 
     public String getId() {
@@ -73,6 +59,7 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+        this.nameLowered = name.toLowerCase();
     }
 
     public String getMood() {
@@ -99,19 +86,27 @@ public class User {
     // TODO verify behaviour of this
     public void populateFriendList(ArrayList<User> friends){ //TODO update method
         for(User u: friends)
-            this.friendList.add(u);
+            this.friendList.add(u.getId());
     }
 
     public boolean addToFriendList(User user){
         if (!isFriend(user))
         {
-            friendList.add(user);
+            friendList.add(user.getId());
+            return true;
+        }
+        return false;
+    }
+    public boolean addToFriendList(String userId){
+        if (!isFriend(userId))
+        {
+            friendList.add(userId);
             return true;
         }
         return false;
     }
 
-    public ArrayList<User> getFriendList() {
+    public ArrayList<String> getFriendList() {
         return friendList;
     }
 
@@ -147,12 +142,26 @@ public class User {
 
     public boolean isFriend(User user){
 
-        Iterator<User> it = friendList.iterator();
+        Iterator<String> it = friendList.iterator();
 
         while(it.hasNext()){
-            User friend = it.next();
+            String friendId = it.next();
 
-            if(friend.getId().equals(user.getId())){
+            if(friendId.equals(user.getId())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isFriend(String userId){
+
+        Iterator<String> it = friendList.iterator();
+
+        while(it.hasNext()){
+            String friendId = it.next();
+
+            if(friendId.equals(userId)){
                 return true;
             }
         }
@@ -302,7 +311,7 @@ public class User {
         isFriend = friend;
     }
 
-    public void setFriendList(ArrayList<User> friendList) {
+    public void setFriendList(ArrayList<String> friendList) {
         this.friendList = friendList;
     }
 
@@ -323,7 +332,7 @@ public class User {
     }
 
     public boolean removeFromFriendList(User user){
-        friendList.remove(user);
+        friendList.remove(user.getId());
         return true;
     }
 

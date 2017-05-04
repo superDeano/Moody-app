@@ -94,9 +94,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         });
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        LoadProfile();
-
-        loadProfile();
 
         return view;
     }
@@ -114,12 +111,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     public void UpdateView(User u) {
         TextView myMood = (TextView)view.findViewById(R.id.mood);
         myMood.setText(u.getMood());
-    }
-
-    private void LoadProfile() {
-        UserManager.getInstance().deleteObservers();
-        UserManager.getInstance().addObserver(this);
-        UserManager.getInstance().getUserInformations();
     }
 
     public void onStart() {
@@ -319,15 +310,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
                 break;
         }
     }
-
-
-
-    private void loadProfile() {
-        UserManager.getInstance().deleteObservers();
-        UserManager.getInstance().addObserver(this);
-        UserManager.getInstance().getUserInformations();
-    }
-
 
     public void SetUserAndPaintProfile(User u) {
         TextView mMood = (TextView) view.findViewById(R.id.mood);

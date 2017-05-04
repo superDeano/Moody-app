@@ -49,7 +49,6 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
                 Log.d("listener Debug", "Coucou");
                 Intent intent = new Intent(context, FriendProfilActivity.class);
                 intent.putExtra("userId", person.getId());
-                //TODO pass id instead of name
                 context.startActivity(intent);
             }
         });
@@ -57,27 +56,41 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
         myViewHolderSearch.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean added = UserManager.getInstance().getCurrentUser().addToFriendList(person);
-                if (added) {
-                    // will update our friend list.
-                    UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-                    Toast.makeText(context, "Friend request sent.", Toast.LENGTH_SHORT).show();
-
-                    Notification n = new Notification(UserManager.getInstance().getCurrentUser().getName(),
-                                                        Notification_type.followed_you.getNumVal(),
-                                                        person.isFriend(UserManager.getInstance().getCurrentUser()),
-                                                        UserManager.getInstance().getCurrentUser().getId(),
-                                                        person.getId());
-
-                    NotificationManager nm = new NotificationManager();
-                    nm.saveNotification(n);
+                //If is already our friend, will poke !
+                if (UserManager.getInstance().getCurrentUser().isFriend(person)) {
+                    Poke(person);
                 }
+                else {
+                    // not in our friends so we will add user.
+                    Boolean added = UserManager.getInstance().getCurrentUser().addToFriendList(person);
+                    if (added) {
+                        // will update our friend list.
+                        UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+
+                        Toast.makeText(context, "Friend request sent.", Toast.LENGTH_SHORT).show();
+                        notifyDataSetChanged();
+                        Notification n = new Notification(UserManager.getInstance().getCurrentUser().getName(),
+                                Notification_type.followed_you.getNumVal(),
+                                person.isFriend(UserManager.getInstance().getCurrentUser()),
+                                UserManager.getInstance().getCurrentUser().getId(),
+                                person.getId());
+
+                        NotificationManager nm = new NotificationManager();
+                        nm.saveNotification(n);
+                    }
+                }
+
             }
         });
         myViewHolderSearch.bind(person);
     }
 
-
+    private void Poke(User user) {
+        User currentUser = UserManager.getInstance().getCurrentUser();
+        Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());
+        NotificationManager nm = new NotificationManager();
+        nm.saveNotification(n);
+    }
 
     @Override
     public int getItemCount() {

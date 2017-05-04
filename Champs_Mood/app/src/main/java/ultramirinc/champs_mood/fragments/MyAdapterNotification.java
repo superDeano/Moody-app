@@ -7,12 +7,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.managers.NotificationManager;
+import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.Notification;
+import ultramirinc.champs_mood.models.Notification_type;
+import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-06.
@@ -53,11 +58,40 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
         myViewHolderNotification.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO implement poke / add
+                //If is already our friend, will poke !
+                if (UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId())) {
+                    Poke(notification.getSenderId());
+                }
+                else {
+                    // not in our friends so we will add user.
+                    Boolean added = UserManager.getInstance().getCurrentUser().addToFriendList(notification.getSenderId());
+                    if (added) {
+                        // will update our friend list.
+                        UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+
+                        Toast.makeText(context, "Now following user.", Toast.LENGTH_SHORT).show();
+                        notifyDataSetChanged();
+                        Notification n = new Notification(UserManager.getInstance().getCurrentUser().getName(),
+                                Notification_type.followed_you.getNumVal(),
+                                true,
+                                UserManager.getInstance().getCurrentUser().getId(),
+                                notification.getSenderId());
+
+                        NotificationManager nm = new NotificationManager();
+                        nm.saveNotification(n);
+                    }
+                }
             }
         });
 
         myViewHolderNotification.bind(notification);
+    }
+
+    private void Poke(String UserId) {
+        User currentUser = UserManager.getInstance().getCurrentUser();
+        Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), true, currentUser.getId(), UserId);
+        NotificationManager nm = new NotificationManager();
+        nm.saveNotification(n);
     }
 
     @Override

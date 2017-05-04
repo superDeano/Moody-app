@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.models.User;
 
@@ -44,7 +45,8 @@ public class SearchFragment extends Fragment {
     private Context context = getContext();
     DatabaseReference databaseUsers;
     ProgressDialog progressDialog;
-    public SearchFragment(){
+
+    public SearchFragment() {
         //addPeople();
     }
 
@@ -69,7 +71,6 @@ public class SearchFragment extends Fragment {
         SearchView sv = (SearchView) view.findViewById(R.id.search_bar).findViewById(R.id.sv);
         sv.setIconifiedByDefault(false);
 
-
         progressDialog = new ProgressDialog(getActivity());
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -89,7 +90,7 @@ public class SearchFragment extends Fragment {
                 List<Fragment> pageList = f.getFragments();
                 Iterator<Fragment> fragmentIterator = pageList.iterator();
 
-                while(fragmentIterator.hasNext()){
+                while (fragmentIterator.hasNext()) {
                     Fragment frg = fragmentIterator.next();
                     final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                     ft.detach(frg);
@@ -101,15 +102,16 @@ public class SearchFragment extends Fragment {
 
                 return true;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
         });
 
-        Toolbar parent =(Toolbar) view.findViewById(R.id.search_bar);
-        parent.setPadding(0,0,0,0);
-        parent.setContentInsetsAbsolute(0,0);
+        Toolbar parent = (Toolbar) view.findViewById(R.id.search_bar);
+        parent.setPadding(0, 0, 0, 0);
+        parent.setContentInsetsAbsolute(0, 0);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
 
@@ -125,7 +127,7 @@ public class SearchFragment extends Fragment {
     public void SearchUsers(String query) { //TODO non case sensitive
 
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
-        Query searchQuery = this.databaseUsers.orderByChild("name").startAt(query);
+        Query searchQuery = this.databaseUsers.orderByChild("nameLowered").startAt(query).endAt(query+"\uf8ff");
 
         progressDialog.setMessage("Searching...");
         progressDialog.show();
@@ -133,7 +135,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 people.clear();
-                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     people.add(singleSnapshot.getValue(User.class));
                 }
                 progressDialog.hide();

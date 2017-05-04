@@ -1,5 +1,6 @@
 package ultramirinc.champs_mood;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +30,8 @@ import ultramirinc.champs_mood.fragments.NotificationFragment;
 import ultramirinc.champs_mood.fragments.ProfilFragment;
 import ultramirinc.champs_mood.fragments.SearchFragment;
 import ultramirinc.champs_mood.fragments.MyViewPager;
+import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.User;
 
 public class TabActivity extends AppCompatActivity {
 
@@ -39,7 +50,7 @@ public class TabActivity extends AppCompatActivity {
 
     private MyViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,29 +64,67 @@ public class TabActivity extends AppCompatActivity {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-
+        progressDialog = new ProgressDialog(this);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (MyViewPager) findViewById(R.id.container);
         mViewPager.setPagingEnabled(false);
-        setupViewPager(mViewPager);
-
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("Home"));
-        tabLayout.addTab(tabLayout.newTab().setText("Friends"));
-        tabLayout.addTab(tabLayout.newTab().setText("Search"));
-        tabLayout.addTab(tabLayout.newTab().setText("Notif"));
-        tabLayout.addTab(tabLayout.newTab().setText("Profil"));
+        loadUserInformationsSetupViewPager(mViewPager);
 
-        tabLayout.setupWithViewPager(mViewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_tab_home);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_firends);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_search);
-        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_notif);
-        tabLayout.getTabAt(4).setIcon(R.drawable.ic_action_profil);
+    }
 
+    private void loadUserInformationsSetupViewPager(MyViewPager viewPager) {
+
+        //Verify if a user is connected
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            //NOT CONNECTED redirect to login.
+            UserManager.getInstance().ClearCurrentUser();
+            finish();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
+        else {
+
+            progressDialog.setMessage("Loading user data...");
+            progressDialog.show();
+            DatabaseReference databaseUsers = FirebaseDatabase.getInstance().getReference("users");
+            Query userQuery = databaseUsers.orderByChild("id").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            ValueEventListener postListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    User user = null;
+                    for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                        user = singleSnapshot.getValue(User.class);
+                        UserManager.getInstance().setCurrentUser(user);
+                        setupViewPager(viewPager);
+
+                        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+                        tabLayout.addTab(tabLayout.newTab().setText("Home"));
+                        tabLayout.addTab(tabLayout.newTab().setText("Friends"));
+                        tabLayout.addTab(tabLayout.newTab().setText("Search"));
+                        tabLayout.addTab(tabLayout.newTab().setText("Notif"));
+                        tabLayout.addTab(tabLayout.newTab().setText("Profil"));
+
+                        tabLayout.setupWithViewPager(mViewPager);
+
+                        tabLayout.getTabAt(0).setIcon(R.drawable.ic_tab_home);
+                        tabLayout.getTabAt(1).setIcon(R.drawable.ic_action_firends);
+                        tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_search);
+                        tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_notif);
+                        tabLayout.getTabAt(4).setIcon(R.drawable.ic_action_profil);
+                        progressDialog.hide();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            userQuery.addListenerForSingleValueEvent(postListener);
+        }
     }
 
     private void setupViewPager(MyViewPager viewPager){

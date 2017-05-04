@@ -203,7 +203,10 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        loadProfile();
+        if (UserManager.getInstance().getCurrentUser() == null)
+            loadProfile();
+        else
+            SetUserAndPaintProfile(UserManager.getInstance().getCurrentUser());
 
         return view;
     }

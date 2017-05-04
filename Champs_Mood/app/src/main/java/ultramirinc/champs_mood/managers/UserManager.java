@@ -37,6 +37,9 @@ public class UserManager extends Observable {
         return this.current_user;
     }
 
+    public void setCurrentUser(User user) {
+        this.current_user = user;
+    }
     public static UserManager getInstance() {
         if(instance == null) {
             instance = new UserManager();

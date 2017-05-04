@@ -35,7 +35,7 @@ public class NotificationFragment extends Fragment {
     private Context context = getContext();
 
     public NotificationFragment(){
-        addNotifications();
+
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,17 +48,11 @@ public class NotificationFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         recyclerView.setAdapter(new MyAdapterNotification(nofications, getContext()));
-
+        addNotifications();
         return view;
     }
 
     private void addNotifications() {
-       /* nofications.add(new Notification("Owen Bross", 1, true));
-        nofications.add(new Notification("Gab Cote", 2, false));
-        nofications.add(new Notification("Francois Kekesi", 3, true));
-        nofications.add(new Notification("Dany", 2, true));
-        nofications.add(new Notification("Alex", 1, false));
-        nofications.add(new Notification("Ming", 3, false)); */
         LoadNotifications();
     }
 
@@ -68,8 +62,10 @@ public class NotificationFragment extends Fragment {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                nofications.clear();
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     nofications.add(singleSnapshot.getValue(Notification.class));
+                    recyclerView.getAdapter().notifyDataSetChanged();
                 }
             }
 
@@ -78,6 +74,6 @@ public class NotificationFragment extends Fragment {
 
             }
         };
-        breakQuery.addListenerForSingleValueEvent(postListener);
+        breakQuery.addValueEventListener(postListener);
     }
 }

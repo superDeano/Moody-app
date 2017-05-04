@@ -87,9 +87,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         //means user is already logged in
 
         if(firebaseAuth.getCurrentUser() != null) {
-            Log.d("Login debug", "current user: " + firebaseAuth.getCurrentUser().toString());
-            //close this activity
-            UserManager.getInstance().getUserInformations();
             finish();
             Intent intent = new Intent(this, TabActivity.class);
             startActivity(intent);
