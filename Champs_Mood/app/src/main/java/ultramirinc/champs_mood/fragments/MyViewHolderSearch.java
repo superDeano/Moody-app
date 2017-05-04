@@ -14,11 +14,11 @@ import ultramirinc.champs_mood.models.User;
  */
 
 public class MyViewHolderSearch extends RecyclerView.ViewHolder{
-
+    private String isFriend;
     private TextView nameView;
     private TextView moodView;
     private TextView breakTextView;
-    private TextView isFriendView;
+
     private Button button;
 
     public MyViewHolderSearch(View itemView) {
@@ -27,16 +27,13 @@ public class MyViewHolderSearch extends RecyclerView.ViewHolder{
         nameView = (TextView) itemView.findViewById(R.id.name);
         moodView = (TextView) itemView.findViewById(R.id.mood);
         breakTextView = (TextView) itemView.findViewById(R.id.breakText);
-        isFriendView = (TextView) itemView.findViewById(R.id.poke);
     }
 
     public void bind(User person){
         nameView.setText(person.getName());
         moodView.setText(person.getMood());
         breakTextView.setText(person.getBreakTextTemp());
-        //set the text based on friend status :
-        //if this person
-        isFriendView.setText(UserManager.getInstance().getCurrentUser().getFriendStatus(person));
+        isFriend = (UserManager.getInstance().getCurrentUser().getFriendStatus(person));
     }
 
     public TextView getNameView() {
@@ -63,12 +60,12 @@ public class MyViewHolderSearch extends RecyclerView.ViewHolder{
         this.breakTextView = breakTextView;
     }
 
-    public TextView getIsFriendView() {
-        return isFriendView;
+    public String getIsFriend() {
+        return isFriend;
     }
 
-    public void setIsFriendView(TextView isFriendView) {
-        this.isFriendView = isFriendView;
+    public void setIsFriend(String isFriend) {
+        this.isFriend = isFriend;
     }
 
     public Button getButton() {

@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     private String mLatitudeText;
     private String mLongitudeText;
     private View view;
-
+    private User u;
     private LocationRequest mLocationRequest;
     private Location mLastLocation;
 
@@ -94,6 +94,8 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         });
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        loadProfile();
 
         return view;
     }
@@ -315,5 +317,11 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         TextView mMood = (TextView) view.findViewById(R.id.mood);
         mMood.setText(UserManager.getInstance().getCurrentUser().getMood());
 
+    }
+
+    private void loadProfile() {
+        UserManager.getInstance().deleteObservers();
+        UserManager.getInstance().addObserver(this);
+        UserManager.getInstance().getUserInformations();
     }
 }

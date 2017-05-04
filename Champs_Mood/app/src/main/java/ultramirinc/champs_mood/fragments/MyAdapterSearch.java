@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
@@ -41,6 +42,13 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
     @Override
     public void onBindViewHolder(MyViewHolderSearch myViewHolderSearch, int position) {
         User person = list.get(position);
+        Button b = (Button) myViewHolderSearch.getButton();//TODO debug this
+
+        if (UserManager.getInstance().getCurrentUser().isFriend(person)){
+            b.setText("poke!");
+        }else{
+            b.setText("Follow");
+        }
 
         //load profile
         myViewHolderSearch.getNameView().setOnClickListener(new View.OnClickListener() {
