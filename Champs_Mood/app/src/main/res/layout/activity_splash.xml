@@ -7,8 +7,17 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="186dp"
         android:layout_centerInParent="true"
         android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="For Champlain Students"
+        android:textColor="@color/white"
+        android:layout_below="@+id/logo"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>
