@@ -102,10 +102,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         mGpsUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String tempMood = view.findViewById(R.id.editMoodText).toString();
-                Toast t = Toast.makeText(context, "Mood cannot be empty!", Toast.LENGTH_SHORT);
-                if(tempMood != null && tempMood != "")
-                    setMood(tempMood);
+                Log.d("Debug location: ","yeah you should implement this");
             }
         });
 
@@ -115,7 +112,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             @Override
             public void onClick(View v) {
                 String tempMood = view.findViewById(R.id.editMoodText).toString();
-                Toast t = Toast.makeText(context, "Mood cannot be empty!", Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(getContext(), "Mood cannot be empty!", Toast.LENGTH_SHORT);
                 if(tempMood != null && tempMood != "")
                     setMood(tempMood);
             }
@@ -456,5 +453,25 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             return false;
         }else
             return true;
+    }
+
+    public void updateLocation() { //TODO add parameter true/false + implement
+        if (checkPermission() && mGoogleApiClient.isConnected()) {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+            if (mLastLocation != null) {
+                mLatitudeText = String.valueOf(mLastLocation.getLatitude());
+                mLongitudeText = String.valueOf(mLastLocation.getLongitude());
+
+                Log.d("Coordinates", (mLatitudeText + ", " + mLongitudeText));
+
+                LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(me).title("me"));
+            } else {
+                Log.d("debug", "fused not working");
+            }
+        } else {
+            //Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
+        }
     }
 }
