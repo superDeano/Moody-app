@@ -29,11 +29,17 @@ public class SplashScreen extends AppCompatActivity {
                 if(firebaseAuth.getCurrentUser() != null) {
                     finish();
                     Intent intent = new Intent(SplashScreen.this, TabActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(0,0); //0 for no animation
                     startActivity(intent);
                 }else {
                     finish();
-                    Intent i = new Intent(SplashScreen.this, LoginActivity.class);
-                    startActivity(i);
+                    Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    startActivityForResult(intent, 0);
+                    overridePendingTransition(0,0); //0 for no animation
+                    startActivity(intent);
                 }
                 finish();
             }
