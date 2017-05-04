@@ -74,17 +74,23 @@ public class SearchFragment extends Fragment {
         progressDialog = new ProgressDialog(getActivity());
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-
+            public boolean onQueryTextSubmit(String query) {//TODO remove clikc of search view twice
 
                 Log.d("search debug", "worked i guess");
+                query = query.toLowerCase();
+
+
+                recyclerView.getAdapter().notifyItemRangeRemoved(0,people.size());
+
                 people.clear();
+
                 SearchUsers(query);
-                recyclerView.getAdapter().notifyDataSetChanged();
 
 
+                /*
                 InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
 
                 FragmentManager f = getActivity().getSupportFragmentManager();
                 List<Fragment> pageList = f.getFragments();
@@ -97,9 +103,10 @@ public class SearchFragment extends Fragment {
                     ft.attach(frg);
                     ft.commit();
                 }
+                */
 
                 sv.clearFocus();
-
+                recyclerView.getAdapter().notifyItemRangeInserted(0, people.size());
                 return true;
             }
 
@@ -134,10 +141,15 @@ public class SearchFragment extends Fragment {
         ValueEventListener valuesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                recyclerView.getAdapter().notifyItemRangeRemoved(0,people.size());
                 people.clear();
+
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     people.add(singleSnapshot.getValue(User.class));
                 }
+                recyclerView.getAdapter().notifyItemRangeInserted(0, people.size());
+
                 progressDialog.hide();
             }
 

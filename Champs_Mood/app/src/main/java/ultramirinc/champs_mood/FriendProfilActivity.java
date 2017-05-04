@@ -86,7 +86,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 UpdateFriendShipButton(UserManager.getInstance().getCurrentUser().isFriend(friendProfile));
                 try {
                     TextView floor = (TextView) findViewById(R.id.floorLevel);
-                    if (friendProfile.getShareFloor()) {
+                    if (friendProfile.isShareFloor()) {
                         floor.setText(Integer.toString(friendProfile.getFloorLevel()));
                     }
                     else {

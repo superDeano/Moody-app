@@ -62,6 +62,10 @@ public class User {
         this.nameLowered = name.toLowerCase();
     }
 
+    public boolean isShareFloor() {
+        return shareFloor;
+    }
+
     public String getMood() {
         return mood;
     }
@@ -69,9 +73,9 @@ public class User {
     public void setShareFloor(boolean value) {
         this.shareFloor = value;
     }
-    public boolean getShareFloor() {
+    /*public boolean getShareFloor() {
         return this.shareFloor;
-    }
+    }*/
 
     public void setFloorLevel(int value) {
         this.floor = value;
@@ -334,6 +338,14 @@ public class User {
     public boolean removeFromFriendList(User user){
         friendList.remove(user.getId());
         return true;
+    }
+
+    public String getNameLowered() {
+        return nameLowered;
+    }
+
+    public void setNameLowered(String nameLowered) {
+        this.nameLowered = nameLowered;
     }
 
 }

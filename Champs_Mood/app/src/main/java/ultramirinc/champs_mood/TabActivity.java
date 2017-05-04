@@ -1,6 +1,7 @@
 package ultramirinc.champs_mood;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -96,6 +99,7 @@ public class TabActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     User user = null;
                     for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                        removeKeyboard();
                         user = singleSnapshot.getValue(User.class);
                         UserManager.getInstance().setCurrentUser(user);
                         setupViewPager(viewPager);
@@ -161,6 +165,14 @@ public class TabActivity extends AppCompatActivity {
         }
     }
 
+    public void removeKeyboard(){
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
 
 
     /**
@@ -208,4 +220,6 @@ public class TabActivity extends AppCompatActivity {
         */
 
     }
+
+
 }
