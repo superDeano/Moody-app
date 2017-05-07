@@ -3,6 +3,10 @@ package ultramirinc.champs_mood.fragments;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
@@ -94,19 +98,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         EditText editText = (EditText) view.findViewById(R.id.editMoodText);
         editText.clearFocus();
 
-
-        mGpsUpdate = (ImageButton) view.findViewById(R.id.update_gps);
-        mGpsUpdate.setEnabled(false);//TODO make it class field
-
-
-        mGpsUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Debug location: ","yeah you should implement this");
-            }
-        });
-
-
         ImageButton mMoodUpdate = (ImageButton) view.findViewById(R.id.enterMood);
         mMoodUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +124,25 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
         mSwitch.setChecked(false);
+
+
+
+        mGpsUpdate = (ImageButton) view.findViewById(R.id.update_gps);
+        mGpsUpdate.setEnabled(false);//TODO make it class field
+
+
+        mGpsUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast;
+                if(mSwitch.isChecked()){
+                    updateLocation();
+                }else {
+                    toast = Toast.makeText(getContext(), "Your location is not shared", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+            }
+        });
 
         RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.floor_group);
 
@@ -273,11 +283,17 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         TextView profileName = (TextView) view.findViewById(R.id.profil_text);
         profileName.setText("Hello " +  UserManager.getInstance().getCurrentUser().getName());
+
         EditText editMood = (EditText) view.findViewById(R.id.editMoodText);
         editMood.setText( UserManager.getInstance().getCurrentUser().getMood());
 
+        TextView breakText = (TextView) view.findViewById(R.id.breakText);
+        breakText.setText(UserManager.getInstance().getCurrentUser().getBreakText());//TODO try
+
         Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
+
         RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.floor_group);
+
         RadioButton button1 = (RadioButton) view.findViewById(R.id.radioButton1);
         RadioButton button2 = (RadioButton) view.findViewById(R.id.radioButton2);
         RadioButton button3 = (RadioButton) view.findViewById(R.id.radioButton3);
@@ -289,10 +305,8 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             case 3: button3.setChecked(true); break;
         }
 
-        if(u.isLocationShared()) {
+        if(u.isLocationShared())
             mSwitch.setChecked(true);
-
-        }
         else
             mSwitch.setChecked(false);
 
@@ -352,7 +366,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
     private void createRequestLocation() {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(30000);
+        mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
@@ -379,23 +393,20 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         mMap.getUiSettings().setCompassEnabled(false);
     }
 
-    private boolean checkPermission() {
-        /*if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                    MY_PERMISSION_ACCESS_FINE_LOCATION );
-        }*/
-        return false;
+    private boolean checkPermission() {//This should work
+        String permission = "android.permission.ACCESS_FINE_LOCATION";
+        int res = getContext().checkCallingPermission(permission);
+        return (res == PackageManager.PERMISSION_GRANTED);
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {
+        stopLocationUpdates();
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
     public void startLocationUpdates() {
@@ -447,12 +458,16 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
     public boolean checkConnection(){
         Toast t;
-        if(false) {// TODO
+        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mWifi = connManager.getActiveNetworkInfo();
+
+        if (mWifi != null) {
+           return true;
+        }else {
             t = Toast.makeText(getContext(), "No internet Connection", Toast.LENGTH_LONG);
             t.show();
             return false;
-        }else
-            return true;
+        }
     }
 
     public void updateLocation() { //TODO add parameter true/false + implement
@@ -466,6 +481,11 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 Log.d("Coordinates", (mLatitudeText + ", " + mLongitudeText));
 
                 LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+                UserManager.getInstance().getCurrentUser().setmLastLocation(mLastLocation);
+
+                UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+
                 mMap.addMarker(new MarkerOptions().position(me).title("me"));
             } else {
                 Log.d("debug", "fused not working");

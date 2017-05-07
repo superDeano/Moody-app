@@ -54,6 +54,7 @@ public class TabActivity extends AppCompatActivity {
     private MyViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,8 +88,7 @@ public class TabActivity extends AppCompatActivity {
             finish();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
-        }
-        else {
+        } else {
 
             progressDialog.setMessage("Loading user data...");
             progressDialog.show();
@@ -168,6 +168,7 @@ public class TabActivity extends AppCompatActivity {
     public void removeKeyboard(){
         View view = this.getCurrentFocus();
         if (view != null) {
+            view.clearFocus();
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
