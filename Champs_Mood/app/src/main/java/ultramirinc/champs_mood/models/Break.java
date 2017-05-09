@@ -123,10 +123,10 @@ public class Break implements Comparable<Break>{
 
         int breakHour = start.getHour();
         int breakMinute = start.getMinute();
-        int minuteDif;
+
 
         int hourDif = (breakHour - currentHour)%24;
-        minuteDif = (breakMinute - currentMinute)%60;
+        int minuteDif =(Math.abs(breakMinute - currentMinute))%60;
 
         if((breakMinute - currentMinute) < 0){
             hourDif--;

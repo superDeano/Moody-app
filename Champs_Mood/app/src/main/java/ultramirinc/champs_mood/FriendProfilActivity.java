@@ -2,6 +2,8 @@ package ultramirinc.champs_mood;
 
 
 import android.content.Intent;
+import android.icu.util.Calendar;
+import android.icu.util.GregorianCalendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,7 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.Break;
+import ultramirinc.champs_mood.models.Time;
 import ultramirinc.champs_mood.models.User;
 
 
@@ -82,7 +89,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 mood.setText(friendProfile.getMood());
                 TextView breakText = (TextView) findViewById(R.id.breakText);
                 breakText.setText(friendProfile.getBreakText());
-
+                CheckBreakStatus();
                 UpdateFriendShipButton(UserManager.getInstance().getCurrentUser().isFriend(friendProfile));
                 try {
                     TextView floor = (TextView) findViewById(R.id.floorLevel);
@@ -128,6 +135,49 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
         String textButton = isFriend ? "Unfollow" : "Follow";
         button.setText(textButton);
+    }
+
+    private void CheckBreakStatus() {
+
+        ArrayList<Break> friendBreaks = new ArrayList<>();
+        //Loading things from db
+        DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("breaks");
+        Query breakQuery = breaksReference.orderByChild("userId").equalTo(friendProfile.getId());
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    friendBreaks.add(singleSnapshot.getValue(Break.class));
+                }
+                java.util.GregorianCalendar current = new java.util.GregorianCalendar();
+                int currentDay = current.get(java.util.Calendar.DAY_OF_WEEK);
+                boolean breakToday = false;
+                for (int i=0; i < friendBreaks.size(); i++) {
+                    Break breakNode = friendBreaks.get(i);
+                    if (currentDay == breakNode.getIntDay()+1) {
+                        breakToday = true;
+                        Time timeDiff = breakNode.getTimeDifference();
+                        String text = "Break at: " + breakNode.getFromTime() + "-" + breakNode.getToTime();
+                        TextView tv = (TextView) findViewById(R.id.breakText);
+                        if (tv != null) {
+                            tv.setText(text);
+                        }
+                    }
+                }
+                if (!breakToday) {
+                    TextView tv = (TextView) findViewById(R.id.breakText);
+                    if (tv != null) {
+                        tv.setText("No breaks today");
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        breakQuery.addListenerForSingleValueEvent(postListener);
     }
 
     @Override

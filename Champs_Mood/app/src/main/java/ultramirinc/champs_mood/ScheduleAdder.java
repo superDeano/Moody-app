@@ -92,6 +92,7 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     breakList.add(singleSnapshot.getValue(Break.class));
                 }
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
 
             @Override
