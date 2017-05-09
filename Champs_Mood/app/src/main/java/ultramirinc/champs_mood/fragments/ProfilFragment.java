@@ -1,6 +1,9 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
@@ -14,6 +17,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -36,10 +41,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStates;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -50,7 +61,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Observable;
 import java.util.Observer;
-
+import android.Manifest;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
@@ -71,16 +82,27 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     private String mLongitudeText;
     private View view;
     private ImageButton mGpsUpdate;
-    private LocationRequest mLocationRequest;
+    private LocationRequest mLocationRequest; //Important
     private Context context;
+    private PendingResult<LocationSettingsResult> result;
+    private LocationSettingsRequest.Builder builder;
+    
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
-    public ProfilFragment(){
-        context = getContext();
+        if (context instanceof Activity){
+            this.context = context;
+        }
+
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        checkPermission();
+
+
         if (view != null) {
             ViewGroup parent = (ViewGroup) view.getParent();
             if (parent != null)
@@ -134,9 +156,39 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         mGpsUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                result = LocationServices.SettingsApi.checkLocationSettings(mGoogleApiClient,
+                        builder.build());
+                result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
+                    @Override
+                    public void onResult(@NonNull LocationSettingsResult result) {
+                        final Status status = result.getStatus();
+                        final LocationSettingsStates locationSettingsStates = result.getLocationSettingsStates();
+                        switch (status.getStatusCode()) {
+                            case LocationSettingsStatusCodes.SUCCESS:
+                                break;
+                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+
+                                try {
+
+                                    status.startResolutionForResult(
+                                            getActivity(),
+                                            0x1);//Code for REQUEST_CHECK_SETTINGS
+                                } catch (IntentSender.SendIntentException e) {
+                                    // Ignore the error.
+                                }
+                                break;
+                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+
+                                break;
+                        }
+                    }
+                });
+
                 Toast toast;
                 if(mSwitch.isChecked()){
                     updateLocation();
+                    Log.d("debug location: ", "should update");
                 }else {
                     toast = Toast.makeText(getContext(), "Your location is not shared", Toast.LENGTH_LONG);
                     toast.show();
@@ -370,6 +422,8 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
+        builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
 
     }
 
@@ -380,10 +434,12 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         // Add a marker in Sydney and move the camera
         LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
+        LatLng etienne = new LatLng(45.583794, -73.349251);
 
-        mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
+        //mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
 
-        CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
+        //CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
+        CameraPosition pos = CameraPosition.builder().target(etienne).build();
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
 
@@ -394,8 +450,27 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     private boolean checkPermission() {//This should work
+
+        int permissionCheck = ContextCompat.checkSelfPermission(
+                context, "Manifest.permission.ACCESS_FINE_LOCATION");
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                    Manifest.permission.READ_PHONE_STATE)) {
+                showExplanation("Permission Needed", "Rationale", Manifest.permission.ACCESS_FINE_LOCATION, 1);
+            } else {
+                requestPermission(Manifest.permission.ACCESS_FINE_LOCATION, 1);
+            }
+        } else {
+            Toast.makeText(getActivity(), "Permission (already) Granted!", Toast.LENGTH_SHORT).show();
+        }
+
         String permission = "android.permission.ACCESS_FINE_LOCATION";
         int res = getContext().checkCallingPermission(permission);
+        if (res != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{"Manifest.permission.ACCESS_FINE_LOCATION"},
+                    1);
+        }
         return (res == PackageManager.PERMISSION_GRANTED);
     }
 
@@ -471,6 +546,9 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
     public void updateLocation() { //TODO add parameter true/false + implement
+        Log.d("debug Location", "" + checkPermission());
+        Log.d("debug Location", "" + mGoogleApiClient.isConnected());
+
         if (checkPermission() && mGoogleApiClient.isConnected()) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
@@ -491,7 +569,43 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 Log.d("debug", "fused not working");
             }
         } else {
-            //Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Location not working m8", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showExplanation(String title,
+                                 String message,
+                                 final String permission,
+                                 final int permissionRequestCode) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        requestPermission(permission, permissionRequestCode);
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void requestPermission(String permissionName, int permissionRequestCode) {
+        ActivityCompat.requestPermissions(getActivity(),
+                new String[]{permissionName}, permissionRequestCode);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            String permissions[],
+            int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getActivity(), "Permission Granted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Permission Denied!", Toast.LENGTH_SHORT).show();
+                }
         }
     }
 }
