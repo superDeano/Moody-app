@@ -73,7 +73,7 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
                 else if(UserManager.getInstance().getCurrentUser().isFriend(person) && !isPokable){
                     Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
                 }
-                else if(!(UserManager.getInstance().getCurrentUser().isFriend(person))){
+                else if(!(person.isFriend(UserManager.getInstance().getCurrentUser()))){
                     Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
                 }
                 else {
