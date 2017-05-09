@@ -30,7 +30,7 @@ public class User {
     private boolean isFriend; //TODO temporary
     private ArrayList<String> friendList = new ArrayList<>();
     private ArrayList<Break> breaks = new ArrayList<>();
-    private Location mLastLocation;
+    private Location mLastLocation = new Location("fused");
     private int floor;
     private boolean shareFloor;
 
