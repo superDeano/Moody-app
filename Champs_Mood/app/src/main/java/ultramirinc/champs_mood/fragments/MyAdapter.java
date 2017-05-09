@@ -2,6 +2,7 @@ package ultramirinc.champs_mood.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     private List<User> list;
     private Context context;
+    private boolean isPokable = true;
 
     public MyAdapter(List<User> list, Context context) {
         this.list = list;
@@ -54,16 +56,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         myViewHolder.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (myFriend.isFriend(UserManager.getInstance().getCurrentUser())) {
+               if (myFriend.isFriend(UserManager.getInstance().getCurrentUser()) && isPokable) {
                    Poke(myFriend);
                }
+               else if(myFriend.isFriend(UserManager.getInstance().getCurrentUser()) && !isPokable){
+                   Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
+               }
+               else if (myFriend.getId().equals(UserManager.getInstance().getCurrentUser().getId())) {
+                   Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_LONG).show();
+               }
                else {
-                   if (myFriend.getId().equals(UserManager.getInstance().getCurrentUser().getId())) {
-                       Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_LONG).show();
-                   }
-                   else {
-                       Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
-                   }
+                   Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
                }
             }
         });
@@ -76,6 +79,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         NotificationManager nm = new NotificationManager();
         nm.saveNotification(n);
         Toast.makeText(context, "Poke sent!", Toast.LENGTH_LONG).show();
+        isPokable =false;
+        Handler checker = new Handler();
+        checker.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isPokable=true;
+            }
+        }, 120000);
     }
 
     @Override

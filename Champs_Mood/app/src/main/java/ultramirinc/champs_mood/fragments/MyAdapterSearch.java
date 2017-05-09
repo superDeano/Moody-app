@@ -2,6 +2,7 @@ package ultramirinc.champs_mood.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ import ultramirinc.champs_mood.models.User;
 public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
     private Context context;
     private List<User> list;
+    private boolean isPokable = true;
 
     public MyAdapterSearch(List<User> list, Context context) {
         this.list = list;
@@ -65,8 +67,14 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
             @Override
             public void onClick(View v) {
                 //If is already our friend, will poke !
-                if (UserManager.getInstance().getCurrentUser().isFriend(person)) {
+                if (UserManager.getInstance().getCurrentUser().isFriend(person) && isPokable) {
                     Poke(person);
+                }
+                else if(UserManager.getInstance().getCurrentUser().isFriend(person) && !isPokable){
+                    Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
+                }
+                else if(!(UserManager.getInstance().getCurrentUser().isFriend(person))){
+                    Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
                 }
                 else {
                     // not in our friends so we will add user.
@@ -99,6 +107,14 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
         NotificationManager nm = new NotificationManager();
         nm.saveNotification(n);
         Toast.makeText(context, "Poke sent!", Toast.LENGTH_LONG).show();
+        isPokable =false;
+        Handler checker = new Handler();
+        checker.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isPokable=true;
+            }
+        }, 120000);
     }
 
     @Override

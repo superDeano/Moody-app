@@ -2,6 +2,7 @@ package ultramirinc.champs_mood.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +28,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
 
     private Context context;
     private List<Notification> list;
+    private boolean isPokable = true;
 
     public MyAdapterNotification(List<Notification> list, Context context) {
         this.list = list;
@@ -59,8 +61,14 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
             @Override
             public void onClick(View v) {
                 //If is already our friend, will poke !
-                if (UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId())) {
+                if (UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId()) && isPokable) {
                     Poke(notification.getSenderId());
+                }
+                else if (UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId()) && !isPokable) {
+                    Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
+                }
+                else if (!(UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId()))) {
+                    Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
                 }
                 else {
                     // not in our friends so we will add user.
@@ -93,6 +101,14 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
         NotificationManager nm = new NotificationManager();
         nm.saveNotification(n);
         Toast.makeText(context, "Poke sent!", Toast.LENGTH_LONG).show();
+        isPokable =false;
+        Handler checker = new Handler();
+        checker.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isPokable=true;
+            }
+        }, 120000);
     }
 
     @Override
