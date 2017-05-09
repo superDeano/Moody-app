@@ -69,7 +69,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
                         // will update our friend list.
                         UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
 
-                        Toast.makeText(context, "Now following user.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Now following user!", Toast.LENGTH_SHORT).show();
                         notifyDataSetChanged();
                         Notification n = new Notification(UserManager.getInstance().getCurrentUser().getName(),
                                 Notification_type.followed_you.getNumVal(),
@@ -92,6 +92,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), true, currentUser.getId(), UserId);
         NotificationManager nm = new NotificationManager();
         nm.saveNotification(n);
+        Toast.makeText(context, "Poke sent!", Toast.LENGTH_LONG).show();
     }
 
     @Override

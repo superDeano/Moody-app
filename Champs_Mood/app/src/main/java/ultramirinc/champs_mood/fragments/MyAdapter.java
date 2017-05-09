@@ -62,7 +62,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                        Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_LONG).show();
                    }
                    else {
-                       Toast.makeText(context, "Can't poke this user because this user isn't following you back", Toast.LENGTH_LONG).show();
+                       Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
                    }
                }
             }
@@ -75,6 +75,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());
         NotificationManager nm = new NotificationManager();
         nm.saveNotification(n);
+        Toast.makeText(context, "Poke sent!", Toast.LENGTH_LONG).show();
     }
 
     @Override
