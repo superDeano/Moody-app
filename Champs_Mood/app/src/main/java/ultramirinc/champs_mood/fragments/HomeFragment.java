@@ -1,5 +1,6 @@
 package ultramirinc.champs_mood.fragments;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +35,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+
+import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
@@ -43,18 +47,13 @@ import ultramirinc.champs_mood.models.User;
  */
 
 
-public class HomeFragment extends Fragment implements Observer, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
+public class HomeFragment extends Fragment implements Observer, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, GoogleMap.OnMarkerClickListener {
 
-    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
-    private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
-    private String mLatitudeText;
-    private String mLongitudeText;
     private View view;
-    private User u;
     private LocationRequest mLocationRequest;
-    private Location mLastLocation;
+    private Marker currentMarker;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,12 +75,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
 
         TextView name = (TextView)view.findViewById(R.id.mood);
 
-        name.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return false;
-            }
-        });
+        name.setOnTouchListener((v, event) -> false);
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -94,6 +88,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     public void update(Observable o, Object arg) {
         try {
             UpdateView((User) arg);
+            setUserAndPaintProfile((User) arg);
         }
         catch (Exception e) {
             //error not handeled
@@ -169,7 +164,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         Log.d("debug", "in");
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
         LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
 
         mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
@@ -186,8 +180,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         mMap.getUiSettings().setRotateGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
 
-        //Add marker on my location
-
     }
 
 
@@ -197,7 +189,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("Cleint error", "Google client did not connect");
+        Log.e("Client error", "Google client did not connect");
 
     }
 
@@ -218,7 +210,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     public void onClick(View v) {
     }
 
-    public void SetUserAndPaintProfile(User u) {
+    public void setUserAndPaintProfile(User u) {
         
         mMap.clear(); //clears map 
 
@@ -258,8 +250,22 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     public void fillMap(ArrayList<User> friendList){
         for (User friend : friendList){
             LatLng temp = new LatLng(friend.getLastLocation().getLat(), friend.getLastLocation().getLng());
-            MarkerOptions markerOption = new MarkerOptions().position(temp).title(friend.getName());
-            mMap.addMarker(markerOption);
+            Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title(friend.getName()));
+            tempMarker.setTag(friend.getId());
+        }
+        mMap.setOnMarkerClickListener(this);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if(currentMarker == marker) {
+            currentMarker = marker;
+            return false;
+        }else{
+            Intent intent = new Intent(getContext(), FriendProfilActivity.class);
+            intent.putExtra("userId", (String) marker.getTag());
+            getContext().startActivity(intent);
+            return true;
         }
     }
 }

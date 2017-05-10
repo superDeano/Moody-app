@@ -244,7 +244,8 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 if(!isChecked){
                     clearMap();
                     UserManager.getInstance().getCurrentUser().setLocationShared(false);
-                    UserManager.getInstance().getCurrentUser().setLastLocation(null);
+                    UserManager.getInstance().getCurrentUser().getLastLocation().setLat(0);
+                    UserManager.getInstance().getCurrentUser().getLastLocation().setLng(0);
                     button1.setEnabled(false);
                     button2.setEnabled(false);
                     button3.setEnabled(false);
@@ -256,8 +257,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                     button3.setEnabled(true);
                 }
                 UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-
-                //HandleFloorStates(isChecked);
 
             }
         });
@@ -274,7 +273,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
     @Override
     public void update(Observable o, Object arg) {
-
         SetUserAndPaintProfile((User) arg);
     }
 
@@ -296,42 +294,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         UserManager.getInstance().addObserver(this);
         UserManager.getInstance().getUserInformations();
     }
-    //Maybe not necessary
-    /*
-    private void HandleFloorStates(boolean isChecked) {
-        User currentUser = UserManager.getInstance().getCurrentUser();
 
-        if (currentUser == null)
-            return;
-
-        RadioButton floor1 = (RadioButton) view.findViewById(R.id.radioButton1);
-        RadioButton floor2 = (RadioButton) view.findViewById(R.id.radioButton2);
-        RadioButton floor3 = (RadioButton) view.findViewById(R.id.radioButton3);
-
-
-
-        if (isChecked) {
-            currentUser.setShareFloor(true);
-            if (floor1.isChecked()){
-                currentUser.setFloorLevel(1);
-            }
-            if (floor2.isChecked()){
-                currentUser.setFloorLevel(2);
-            }
-            if (floor3.isChecked()){
-                currentUser.setFloorLevel(3);
-            }
-        }
-        else {
-            currentUser.setShareFloor(false);
-            floor1.setEnabled(false);
-            floor2.setEnabled(false);
-            floor3.setEnabled(false);
-        }
-        //save changes
-        UserManager.getInstance().editUserInformations(currentUser);
-    }
-    */
 
     public void SetUserAndPaintProfile(User u) {
 
