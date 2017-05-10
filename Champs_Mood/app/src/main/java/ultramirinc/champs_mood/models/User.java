@@ -30,7 +30,8 @@ public class User {
     private boolean isFriend; //TODO temporary
     private ArrayList<String> friendList = new ArrayList<>();
     private ArrayList<Break> breaks = new ArrayList<>();
-    private Location mLastLocation = new Location("fused");
+    //private Location mLastLocation = new Location("fused");
+    private MyLocation lastLocation = new MyLocation();
     private int floor;
     private boolean shareFloor;
 
@@ -319,12 +320,21 @@ public class User {
         this.friendList = friendList;
     }
 
-    public Location getmLastLocation() {
+    /*public Location getmLastLocation() {
         return mLastLocation;
     }
 
     public void setmLastLocation(Location mLastLocation) {
         this.mLastLocation = mLastLocation;
+    }
+    */
+
+    public MyLocation getLastLocation() {
+        return lastLocation;
+    }
+
+    public void setLastLocation(MyLocation lastLocation) {
+        this.lastLocation = lastLocation;
     }
 
     public int getFloor() {

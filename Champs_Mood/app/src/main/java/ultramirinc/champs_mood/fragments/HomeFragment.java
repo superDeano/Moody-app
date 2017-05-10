@@ -197,65 +197,10 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         mMap.getUiSettings().setCompassEnabled(false);
 
         //Add marker on my location
-        updateLocation();
+
     }
 
 
-    /*
-    public void startLocationUpdates() {
-
-        if(checkPermission() && mGoogleApiClient != null) { //debug
-            LocationServices.FusedLocationApi.requestLocationUpdates(
-                    mGoogleApiClient, mLocationRequest, this);
-        }else{
-           // Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    protected void stopLocationUpdates() {
-        checkPermission();
-        if(mGoogleApiClient.isConnected()) {
-            LocationServices.FusedLocationApi.removeLocationUpdates(
-                    mGoogleApiClient,  this);
-        }else{
-            //Toast.makeText(getActivity(), "something went wrong in stop", Toast.LENGTH_SHORT).show();
-        }
-    }
-    */
-
-    private boolean checkPermission() {
-
-       /* if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_COARSE_LOCATION  },
-                    MY_PERMISSION_ACCESS_COARSE_LOCATION );
-
-            ActivityCompat.requestPermissions( getActivity(), new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  },
-                    MY_PERMISSION_ACCESS_FINE_LOCATION );
-            return false;
-        }
-
-        return true;*/
-       return false;
-    }
-
-    // Get permission result
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSION_ACCESS_FINE_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    updateLocation();
-                } else {
-                    // permission was denied
-                }
-                return;
-            }
-        }
-    }
 
     public void onConnectionSuspended(int i) {
     }
@@ -279,38 +224,8 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         super.onDestroyView();
     }
 
-    public void updateLocation(){ //TODO add parameter true/false
-        if(checkPermission() && mGoogleApiClient.isConnected()) {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-            if (mLastLocation != null) {
-                mLatitudeText = String.valueOf(mLastLocation.getLatitude());
-                mLongitudeText = String.valueOf(mLastLocation.getLongitude());
-
-                Log.d("Coordinates",(mLatitudeText + ", " + mLongitudeText));
-
-                LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(me).title("me"));
-            } else {
-                Log.d("debug", "fused not working");
-            }
-        } else{
-            //Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
-
     @Override
     public void onClick(View v) {
-        Log.d("debug", "inside Button Listener");
-        switch(v.getId()){
-            case R.id.update_gps:
-                Log.d("debug", "inside good case");
-                mMap.clear();
-                updateLocation();
-                break;
-        }
     }
 
     public void SetUserAndPaintProfile(User u) {
@@ -323,5 +238,9 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         UserManager.getInstance().deleteObservers();
         UserManager.getInstance().addObserver(this);
         UserManager.getInstance().getUserInformations();
+    }
+
+    public void fillMap(){
+
     }
 }

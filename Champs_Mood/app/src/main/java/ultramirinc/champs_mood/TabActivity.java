@@ -81,15 +81,6 @@ public class TabActivity extends AppCompatActivity {
 
     private void loadUserInformationsSetupViewPager(MyViewPager viewPager) {
 
-        //Verify if a user is connected
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            //NOT CONNECTED redirect to login.
-            UserManager.getInstance().ClearCurrentUser();
-            finish();
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        } else {
-
             progressDialog.setMessage("Loading user data...");
             progressDialog.show();
             DatabaseReference databaseUsers = FirebaseDatabase.getInstance().getReference("users");
@@ -128,7 +119,6 @@ public class TabActivity extends AppCompatActivity {
                 }
             };
             userQuery.addListenerForSingleValueEvent(postListener);
-        }
     }
 
     private void setupViewPager(MyViewPager viewPager){

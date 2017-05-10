@@ -436,13 +436,13 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        //LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
-        LatLng papa = new LatLng(45.589532, -73.354669);
+        LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
+        //LatLng papa = new LatLng(45.589532, -73.354669);
 
         //mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
 
-        //CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
-        CameraPosition pos = CameraPosition.builder().target(papa).build(); //rotate map
+        CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
+        //CameraPosition pos = CameraPosition.builder().target(papa).build(); //rotate map
 
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
@@ -555,7 +555,9 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
                 LatLng me = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-                UserManager.getInstance().getCurrentUser().setmLastLocation(mLastLocation);
+                UserManager.getInstance().getCurrentUser().getLastLocation().setLat(Double.parseDouble(mLatitudeText));
+                UserManager.getInstance().getCurrentUser().getLastLocation().setLng(Double.parseDouble(mLongitudeText));
+
 
                 UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
 

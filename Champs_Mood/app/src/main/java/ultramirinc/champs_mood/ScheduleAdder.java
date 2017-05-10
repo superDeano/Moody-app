@@ -76,14 +76,6 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
     }
 
     public void populateList(){
-        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Monday"));
-        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Monday"));
-        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Tuesday"));
-        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Wednesday"));
-        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Wednesday"));
-        //breakList.add(new Break(new Time(1, 30), new Time(2, 00), "Friday"));
-
-        //Loading things from db
         DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("breaks");
         Query breakQuery = breaksReference.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         ValueEventListener postListener = new ValueEventListener() {
@@ -102,8 +94,6 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
         };
         breakQuery.addListenerForSingleValueEvent(postListener);
     }
-
-
 
 
     @Override
