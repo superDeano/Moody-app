@@ -1,14 +1,11 @@
 package ultramirinc.champs_mood;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import java.util.Calendar;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
@@ -23,8 +20,6 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import ultramirinc.champs_mood.fragments.TimePicker;
 
 public class BreakCreator extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
@@ -194,28 +189,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
     }
 
-    //Change the implements to add this again (TimePicker.SetOnClockSomething)
-    /*
-    @Override
-    public void onTimeSetDialog(String inputText) {
-        String[] temp = inputText.split(":");
-        if(Integer.parseInt(temp[0])==1){
-            startHour = Integer.parseInt(temp[1]);
-            startMinute = Integer.parseInt(temp[2]);
-            setStartTimeView();
-        } else if(Integer.parseInt(temp[0])==2){
-            endHour = Integer.parseInt(temp[1]);
-            endMinute = Integer.parseInt(temp[2]);
-            setEndTimeView();
-        }else{
-            startMinute = -1;
-            startHour = -1;
-            endMinute = -1;
-            endHour = -1;
-        }
 
-    }
-    */
 
     public void setStartTimeView(){
 

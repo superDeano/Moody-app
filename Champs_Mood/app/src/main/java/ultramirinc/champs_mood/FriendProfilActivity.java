@@ -184,11 +184,17 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         Log.d("debug", "in");
         mMap = googleMap;
+        mMap.clear();
 
         // Add a marker in Sydney and move the camera
         LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
 
-        mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
+        LatLng user = new LatLng(UserManager.getInstance().getCurrentUser().getLastLocation().getLat(),
+        UserManager.getInstance().getCurrentUser().getLastLocation().getLng());
+
+
+
+        mMap.addMarker(new MarkerOptions().position(user).title(UserManager.getInstance().getCurrentUser().getName()));
 
         CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));

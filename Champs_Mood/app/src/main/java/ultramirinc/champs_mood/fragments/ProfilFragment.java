@@ -242,8 +242,9 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if(!isChecked){
-
+                    clearMap();
                     UserManager.getInstance().getCurrentUser().setLocationShared(false);
+                    UserManager.getInstance().getCurrentUser().setLastLocation(null);
                     button1.setEnabled(false);
                     button2.setEnabled(false);
                     button3.setEnabled(false);
@@ -560,6 +561,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
 
                 UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
+                mMap.clear();
 
                 mMap.addMarker(new MarkerOptions().position(me).title("me"));
             } else {
@@ -589,5 +591,9 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                     Toast.makeText(getActivity(), "Permission Denied!", Toast.LENGTH_SHORT).show();
                 }
         }
+    }
+
+    public void clearMap(){
+        mMap.clear();
     }
 }

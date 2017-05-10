@@ -1,39 +1,22 @@
 package ultramirinc.champs_mood.fragments;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,6 +24,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import ultramirinc.champs_mood.R;
@@ -229,8 +219,33 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     }
 
     public void SetUserAndPaintProfile(User u) {
-        TextView mMood = (TextView) view.findViewById(R.id.mood);
-        mMood.setText(UserManager.getInstance().getCurrentUser().getMood());
+        
+        mMap.clear(); //clears map 
+
+        User currentUser = u;
+
+        DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
+        usersTable.child(currentUser.getuId()).child("friendList").addValueEventListener(new ValueEventListener() {
+        ArrayList<User> friends = new ArrayList<User>();
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for (DataSnapshot friendKey: snapshot.getChildren()) {
+                    FirebaseDatabase.getInstance().getReference("users").child(friendKey.getValue(String.class)).addValueEventListener(new ValueEventListener() {
+                        public void onDataChange(DataSnapshot friendSnapshot) {
+                            friends.add(friendSnapshot.getValue(User.class));
+                        }
+                        public void onCancelled(DatabaseError firebaseError) {
+                        }
+                    });
+                }
+                fillMap(friends);
+            }
+            public void onCancelled(DatabaseError firebaseError) {
+                //empty
+            }
+        });
+
+
 
     }
 
@@ -240,7 +255,11 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         UserManager.getInstance().getUserInformations();
     }
 
-    public void fillMap(){
-
+    public void fillMap(ArrayList<User> friendList){
+        for (User friend : friendList){
+            LatLng temp = new LatLng(friend.getLastLocation().getLat(), friend.getLastLocation().getLng());
+            MarkerOptions markerOption = new MarkerOptions().position(temp).title(friend.getName());
+            mMap.addMarker(markerOption);
+        }
     }
 }
