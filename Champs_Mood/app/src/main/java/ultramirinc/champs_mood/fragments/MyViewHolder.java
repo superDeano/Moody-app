@@ -70,6 +70,11 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
         this.breakTextView = breakTextView;
     }
 
+    public void setBreakTextText(String s){
+        breakTextView.setText(s);
+    }
+
+
     public Button getButton() {
         return mButton;
     }

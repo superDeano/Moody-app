@@ -224,7 +224,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
 
 
             public void onDataChange(DataSnapshot snapshot) {
-
+            mMap.clear();
                 for (DataSnapshot friendKey: snapshot.getChildren()) {
                     FirebaseDatabase.getInstance().getReference("users").child(friendKey.getValue(String.class)).addValueEventListener(new ValueEventListener() {
                         public void onDataChange(DataSnapshot friendSnapshot) {

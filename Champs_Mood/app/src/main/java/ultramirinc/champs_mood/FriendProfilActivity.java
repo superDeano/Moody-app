@@ -101,8 +101,11 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
                 latLng = new LatLng(friendProfile.getLastLocation().getLat(),
                         friendProfile.getLastLocation().getLng());
-                Log.d("Location Debug: ", latLng.toString());
-                mMap.addMarker(new MarkerOptions().position(latLng).title(friendProfile.getName()));
+
+                if(friendProfile.isLocationShared()) {
+                    Log.d("Location Debug: ", latLng.toString());
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(friendProfile.getName()));
+                }
 
                 TextView name = (TextView) findViewById(R.id.profil_text);
                 name.setText(friendProfile.getName());
@@ -304,5 +307,10 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         mMap.setMaxZoomPreference(20);
         mMap.getUiSettings().setRotateGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
+    }
+
+    @Override
+    public void onBackPressed(){
+        finish();
     }
 }
