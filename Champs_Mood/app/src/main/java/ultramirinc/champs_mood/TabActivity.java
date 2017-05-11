@@ -76,7 +76,6 @@ public class TabActivity extends AppCompatActivity {
 
         loadUserInformationsSetupViewPager(mViewPager);
 
-
     }
 
     private void loadUserInformationsSetupViewPager(MyViewPager viewPager) {

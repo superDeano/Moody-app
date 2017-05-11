@@ -391,7 +391,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(mLocationRequest);
 
-
     }
 
     @Override
@@ -410,7 +409,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
-        if(UserManager.getInstance().getCurrentUser().getLastLocation()!= null) {
+        if(UserManager.getInstance().getCurrentUser().getLastLocation() != null) {
             User u = UserManager.getInstance().getCurrentUser();
             LatLng temp = new LatLng(u.getLastLocation().getLat(), u.getLastLocation().getLng());
             Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title("Me"));

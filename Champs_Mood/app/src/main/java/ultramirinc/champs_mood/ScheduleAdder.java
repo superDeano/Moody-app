@@ -75,7 +75,7 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
         });
     }
 
-    public void populateList(){
+    public void populateList() {
         DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("breaks");
         Query breakQuery = breaksReference.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         ValueEventListener postListener = new ValueEventListener() {

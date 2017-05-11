@@ -48,7 +48,7 @@ public class Break implements Comparable<Break>{
         this.start = start;
     }
 
-    public String getFromTime(){
+    public String getFromTime() {
         if(start.getMinute() >= 10)
             return start.getHour() + ":" + start.getMinute();
         else
