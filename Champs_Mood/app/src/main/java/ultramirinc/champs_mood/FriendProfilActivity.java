@@ -27,7 +27,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.Break;
@@ -162,25 +169,78 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendBreaks.add(singleSnapshot.getValue(Break.class));
                 }
+                friendProfile.setBreaks(friendBreaks);
                 java.util.GregorianCalendar current = new java.util.GregorianCalendar();
                 int currentDay = current.get(java.util.Calendar.DAY_OF_WEEK);
-                boolean breakToday = false;
+
+                long closestBreakMin = 1440;
+                Break closestBreak = null;
+                long closestBreakDuration = 0;
+
+                // find closest break for the day (if any)
                 for (int i=0; i < friendBreaks.size(); i++) {
                     Break breakNode = friendBreaks.get(i);
                     if (currentDay == breakNode.getIntDay()+1) {
-                        breakToday = true;
-                        Time timeDiff = breakNode.getTimeDifference();
-                        String text = "Break at: " + breakNode.getFromTime() + "-" + breakNode.getToTime();
-                        TextView tv = (TextView) findViewById(R.id.breakText);
-                        if (tv != null) {
-                            tv.setText(text);
+                        Date now = new Date();
+
+                        Date breakStart = new Date();
+                        breakStart.setHours(breakNode.getStart().getHour());
+                        breakStart.setMinutes((breakNode.getStart().getMinute()));
+                        breakStart.setSeconds(0);
+
+                        long timeDiffInMinutes = getDateDiff(now, breakStart, TimeUnit.MINUTES);
+
+                        Date breakEnd = new Date();
+                        breakEnd.setHours(breakNode.getEnd().getHour());
+                        breakEnd.setMinutes(breakNode.getEnd().getMinute());
+                        breakEnd.setSeconds(0);
+
+                        //check if currently in break.
+                        long breakDuration = getDateDiff(breakStart, breakEnd, TimeUnit.MINUTES);
+                        if (timeDiffInMinutes < 0 && Math.abs(timeDiffInMinutes) <= breakDuration) {
+                            //is currently in break! // Loop stops here.
+                            closestBreak = breakNode;
+                            closestBreakMin = timeDiffInMinutes;
+                            closestBreakDuration = breakDuration;
+                            break;
+                        } else if (timeDiffInMinutes < closestBreakMin) {
+                            //this is to handle if there are multiple breaks in one day. The goal is to show when is the CLOSEST break.
+                            closestBreak = breakNode;
+                            closestBreakMin = timeDiffInMinutes;
+                            closestBreakDuration = breakDuration;
+                        }
+                        else if (timeDiffInMinutes > 0 && closestBreakMin < 0) {
+                            //There is still a break in the current day, while the closest break is already passed, so the coming break has priority. (get it?)
+                            closestBreak = breakNode;
+                            closestBreakMin = timeDiffInMinutes;
+                            closestBreakDuration = breakDuration;
                         }
                     }
                 }
-                if (!breakToday) {
+                String text = "";
+                if (closestBreak == null) {
                     TextView tv = (TextView) findViewById(R.id.breakText);
                     if (tv != null) {
                         tv.setText("No breaks today");
+                    }
+                }
+                else {
+                    if (closestBreakMin > 0) {
+                        // Next break in timediffminutes
+                        text = "Next break at : " + closestBreak.getFromTime();
+                    }
+                    else if (closestBreakMin < 0 && Math.abs(closestBreakMin) <= closestBreakDuration) {
+                        text = "In break until : " + closestBreak.getToTime();
+                    }
+                    else {
+                        // break is over.
+                        text = "No more breaks today";
+                    }
+
+
+                    TextView tv = (TextView) findViewById(R.id.breakText);
+                    if (tv != null) {
+                        tv.setText(text);
                     }
                 }
             }
@@ -191,6 +251,11 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
             }
         };
         breakQuery.addListenerForSingleValueEvent(postListener);
+    }
+
+    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 
     @Override

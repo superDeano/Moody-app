@@ -245,7 +245,7 @@ public class User {
                     break;
                 }
             }
-            if(currentHour > tempBreak.getStart().getHour() && currentHour < tempBreak.getEnd().getHour()){
+            if(currentHour >= tempBreak.getStart().getHour() && currentHour <= tempBreak.getEnd().getHour()){
                 breakText = "In break";
                 break;
             }

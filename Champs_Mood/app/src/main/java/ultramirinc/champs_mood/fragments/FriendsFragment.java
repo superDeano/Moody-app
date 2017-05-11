@@ -82,11 +82,13 @@ public class FriendsFragment extends Fragment{
                             recyclerView.getAdapter().notifyDataSetChanged();
                         }
                         public void onCancelled(DatabaseError firebaseError) {
+
                         }
                     });
                 }
             }
             public void onCancelled(DatabaseError firebaseError) {
+
             }
         });
     }

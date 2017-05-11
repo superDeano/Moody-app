@@ -17,7 +17,7 @@ import ultramirinc.champs_mood.fragments.ProfilFragment;
 import ultramirinc.champs_mood.models.User;
 
 /**
- * Created by Bata on 2017-04-25.
+ * Created by Amir Osman on 2017-04-25.
  */
 public class UserManager extends Observable {
     private User current_user;
