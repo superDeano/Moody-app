@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -129,6 +131,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
             UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
             updateFriendShipButton(false);
         }
+        Toast.makeText(this, "Unfollowed", Toast.LENGTH_SHORT).show();
         return done;
     }
     private void follow(User userToFollow) {
@@ -138,6 +141,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
             UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
             updateFriendShipButton(true);
         }
+        Toast.makeText(this, "Friend request sent!", Toast.LENGTH_SHORT).show();
     }
     public void updateFriendShipButton(boolean isFriend) {
         Button button = (Button) findViewById(R.id.friendShipButton);

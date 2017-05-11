@@ -63,7 +63,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
                     Poke(notification.getSenderId());
                 }
                 else if (UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId()) && !isPokable) {
-                    Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Already poked!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     // not in our friends so we will add user.
@@ -95,7 +95,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), true, currentUser.getId(), UserId);
         NotificationManager nm = new NotificationManager();
         nm.saveNotification(n);
-        Toast.makeText(context, "Poke sent!", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Poke sent!", Toast.LENGTH_SHORT).show();
         isPokable =false;
         Handler checker = new Handler();
         checker.postDelayed(new Runnable() {

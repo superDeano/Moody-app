@@ -60,10 +60,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                    Poke(myFriend);
                }
                else if(myFriend.isFriend(UserManager.getInstance().getCurrentUser()) && !isPokable){
-                   Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
+                   Toast.makeText(context, "Already poked!", Toast.LENGTH_SHORT).show();
                }
                else if (myFriend.getId().equals(UserManager.getInstance().getCurrentUser().getId())) {
-                   Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_LONG).show();
+                   Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_SHORT).show();
                }
                else {
                    Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_SHORT).show();
@@ -78,7 +78,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());
         NotificationManager nm = new NotificationManager();
         nm.saveNotification(n);
-        Toast.makeText(context, "Poke sent!", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Poke sent!", Toast.LENGTH_SHORT).show();
         isPokable =false;
         Handler checker = new Handler();
         checker.postDelayed(new Runnable() {

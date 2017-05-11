@@ -56,7 +56,10 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
         myViewHolderSearch.getNameView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("listener Debug", "Coucou");
+                /*if((UserManager.getInstance().getCurrentUser().getName()).equals(myViewHolderSearch.getNameView().getText())){
+                    Toast.makeText(context, "Hello?", Toast.LENGTH_SHORT).show();
+                }
+                else{*/
                 Intent intent = new Intent(context, FriendProfilActivity.class);
                 intent.putExtra("userId", person.getId());
                 context.startActivity(intent);
@@ -73,14 +76,14 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
                 }
                 else if(person.isFriend(UserManager.getInstance().getCurrentUser())
                         && UserManager.getInstance().getCurrentUser().isFriend(person) && !isPokable){
-                    Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Already poked!", Toast.LENGTH_SHORT).show();
                 }
                 else if(!(person.isFriend(UserManager.getInstance().getCurrentUser()))
                         && UserManager.getInstance().getCurrentUser().isFriend(person)){
-                    Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_SHORT).show();
                 }
                 else if (person.getId().equals(UserManager.getInstance().getCurrentUser().getId())) {
-                    Toast.makeText(context, "You can't follow yourself!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "You can't follow yourself!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     // not in our friends so we will add user.
@@ -112,7 +115,7 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());
         NotificationManager nm = new NotificationManager();
         nm.saveNotification(n);
-        Toast.makeText(context, "Poke sent!", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "Poke sent!", Toast.LENGTH_SHORT).show();
         isPokable =false;
         Handler checker = new Handler();
         checker.postDelayed(new Runnable() {

@@ -31,6 +31,7 @@ import ultramirinc.champs_mood.models.Notification;
 public class NotificationFragment extends Fragment {
 
     private RecyclerView recyclerView;
+    private LinearLayoutManager mLayoutManager;
     private List<Notification> nofications = new ArrayList<>();
     private Context context = getContext();
 
@@ -44,8 +45,9 @@ public class NotificationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mLayoutManager = new LinearLayoutManager(context);
+        mLayoutManager.setReverseLayout(true);
+        recyclerView.setLayoutManager(mLayoutManager);
 
         recyclerView.setAdapter(new MyAdapterNotification(nofications, getContext()));
         addNotifications();
