@@ -85,7 +85,7 @@ public class SearchFragment extends Fragment {
 
                 people.clear();
 
-                SearchUsers(query);
+                searchUsers(query);
 
 
                 /*
@@ -132,7 +132,7 @@ public class SearchFragment extends Fragment {
     }
 
 
-    public void SearchUsers(String query) { //TODO non case sensitive
+    public void searchUsers(String query) { //TODO non case sensitive
 
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query searchQuery = this.databaseUsers.orderByChild("nameLowered").startAt(query).endAt(query+"\uf8ff");
@@ -149,7 +149,7 @@ public class SearchFragment extends Fragment {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
                     User tempUser = singleSnapshot.getValue(User.class);
 
-                    if(!(UserManager.getInstance().getCurrentUser().getId().equals(tempUser.getId())));
+                    if(!(UserManager.getInstance().getCurrentUser().getId().equals(tempUser.getId())))
                     people.add(tempUser);
 
                 }
