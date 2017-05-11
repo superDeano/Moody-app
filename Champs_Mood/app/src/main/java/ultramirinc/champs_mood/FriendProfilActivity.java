@@ -1,9 +1,11 @@
 package ultramirinc.champs_mood;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.icu.util.Calendar;
 import android.icu.util.GregorianCalendar;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
@@ -45,9 +48,9 @@ import ultramirinc.champs_mood.models.User;
 public class FriendProfilActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
     private User friendProfile;
     private LatLng latLng;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +59,14 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
         Intent intent = getIntent();
 
+        progressDialog = new ProgressDialog(this);
+
         try {
             String userId = intent.getExtras().get("userId").toString();
             loadFriendProfile(userId);
         }
         catch (Exception e) {
-            //error occured, don't do nothing.
+            //error occured, don't do nothing.// TODO: 2017-05-11 check wifi
         }
 
         Button button = (Button) findViewById(R.id.friendShipButton);
@@ -82,6 +87,8 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
     }
 
     public void loadFriendProfile(String userId) {
+        progressDialog.setMessage("Loading user data...");
+        progressDialog.show();
         DatabaseReference databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query userQuery = databaseUsers.orderByChild("id").equalTo(userId);
         ValueEventListener loadInfoListener = new ValueEventListener() {
@@ -101,17 +108,25 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 name.setText(friendProfile.getName());
 
                 TextView mood = (TextView) findViewById(R.id.mood);
-                mood.setText(friendProfile.getMood());
+
+                if(friendProfile.getMood() == null) {
+                    mood.setText("No mood");
+                }else if( friendProfile.getMood().equals("")){
+                    mood.setText("No Mood");
+                }else {
+                    mood.setText(friendProfile.getMood());
+                }
 
                 TextView breakText = (TextView) findViewById(R.id.breakText);
                 breakText.setText(friendProfile.getBreakText());
 
-                CheckBreakStatus();
+                checkBreakStatus();
                 updateFriendShipButton(UserManager.getInstance().getCurrentUser().isFriend(friendProfile));
 
                 try {
                     TextView floor = (TextView) findViewById(R.id.floorLevel);
-                    if (friendProfile.isShareFloor()) {
+
+                    if (friendProfile.isLocationShared()) {
                         floor.setText(Integer.toString(friendProfile.getFloorLevel()));
                     }
                     else {
@@ -120,6 +135,14 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 }catch (Exception e) {
                     //empty
                 }
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                    }
+                }, 500);
+
 
             }
 
@@ -157,7 +180,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         button.setText(textButton);
     }
 
-    private void CheckBreakStatus() {
+    private void checkBreakStatus() {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();
         //Loading things from db
@@ -183,7 +206,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                     if (currentDay == breakNode.getIntDay()+1) {
                         Date now = new Date();
 
-                        Date breakStart = new Date();
+                        Date breakStart = new Date(); //Todo NOOOOO pas de deprecated
                         breakStart.setHours(breakNode.getStart().getHour());
                         breakStart.setMinutes((breakNode.getStart().getMinute()));
                         breakStart.setSeconds(0);

@@ -498,19 +498,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         //Do Nothing
     }
 
-    public boolean checkConnection(){
-        Toast t;
-        ConnectivityManager connManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mWifi = connManager.getActiveNetworkInfo();
-
-        if (mWifi != null) {
-           return true;
-        }else {
-            t = Toast.makeText(getContext(), "No internet Connection", Toast.LENGTH_LONG);
-            t.show();
-            return false;
-        }
-    }
 
     public void updateLocation() { //TODO add parameter true/false + implement
         if (checkPermission() && mGoogleApiClient.isConnected()) {
@@ -533,6 +520,9 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 mMap.clear();
 
                 mMap.addMarker(new MarkerOptions().position(me).title("Me"));
+
+                Toast.makeText(getContext(), "Location updated", Toast.LENGTH_SHORT).show();
+
             } else {
                 Log.d("debug", "fused not working");
             }

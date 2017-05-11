@@ -276,6 +276,5 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         Intent intent = new Intent(getContext(), FriendProfilActivity.class);
         intent.putExtra("userId", (String) marker.getTag());
         getContext().startActivity(intent);
-
     }
 }

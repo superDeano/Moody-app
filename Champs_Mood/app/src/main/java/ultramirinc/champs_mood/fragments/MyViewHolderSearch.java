@@ -31,7 +31,15 @@ public class MyViewHolderSearch extends RecyclerView.ViewHolder{
 
     public void bind(User person){
         nameView.setText(person.getName());
-        moodView.setText(person.getMood());
+
+        if(person.getMood() == null) {
+            moodView.setText("No mood");
+        }else if(person.getMood().equals("")){
+            moodView.setText("No mood");
+        }else {
+            moodView.setText(person.getMood());
+        }
+
         breakTextView.setText(person.getBreakTextTemp());
         isFriend = (UserManager.getInstance().getCurrentUser().getFriendStatus(person));
     }

@@ -108,7 +108,7 @@ public class TabActivity extends AppCompatActivity {
                         tabLayout.getTabAt(2).setIcon(R.drawable.ic_action_search);
                         tabLayout.getTabAt(3).setIcon(R.drawable.ic_action_notif);
                         tabLayout.getTabAt(4).setIcon(R.drawable.ic_action_profil);
-                        progressDialog.hide();
+                        progressDialog.dismiss();
                     }
                 }
 
