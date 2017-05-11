@@ -57,13 +57,23 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.concurrent.TimeUnit;
 
 import android.Manifest;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.UserManager;
+import ultramirinc.champs_mood.models.Break;
 import ultramirinc.champs_mood.models.User;
 
 /**
@@ -315,6 +325,8 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         RadioButton button2 = (RadioButton) view.findViewById(R.id.radioButton2);
         RadioButton button3 = (RadioButton) view.findViewById(R.id.radioButton3);
 
+        checkBreakStatus();
+
         int tempFloor = u.getFloor();
         switch (tempFloor){
             case 1: button1.setChecked(true); break;
@@ -554,5 +566,106 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
     public void clearMap(){
         mMap.clear();
+    }
+
+    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+    }
+
+    private void checkBreakStatus() {
+        User u = UserManager.getInstance().getCurrentUser();
+        ArrayList<Break> friendBreaks = new ArrayList<>();
+        //Loading things from db
+        DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("breaks");
+        Query breakQuery = breaksReference.orderByChild("userId").equalTo(u.getId());
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    friendBreaks.add(singleSnapshot.getValue(Break.class));
+                }
+                u.setBreaks(friendBreaks);
+                java.util.GregorianCalendar current = new java.util.GregorianCalendar();
+                int currentDay = current.get(java.util.Calendar.DAY_OF_WEEK);
+
+                long closestBreakMin = 1440;
+                Break closestBreak = null;
+                long closestBreakDuration = 0;
+
+                // find closest break for the day (if any)
+                for (int i=0; i < friendBreaks.size(); i++) {
+                    Break breakNode = friendBreaks.get(i);
+                    if (currentDay == breakNode.getIntDay()+1) {
+                        Date now = new Date();
+
+                        Date breakStart = new Date(); //Todo NOOOOO pas de deprecated
+                        breakStart.setHours(breakNode.getStart().getHour());
+                        breakStart.setMinutes((breakNode.getStart().getMinute()));
+                        breakStart.setSeconds(0);
+
+                        long timeDiffInMinutes = getDateDiff(now, breakStart, TimeUnit.MINUTES);
+
+                        Date breakEnd = new Date();
+                        breakEnd.setHours(breakNode.getEnd().getHour());
+                        breakEnd.setMinutes(breakNode.getEnd().getMinute());
+                        breakEnd.setSeconds(0);
+
+                        //check if currently in break.
+                        long breakDuration = getDateDiff(breakStart, breakEnd, TimeUnit.MINUTES);
+                        if (timeDiffInMinutes < 0 && Math.abs(timeDiffInMinutes) <= breakDuration) {
+                            //is currently in break! // Loop stops here.
+                            closestBreak = breakNode;
+                            closestBreakMin = timeDiffInMinutes;
+                            closestBreakDuration = breakDuration;
+                            break;
+                        } else if (timeDiffInMinutes < closestBreakMin) {
+                            //this is to handle if there are multiple breaks in one day. The goal is to show when is the CLOSEST break.
+                            closestBreak = breakNode;
+                            closestBreakMin = timeDiffInMinutes;
+                            closestBreakDuration = breakDuration;
+                        }
+                        else if (timeDiffInMinutes > 0 && closestBreakMin < 0) {
+                            //There is still a break in the current day, while the closest break is already passed, so the coming break has priority. (get it?)
+                            closestBreak = breakNode;
+                            closestBreakMin = timeDiffInMinutes;
+                            closestBreakDuration = breakDuration;
+                        }
+                    }
+                }
+                String text = "";
+                if (closestBreak == null) {
+                    TextView tv = (TextView) view.findViewById(R.id.breakText);
+                    if (tv != null) {
+                        tv.setText("No breaks today");
+                    }
+                }
+                else {
+                    if (closestBreakMin > 0) {
+                        // Next break in timediffminutes
+                        text = "Next break at : " + closestBreak.getFromTime();
+                    }
+                    else if (closestBreakMin < 0 && Math.abs(closestBreakMin) <= closestBreakDuration) {
+                        text = "In break until : " + closestBreak.getToTime();
+                    }
+                    else {
+                        // break is over.
+                        text = "No more breaks today";
+                    }
+
+
+                    TextView tv = (TextView) view.findViewById(R.id.breakText);
+                    if (tv != null) {
+                        tv.setText(text);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        breakQuery.addListenerForSingleValueEvent(postListener);
     }
 }
