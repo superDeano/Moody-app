@@ -228,19 +228,24 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
                 for (DataSnapshot friendKey: snapshot.getChildren()) {
                     FirebaseDatabase.getInstance().getReference("users").child(friendKey.getValue(String.class)).addValueEventListener(new ValueEventListener() {
                         public void onDataChange(DataSnapshot friendSnapshot) {
+
                             friends.add(friendSnapshot.getValue(User.class));
                             User friend = friendSnapshot.getValue(User.class);
+
                             Log.d("Debug Location hp: ", ""+ friend.getName()+ "\n" + friend.getLastLocation().getLat());
                             LatLng temp = new LatLng(friend.getLastLocation().getLat(), friend.getLastLocation().getLng());
-                            Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title(friend.getName()));
-                            tempMarker.showInfoWindow();
-                            tempMarker.setTag(friend.getId());
+                            if(friend.isLocationShared()) {
+                                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title(friend.getName()));
+                                tempMarker.showInfoWindow();
+                                tempMarker.setTag(friend.getId());
+                            }
+
                         }
                         public void onCancelled(DatabaseError firebaseError) {
                         }
                     });
                 }
-                //fillMap(friends);
+            //fillMap(friends);
             }
             public void onCancelled(DatabaseError firebaseError) {
                 //empty

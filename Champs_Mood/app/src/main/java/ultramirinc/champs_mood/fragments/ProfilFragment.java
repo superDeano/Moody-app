@@ -245,8 +245,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 if(!isChecked){
                     clearMap();
                     UserManager.getInstance().getCurrentUser().setLocationShared(false);
-                    UserManager.getInstance().getCurrentUser().getLastLocation().setLat(0);
-                    UserManager.getInstance().getCurrentUser().getLastLocation().setLng(0);
                     button1.setEnabled(false);
                     button2.setEnabled(false);
                     button3.setEnabled(false);
@@ -415,7 +413,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         if(UserManager.getInstance().getCurrentUser().getLastLocation()!= null) {
             User u = UserManager.getInstance().getCurrentUser();
             LatLng temp = new LatLng(u.getLastLocation().getLat(), u.getLastLocation().getLng());
-            //mMap.addMarker(new MarkerOptions().title("Me").position(temp));
             Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title("Me"));
             tempMarker.showInfoWindow();
         }
