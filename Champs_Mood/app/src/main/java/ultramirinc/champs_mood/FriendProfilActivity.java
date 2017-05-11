@@ -38,6 +38,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
     private GoogleMap mMap;
 
     private User friendProfile;
+    private LatLng latLng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,34 +47,32 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
         Intent intent = getIntent();
 
-        Button button = (Button) findViewById(R.id.friendShipButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (button.getText().toString().equals("Follow")) {
-                    Follow(friendProfile);
-                }
-                else {
-                    UnFollow(friendProfile);
-                }
-            }
-        });
-
-
-
         try {
             String userId = intent.getExtras().get("userId").toString();
-            LoadFriendProfile(userId);
+            loadFriendProfile(userId);
         }
         catch (Exception e) {
             //error occured, don't do nothing.
         }
 
+        Button button = (Button) findViewById(R.id.friendShipButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (button.getText().toString().equals("Follow")) {
+                    follow(friendProfile);
+                }
+                else {
+                    unFollow(friendProfile);
+                }
+            }
+        });
+
         SupportMapFragment mMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMap.getMapAsync(this);
     }
 
-    public void LoadFriendProfile(String userId) {
+    public void loadFriendProfile(String userId) {
         DatabaseReference databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query userQuery = databaseUsers.orderByChild("id").equalTo(userId);
         ValueEventListener loadInfoListener = new ValueEventListener() {
@@ -83,14 +82,24 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendProfile = singleSnapshot.getValue(User.class);
                 }
+
+                latLng = new LatLng(friendProfile.getLastLocation().getLat(),
+                        friendProfile.getLastLocation().getLng());
+                Log.d("Location Debug: ", latLng.toString());
+                mMap.addMarker(new MarkerOptions().position(latLng).title(friendProfile.getName()));
+
                 TextView name = (TextView) findViewById(R.id.profil_text);
                 name.setText(friendProfile.getName());
+
                 TextView mood = (TextView) findViewById(R.id.mood);
                 mood.setText(friendProfile.getMood());
+
                 TextView breakText = (TextView) findViewById(R.id.breakText);
                 breakText.setText(friendProfile.getBreakText());
+
                 CheckBreakStatus();
-                UpdateFriendShipButton(UserManager.getInstance().getCurrentUser().isFriend(friendProfile));
+                updateFriendShipButton(UserManager.getInstance().getCurrentUser().isFriend(friendProfile));
+
                 try {
                     TextView floor = (TextView) findViewById(R.id.floorLevel);
                     if (friendProfile.isShareFloor()) {
@@ -100,7 +109,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                         floor.setText("Floor not shared");
                     }
                 }catch (Exception e) {
-
+                    //empty
                 }
 
             }
@@ -113,24 +122,24 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         userQuery.addListenerForSingleValueEvent(loadInfoListener);
     }
 
-    private boolean UnFollow(User userToUnfollow) {
+    private boolean unFollow(User userToUnfollow) {
         boolean done = UserManager.getInstance().getCurrentUser().removeFromFriendList(userToUnfollow);
         //save
         if (done) {
             UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-            UpdateFriendShipButton(false);
+            updateFriendShipButton(false);
         }
         return done;
     }
-    private void Follow(User userToFollow) {
+    private void follow(User userToFollow) {
         boolean done = UserManager.getInstance().getCurrentUser().addToFriendList(userToFollow);
         //save
         if (done) {
             UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-            UpdateFriendShipButton(true);
+            updateFriendShipButton(true);
         }
     }
-    public void UpdateFriendShipButton(boolean isFriend) {
+    public void updateFriendShipButton(boolean isFriend) {
         Button button = (Button) findViewById(R.id.friendShipButton);
 
         String textButton = isFriend ? "Unfollow" : "Follow";
@@ -189,12 +198,11 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         // Add a marker in Sydney and move the camera
         LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
 
-        LatLng user = new LatLng(UserManager.getInstance().getCurrentUser().getLastLocation().getLat(),
-        UserManager.getInstance().getCurrentUser().getLastLocation().getLng());
 
 
 
-        mMap.addMarker(new MarkerOptions().position(user).title(UserManager.getInstance().getCurrentUser().getName()));
+
+
 
         CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));

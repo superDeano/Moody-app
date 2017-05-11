@@ -47,7 +47,7 @@ import ultramirinc.champs_mood.models.User;
  */
 
 
-public class HomeFragment extends Fragment implements Observer, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, GoogleMap.OnMarkerClickListener {
+public class HomeFragment extends Fragment implements Observer, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
@@ -87,7 +87,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     @Override
     public void update(Observable o, Object arg) {
         try {
-            UpdateView((User) arg);
             setUserAndPaintProfile((User) arg);
         }
         catch (Exception e) {
@@ -95,7 +94,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         }
     }
 
-    public void UpdateView(User u) {
+    public void updateView(User u) {
         TextView myMood = (TextView)view.findViewById(R.id.mood);
         myMood.setText(u.getMood());
     }
@@ -166,19 +165,20 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
 
         LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
 
-        mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
+        //mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
 
         CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
 
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(champlain));//Move camera to Champlain
-        mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
+        //mMap.addMarker(new MarkerOptions().position(champlain).title("Champlain College"));
 
         mMap.setMinZoomPreference((float)17.3);
         mMap.setMaxZoomPreference(20);
         mMap.getUiSettings().setRotateGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
+        mMap.setOnInfoWindowClickListener(this);
 
     }
 
@@ -211,26 +211,36 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     }
 
     public void setUserAndPaintProfile(User u) {
-        
-        mMap.clear(); //clears map 
+
+
+        updateView(u);
 
         User currentUser = u;
 
         DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
         usersTable.child(currentUser.getuId()).child("friendList").addValueEventListener(new ValueEventListener() {
+
         ArrayList<User> friends = new ArrayList<User>();
+
+
             public void onDataChange(DataSnapshot snapshot) {
 
                 for (DataSnapshot friendKey: snapshot.getChildren()) {
                     FirebaseDatabase.getInstance().getReference("users").child(friendKey.getValue(String.class)).addValueEventListener(new ValueEventListener() {
                         public void onDataChange(DataSnapshot friendSnapshot) {
                             friends.add(friendSnapshot.getValue(User.class));
+                            User friend = friendSnapshot.getValue(User.class);
+                            Log.d("Debug Location hp: ", ""+ friend.getName()+ "\n" + friend.getLastLocation().getLat());
+                            LatLng temp = new LatLng(friend.getLastLocation().getLat(), friend.getLastLocation().getLng());
+                            Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title(friend.getName()));
+                            tempMarker.showInfoWindow();
+                            tempMarker.setTag(friend.getId());
                         }
                         public void onCancelled(DatabaseError firebaseError) {
                         }
                     });
                 }
-                fillMap(friends);
+                //fillMap(friends);
             }
             public void onCancelled(DatabaseError firebaseError) {
                 //empty
@@ -247,25 +257,20 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         UserManager.getInstance().getUserInformations();
     }
 
+    /*
     public void fillMap(ArrayList<User> friendList){
+        Log.d("Debug location hp: ", "inside fillMap");
         for (User friend : friendList){
-            LatLng temp = new LatLng(friend.getLastLocation().getLat(), friend.getLastLocation().getLng());
-            Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title(friend.getName()));
-            tempMarker.setTag(friend.getId());
+
         }
-        mMap.setOnMarkerClickListener(this);
-    }
+
+    }*/
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
-        if(currentMarker == marker) {
-            currentMarker = marker;
-            return false;
-        }else{
-            Intent intent = new Intent(getContext(), FriendProfilActivity.class);
-            intent.putExtra("userId", (String) marker.getTag());
-            getContext().startActivity(intent);
-            return true;
-        }
+    public void onInfoWindowClick(Marker marker) {
+        Intent intent = new Intent(getContext(), FriendProfilActivity.class);
+        intent.putExtra("userId", (String) marker.getTag());
+        getContext().startActivity(intent);
+
     }
 }

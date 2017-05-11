@@ -53,7 +53,7 @@ public class TabActivity extends AppCompatActivity {
 
     private MyViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +164,12 @@ public class TabActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        progressDialog.dismiss();
+    }
+
 
 
 
@@ -179,16 +185,11 @@ public class TabActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
 
         public void addFragment(Fragment fragment) {
             mFragmentList.add(fragment);
@@ -204,13 +205,6 @@ public class TabActivity extends AppCompatActivity {
             return mFragmentList.size();
         }
 
-        /*
-        @Override
-        public CharSequence getPageTitle(int position) {
-
-            return mFragmentTitleList.get(position);
-        }
-        */
 
     }
 

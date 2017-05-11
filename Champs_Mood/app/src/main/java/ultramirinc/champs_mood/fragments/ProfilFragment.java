@@ -55,6 +55,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Observable;
@@ -266,14 +267,14 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         if (UserManager.getInstance().getCurrentUser() == null)
             loadProfile();
         else
-            SetUserAndPaintProfile(UserManager.getInstance().getCurrentUser());
+            setUserAndPaintProfile(UserManager.getInstance().getCurrentUser());
 
         return view;
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        SetUserAndPaintProfile((User) arg);
+        setUserAndPaintProfile((User) arg);
     }
 
     private void setMood(String mood) { //TODO change this
@@ -296,7 +297,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     }
 
 
-    public void SetUserAndPaintProfile(User u) {
+    public void setUserAndPaintProfile(User u) {
 
         TextView profileName = (TextView) view.findViewById(R.id.profil_text);
         profileName.setText("Hello " +  UserManager.getInstance().getCurrentUser().getName());
@@ -308,6 +309,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         breakText.setText(UserManager.getInstance().getCurrentUser().getBreakText());//TODO try
 
         Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
+
 
         RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.floor_group);
 
@@ -410,6 +412,13 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
+        if(UserManager.getInstance().getCurrentUser().getLastLocation()!= null) {
+            User u = UserManager.getInstance().getCurrentUser();
+            LatLng temp = new LatLng(u.getLastLocation().getLat(), u.getLastLocation().getLng());
+            //mMap.addMarker(new MarkerOptions().title("Me").position(temp));
+            Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title("Me"));
+            tempMarker.showInfoWindow();
+        }
 
         mMap.setMinZoomPreference((float)17.3);
         mMap.setMaxZoomPreference(20);
@@ -512,6 +521,8 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
             if (mLastLocation != null) {
+                mMap.clear();
+
                 mLatitudeText = String.valueOf(mLastLocation.getLatitude());
                 mLongitudeText = String.valueOf(mLastLocation.getLongitude());
 
@@ -522,11 +533,10 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
                 UserManager.getInstance().getCurrentUser().getLastLocation().setLat(Double.parseDouble(mLatitudeText));
                 UserManager.getInstance().getCurrentUser().getLastLocation().setLng(Double.parseDouble(mLongitudeText));
 
-
                 UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
                 mMap.clear();
 
-                mMap.addMarker(new MarkerOptions().position(me).title("me"));
+                mMap.addMarker(new MarkerOptions().position(me).title("Me"));
             } else {
                 Log.d("debug", "fused not working");
             }
