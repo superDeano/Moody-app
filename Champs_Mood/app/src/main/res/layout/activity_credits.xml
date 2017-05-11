@@ -94,11 +94,37 @@
         android:textStyle="italic"/>
 
     <TextView
-        android:id="@+id/ico"
+        android:id="@+id/teach"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/sam"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="20dp"
+        android:text="Teacher:"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/amin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/teach"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:text="Amin Ranj Bar"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/ico"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/amin"
         android:layout_marginStart="12dp"
         android:layout_marginTop="20dp"
         android:text="Icons:"
