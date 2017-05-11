@@ -9,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import java.util.List;
-
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.NotificationManager;
@@ -66,9 +64,6 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
                 }
                 else if (UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId()) && !isPokable) {
                     Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
-                }
-                else if (!(UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId()))) {
-                    Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
                 }
                 else {
                     // not in our friends so we will add user.

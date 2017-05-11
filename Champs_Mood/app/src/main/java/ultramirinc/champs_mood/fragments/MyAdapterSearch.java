@@ -67,14 +67,20 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
             @Override
             public void onClick(View v) {
                 //If is already our friend, will poke !
-                if (UserManager.getInstance().getCurrentUser().isFriend(person) && isPokable) {
+                if (person.isFriend(UserManager.getInstance().getCurrentUser())
+                        && UserManager.getInstance().getCurrentUser().isFriend(person) && isPokable){
                     Poke(person);
                 }
-                else if(UserManager.getInstance().getCurrentUser().isFriend(person) && !isPokable){
+                else if(person.isFriend(UserManager.getInstance().getCurrentUser())
+                        && UserManager.getInstance().getCurrentUser().isFriend(person) && !isPokable){
                     Toast.makeText(context, "Already poked!", Toast.LENGTH_LONG).show();
                 }
-                else if(!(person.isFriend(UserManager.getInstance().getCurrentUser()))){
+                else if(!(person.isFriend(UserManager.getInstance().getCurrentUser()))
+                        && UserManager.getInstance().getCurrentUser().isFriend(person)){
                     Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
+                }
+                else if (person.getId().equals(UserManager.getInstance().getCurrentUser().getId())) {
+                    Toast.makeText(context, "You can't follow yourself!", Toast.LENGTH_LONG).show();
                 }
                 else {
                     // not in our friends so we will add user.

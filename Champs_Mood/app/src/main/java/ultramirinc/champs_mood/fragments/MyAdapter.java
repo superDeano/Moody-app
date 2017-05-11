@@ -66,7 +66,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                    Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_LONG).show();
                }
                else {
-                   Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_LONG).show();
+                   Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_SHORT).show();
                }
             }
         });
