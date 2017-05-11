@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ultramirinc.champs_mood.R;
+import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
 
@@ -146,7 +147,11 @@ public class SearchFragment extends Fragment {
                 people.clear();
 
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-                    people.add(singleSnapshot.getValue(User.class));
+                    User tempUser = singleSnapshot.getValue(User.class);
+
+                    if(!(UserManager.getInstance().getCurrentUser().getId().equals(tempUser.getId())));
+                    people.add(tempUser);
+
                 }
                 recyclerView.getAdapter().notifyItemRangeInserted(0, people.size());
 
