@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -123,6 +124,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         }else{
             view = inflater.inflate(R.layout.fragment_profil, container, false);
         }
+
 
         SupportMapFragment mMap = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -367,6 +369,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         }else{
             startLocationUpdates();
         }
+
     }
 
     @Override

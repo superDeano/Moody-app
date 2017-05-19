@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -128,6 +129,31 @@ public class TabActivity extends AppCompatActivity {
         mSectionsPagerAdapter.addFragment(new NotificationFragment());
         mSectionsPagerAdapter.addFragment(new ProfilFragment());
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                //Nothing
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                String message = "";
+                switch (position){
+                    case 0: message = "Moods"; break;
+                    case 1: message = "Friends"; break;
+                    case 2: message = "Search"; break;
+                    case 3: message = "Notifications"; break;
+                    case 4: message = "Profil"; break;
+                        default: message = "Default"; break;
+                }
+                getSupportActionBar().setTitle(message);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //Nothing
+            }
+        });
     }
 
     @Override

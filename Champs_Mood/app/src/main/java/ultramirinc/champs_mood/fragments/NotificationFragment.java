@@ -3,6 +3,7 @@ package ultramirinc.champs_mood.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ public class NotificationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_notification, container, false);
 
+
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mLayoutManager = new LinearLayoutManager(context);
         mLayoutManager.setReverseLayout(true);
@@ -78,4 +80,5 @@ public class NotificationFragment extends Fragment {
         };
         breakQuery.addValueEventListener(postListener);
     }
+
 }
