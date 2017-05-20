@@ -2,6 +2,7 @@ package ultramirinc.champs_mood.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -54,6 +58,8 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     private View view;
     private LocationRequest mLocationRequest;
     private Marker currentMarker;
+    private List<User> friends = Collections.synchronizedList(new ArrayList<User>());
+    private boolean fetchFinished = false;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -214,48 +220,14 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
 
     public void setUserAndPaintProfile(User u) {
 
+        friends = new ArrayList<User>();
 
         updateView(u);
 
         User currentUser = u;
 
-        DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
-        usersTable.child(currentUser.getuId()).child("friendList").addValueEventListener(new ValueEventListener() {
-
-        ArrayList<User> friends = new ArrayList<User>();
-
-
-            public void onDataChange(DataSnapshot snapshot) {
-            mMap.clear();
-                for (DataSnapshot friendKey: snapshot.getChildren()) {
-                    FirebaseDatabase.getInstance().getReference("users").child(friendKey.getValue(String.class)).addValueEventListener(new ValueEventListener() {
-                        public void onDataChange(DataSnapshot friendSnapshot) {
-
-                            friends.add(friendSnapshot.getValue(User.class));
-                            User friend = friendSnapshot.getValue(User.class);
-
-                            Log.d("Debug Location hp: ", ""+ friend.getName()+ "\n" + friend.getLastLocation().getLat());
-                            LatLng temp = new LatLng(friend.getLastLocation().getLat(), friend.getLastLocation().getLng());
-                            if(friend.isLocationShared()) {
-                                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title(friend.getName()));
-                                tempMarker.showInfoWindow();
-                                tempMarker.setTag(friend.getId());
-                            }
-
-                        }
-                        public void onCancelled(DatabaseError firebaseError) {
-                        }
-                    });
-                }
-            //fillMap(friends);
-            }
-            public void onCancelled(DatabaseError firebaseError) {
-                //empty
-            }
-        });
-
-
-
+        getFriends(u);
+        setDataListeners(u);
     }
 
     private void loadProfile() {
@@ -264,19 +236,115 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         UserManager.getInstance().getUserInformations();
     }
 
-    /*
-    public void fillMap(ArrayList<User> friendList){
-        Log.d("Debug location hp: ", "inside fillMap");
-        for (User friend : friendList){
+    public void getFriends(User u){
 
-        }
+        User currentUser = u;
 
-    }*/
+        DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
+        usersTable.child(currentUser.getuId()).child("friendList").addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for (DataSnapshot friendKey: snapshot.getChildren()) {
+                    FirebaseDatabase.getInstance().getReference("users").child(friendKey.getValue(String.class)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        public void onDataChange(DataSnapshot friendSnapshot) {
+
+                            User friend = friendSnapshot.getValue(User.class);
+                            friends.add(friend);
+                            LatLng temp = new LatLng(friend.getLastLocation().getLat(), friend.getLastLocation().getLng());
+                            if(friend.isLocationShared()) {
+                                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title(friend.getName()));
+                                tempMarker.showInfoWindow();
+                                tempMarker.setTag(friend.getId());
+                            }
+
+
+                        }
+                        public void onCancelled(DatabaseError firebaseError) {
+                            //nothing
+                        }
+
+
+                    });
+                }
+                //fillMap(friends);
+            }
+            public void onCancelled(DatabaseError firebaseError) {
+                //empty
+            }
+        });
+    }
+
+
+    public void setDataListeners(User u){
+        User currentUser = u;
+
+        DatabaseReference usersTable = FirebaseDatabase.getInstance().getReference("users");
+        usersTable.child(currentUser.getuId()).child("friendList").addValueEventListener(new ValueEventListener() {
+
+
+            public void onDataChange(DataSnapshot snapshot) {
+
+                for (DataSnapshot friendKey: snapshot.getChildren()) {
+                    FirebaseDatabase.getInstance().getReference("users").child(friendKey.getValue(String.class)).addValueEventListener(new ValueEventListener() {
+                        public void onDataChange(DataSnapshot friendSnapshot) {
+
+                            User u = friendSnapshot.getValue(User.class);
+                            Iterator<User> iterator = friends.iterator();
+                            User toDelete = null;
+                            User toAdd = null;
+
+                            while(iterator.hasNext()){
+                                User friend = iterator.next();
+                                if(friend.getId().equals(u.getId())){
+                                    toDelete = friend;
+                                    toAdd = u;
+                                }else{
+                                    toAdd = u;
+                                }
+                            }
+
+                            if(toDelete != null)
+                                friends.remove(toDelete);
+                            if(toAdd != null)
+                                friends.add(toAdd);
+
+                            drawMap();
+                        }
+                        public void onCancelled(DatabaseError firebaseError) {
+                            //nothing
+                        }
+                    });
+                }
+
+            }
+            public void onCancelled(DatabaseError firebaseError) {
+                //empty
+            }
+        });
+    }
+
 
     @Override
     public void onInfoWindowClick(Marker marker) {
         Intent intent = new Intent(getContext(), FriendProfilActivity.class);
         intent.putExtra("userId", (String) marker.getTag());
         getContext().startActivity(intent);
+    }
+
+    public void drawMap(){
+        mMap.clear();
+        Log.d("Draw Map debug", ""+friends.size());
+        for(User friend: friends){
+            Log.d("Debug Location hp: ", ""+ friend.getName()+ "\n" + friend.getLastLocation().getLat());
+            LatLng temp = new LatLng(friend.getLastLocation().getLat(), friend.getLastLocation().getLng());
+            if(friend.isLocationShared()) {
+                Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title(friend.getName()));
+                tempMarker.showInfoWindow();
+                tempMarker.setTag(friend.getId());
+            }
+        }
+
     }
 }
