@@ -75,7 +75,7 @@ public class NotificationFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //Not Handled
             }
         };
         breakQuery.addValueEventListener(postListener);

@@ -19,7 +19,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -58,34 +60,34 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
         view = myViewHolder;
         User myFriend = list.get(position);
-        checkBreakStatus(myFriend);
-        myViewHolder.getNameView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, FriendProfilActivity.class);
-                intent.putExtra("userId", myFriend.getId());
-                context.startActivity(intent);
-            }
+        int p = position;
+
+        myViewHolder.getNameView().setOnClickListener(v -> {
+            Intent intent = new Intent(context, FriendProfilActivity.class);
+            intent.putExtra("userId", myFriend.getId());
+            context.startActivity(intent);
         });
 
-        myViewHolder.getButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               if (myFriend.isFriend(UserManager.getInstance().getCurrentUser()) && isPokable) {
-                   Poke(myFriend);
-               }
-               else if(myFriend.isFriend(UserManager.getInstance().getCurrentUser()) && !isPokable){
-                   Toast.makeText(context, "Already poked!", Toast.LENGTH_SHORT).show();
-               }
-               else if (myFriend.getId().equals(UserManager.getInstance().getCurrentUser().getId())) {
-                   Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_SHORT).show();
-               }
-               else {
-                   Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_SHORT).show();
-               }
-            }
+        myViewHolder.getButton().setOnClickListener(v -> {
+           if (myFriend.isFriend(UserManager.getInstance().getCurrentUser()) && isPokable) {
+               Poke(myFriend);
+           }
+           else if(myFriend.isFriend(UserManager.getInstance().getCurrentUser()) && !isPokable){
+               Toast.makeText(context, "Already poked!", Toast.LENGTH_SHORT).show();
+           }
+           else if (myFriend.getId().equals(UserManager.getInstance().getCurrentUser().getId())) {
+               Toast.makeText(context, "You can't poke yourself!", Toast.LENGTH_SHORT).show();
+           }
+           else {
+               Toast.makeText(context, "Can't poke because this user isn't following you back", Toast.LENGTH_SHORT).show();
+           }
         });
+
+        checkBreakStatus(myFriend);
+
         myViewHolder.bind(myFriend);
+
+
     }
 
     private void Poke(User user) {
@@ -95,13 +97,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         nm.saveNotification(n);
         Toast.makeText(context, "Poke sent!", Toast.LENGTH_SHORT).show();
         isPokable =false;
-        Handler checker = new Handler();
-        checker.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                isPokable=true;
-            }
-        }, 120000);
+        new Handler().postDelayed(() -> isPokable=true, 120000);
+        //checker.postDelayed(() -> isPokable=true, 120000);
     }
 
     @Override
@@ -109,23 +106,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return list.size();
     }
 
-    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
-        long diffInMillies = date2.getTime() - date1.getTime();
+    public static long getDateDiff(GregorianCalendar date1, GregorianCalendar date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime().getTime() - date1.getTime().getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 
     private void checkBreakStatus(User u) {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();
-        //Loading things from db
+        //Loading things from database
+
         DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("breaks");
         Query breakQuery = breaksReference.orderByChild("userId").equalTo(u.getId());
+
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("debug bt: ", "inside checkBreakListener for:"+u.getName() );
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendBreaks.add(singleSnapshot.getValue(Break.class));
                 }
+
                 u.setBreaks(friendBreaks);
 
                 java.util.GregorianCalendar current = new java.util.GregorianCalendar();
@@ -138,29 +139,33 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 // find closest break for the day (if any)
                 for (int i=0; i < friendBreaks.size(); i++) {
                     Break breakNode = friendBreaks.get(i);
-                    if (currentDay == breakNode.getIntDay()+1) {
-                        Date now = new Date();
 
-                        Date breakStart = new Date(); //Todo NOOOOO pas de deprecated
-                        breakStart.setHours(breakNode.getStart().getHour());
-                        breakStart.setMinutes((breakNode.getStart().getMinute()));
-                        breakStart.setSeconds(0);
+                    if (currentDay == breakNode.getIntDay()+1) {
+
+                        GregorianCalendar now = new GregorianCalendar();
+
+                        GregorianCalendar breakStart = new GregorianCalendar();
+                        breakStart.set(Calendar.HOUR_OF_DAY,breakNode.getStart().getHour());
+                        breakStart.set(Calendar.MINUTE,(breakNode.getStart().getMinute()));
+                        breakStart.set(Calendar.SECOND,0);
 
                         long timeDiffInMinutes = getDateDiff(now, breakStart, TimeUnit.MINUTES);
 
-                        Date breakEnd = new Date();
-                        breakEnd.setHours(breakNode.getEnd().getHour());
-                        breakEnd.setMinutes(breakNode.getEnd().getMinute());
-                        breakEnd.setSeconds(0);
+                        GregorianCalendar breakEnd = new GregorianCalendar();
+                        breakEnd.set(Calendar.HOUR_OF_DAY,breakNode.getEnd().getHour());
+                        breakEnd.set(Calendar.MINUTE,breakNode.getEnd().getMinute());
+                        breakEnd.set(Calendar.SECOND,0);
 
                         //check if currently in break.
                         long breakDuration = getDateDiff(breakStart, breakEnd, TimeUnit.MINUTES);
+
                         if (timeDiffInMinutes < 0 && Math.abs(timeDiffInMinutes) <= breakDuration) {
                             //is currently in break! // Loop stops here.
                             closestBreak = breakNode;
                             closestBreakMin = timeDiffInMinutes;
                             closestBreakDuration = breakDuration;
                             break;
+
                         } else if (timeDiffInMinutes < closestBreakMin) {
                             //this is to handle if there are multiple breaks in one day. The goal is to show when is the CLOSEST break.
                             closestBreak = breakNode;
@@ -175,16 +180,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                         }
                     }
                 }
-                if (u.getBreaks().isEmpty()){
-                    view.setBreakTextText("No breaks at all");
-                    return;
-                }
 
                 String text = "";
-                if (closestBreak == null) {
-                    view.setBreakTextText("No breaks today");
-                }
-                else {
+
+                if (u.getBreaks().isEmpty()){
+                    text = "No breaks at all";
+
+                } else if (closestBreak == null) {
+                    text = "No breaks today";
+
+                } else {
                     if (closestBreakMin > 0) {
                         // Next break in timediffminutes
                         text = "Next break at : " + closestBreak.getFromTime();
@@ -197,14 +202,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                         text = "No more breaks today";
                     }
 
-
-                    view.setBreakTextText(text);
                 }
+                Log.d("Debug bt: ", ""+text);
+                view.setBreakTextText(text);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //Not Handled
             }
         };
         breakQuery.addListenerForSingleValueEvent(postListener);

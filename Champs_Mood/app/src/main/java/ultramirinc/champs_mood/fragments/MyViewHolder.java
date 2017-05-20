@@ -43,7 +43,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
             moodView.setText(myFriend.getMood());
         }
 
-        breakTextView.setText(myFriend.getBreakTextTemp());
+        //breakTextView.setText(myFriend.getBreakTextTemp());
     }
 
     public TextView getNameView() {
