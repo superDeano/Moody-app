@@ -39,7 +39,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:text = "Moodsmoodsmoodsmoods"/>
 
             <Button
                 android:id="@+id/friendShipButton"

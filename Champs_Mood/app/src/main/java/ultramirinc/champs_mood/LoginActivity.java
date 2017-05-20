@@ -73,6 +73,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
+    private boolean cancel;
+    private View focusView;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -184,11 +186,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String email = mEmailView.getText().toString().trim();
         String password = mPasswordView.getText().toString().trim();
 
-        boolean cancel = false;
-        View focusView = null;
+        cancel = false;
+        focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        } else if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -309,6 +315,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             //start the profile activity
                             finish();
                             startActivity(new Intent(getApplicationContext(), TabActivity.class));
+                        }
+                        else{
+                            mPasswordView.setError("This password is incorrect");
+                            focusView = mPasswordView;
+                            cancel = true;
                         }
                     }
                 });

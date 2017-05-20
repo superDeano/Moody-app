@@ -105,6 +105,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+        mConfirmView = (EditText) findViewById(R.id.confirm);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -228,10 +229,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
+        mConfirmView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String confirm = mConfirmView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -240,6 +243,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+        else if(!password.equals(confirm)){
+            mConfirmView.setError("This password is not the same");
+            focusView = mConfirmView;
             cancel = true;
         }
 
