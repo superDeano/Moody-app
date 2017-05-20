@@ -133,17 +133,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
         EditText editText = (EditText) view.findViewById(R.id.editMoodText);
         editText.clearFocus();
 
-        ImageButton mMoodUpdate = (ImageButton) view.findViewById(R.id.enterMood);
-        mMoodUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String tempMood = view.findViewById(R.id.editMoodText).toString();
-                Toast t = Toast.makeText(getContext(), "Mood cannot be empty!", Toast.LENGTH_SHORT);
-                if(tempMood != null && tempMood != "")
-                    setMood(tempMood);
-            }
-        });
-
         createGoogleMapClient(); // <- moi
 
 
@@ -243,7 +232,16 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
             public void onClick(View view) {
                 EditText editMoodInput = (EditText) getView().findViewById(R.id.editMoodText);
                 String enteredMood = editMoodInput.getText().toString();
-                setMood(enteredMood);
+
+                if(enteredMood.length() > 20){
+                    Toast.makeText(getContext(), "Your mood is too long, shrink it down!", Toast.LENGTH_LONG).show();
+                }
+                else if(enteredMood == null || enteredMood.equals("")){
+                    setMood("No Mood");
+                }
+                else{
+                    setMood(enteredMood);
+                }
             }
         });
 
@@ -289,7 +287,6 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
 
     private void setMood(String mood) { //TODO change this
         UserManager.getInstance().getCurrentUser().setMood(mood);
-
         UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
         Toast.makeText(getActivity(), "Mood updated!", Toast.LENGTH_SHORT).show();
     }
