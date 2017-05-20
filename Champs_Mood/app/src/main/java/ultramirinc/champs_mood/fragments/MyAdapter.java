@@ -83,9 +83,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
            }
         });
 
-        checkBreakStatus(myFriend);
 
         myViewHolder.bind(myFriend);
+
+
+        checkBreakStatus(myFriend);
+
+
 
 
     }
