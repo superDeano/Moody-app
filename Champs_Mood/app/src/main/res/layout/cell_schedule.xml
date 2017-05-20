@@ -38,8 +38,7 @@
                 android:layout_marginStart="12dp"
                 android:text="From "
                 android:textSize="20sp"
-                android:layout_marginTop="10dp"
-                android:textColor="@android:color/black"/>
+                android:layout_marginTop="10dp"/>
 
             <TextView
                 android:id="@+id/fromTime"
@@ -48,7 +47,6 @@
                 android:text="1:00PM"
                 android:textSize="20sp"
                 android:layout_marginTop="10dp"
-                android:textColor="@android:color/black"
                 android:layout_toRightOf="@+id/fromText"/>
 
             <TextView
@@ -58,7 +56,6 @@
                 android:text=" to "
                 android:textSize="20sp"
                 android:layout_marginTop="10dp"
-                android:textColor="@android:color/black"
                 android:layout_toRightOf="@+id/fromTime"/>
 
             <TextView
@@ -68,7 +65,6 @@
                 android:text="2:30PM"
                 android:textSize="20sp"
                 android:layout_marginTop="10dp"
-                android:textColor="@android:color/black"
                 android:layout_toRightOf="@+id/toText"/>
 
 

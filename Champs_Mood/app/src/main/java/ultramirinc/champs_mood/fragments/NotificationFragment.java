@@ -49,6 +49,7 @@ public class NotificationFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         mLayoutManager = new LinearLayoutManager(context);
         mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
 
         recyclerView.setAdapter(new MyAdapterNotification(nofications, getContext()));
