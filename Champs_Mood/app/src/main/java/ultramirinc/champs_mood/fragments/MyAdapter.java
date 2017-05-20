@@ -3,6 +3,7 @@ package ultramirinc.champs_mood.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -86,11 +87,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         myViewHolder.bind(myFriend);
 
-
         checkBreakStatus(myFriend);
-
-
-
 
     }
 
@@ -126,89 +123,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("debug bt: ", "inside checkBreakListener for:"+u.getName() );
+                Log.d("debug bt ", "inside checkBreakListener for: "+u.getName() );
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendBreaks.add(singleSnapshot.getValue(Break.class));
                 }
-
                 u.setBreaks(friendBreaks);
 
-                java.util.GregorianCalendar current = new java.util.GregorianCalendar();
-                int currentDay = current.get(java.util.Calendar.DAY_OF_WEEK);
+                view.setBreakTextText(breakCalculator(u, friendBreaks));
 
-                long closestBreakMin = 1440;
-                Break closestBreak = null;
-                long closestBreakDuration = 0;
-
-                // find closest break for the day (if any)
-                for (int i=0; i < friendBreaks.size(); i++) {
-                    Break breakNode = friendBreaks.get(i);
-
-                    if (currentDay == breakNode.getIntDay()+1) {
-
-                        GregorianCalendar now = new GregorianCalendar();
-
-                        GregorianCalendar breakStart = new GregorianCalendar();
-                        breakStart.set(Calendar.HOUR_OF_DAY,breakNode.getStart().getHour());
-                        breakStart.set(Calendar.MINUTE,(breakNode.getStart().getMinute()));
-                        breakStart.set(Calendar.SECOND,0);
-
-                        long timeDiffInMinutes = getDateDiff(now, breakStart, TimeUnit.MINUTES);
-
-                        GregorianCalendar breakEnd = new GregorianCalendar();
-                        breakEnd.set(Calendar.HOUR_OF_DAY,breakNode.getEnd().getHour());
-                        breakEnd.set(Calendar.MINUTE,breakNode.getEnd().getMinute());
-                        breakEnd.set(Calendar.SECOND,0);
-
-                        //check if currently in break.
-                        long breakDuration = getDateDiff(breakStart, breakEnd, TimeUnit.MINUTES);
-
-                        if (timeDiffInMinutes < 0 && Math.abs(timeDiffInMinutes) <= breakDuration) {
-                            //is currently in break! // Loop stops here.
-                            closestBreak = breakNode;
-                            closestBreakMin = timeDiffInMinutes;
-                            closestBreakDuration = breakDuration;
-                            break;
-
-                        } else if (timeDiffInMinutes < closestBreakMin) {
-                            //this is to handle if there are multiple breaks in one day. The goal is to show when is the CLOSEST break.
-                            closestBreak = breakNode;
-                            closestBreakMin = timeDiffInMinutes;
-                            closestBreakDuration = breakDuration;
-                        }
-                        else if (timeDiffInMinutes > 0 && closestBreakMin < 0) {
-                            //There is still a break in the current day, while the closest break is already passed, so the coming break has priority. (get it?)
-                            closestBreak = breakNode;
-                            closestBreakMin = timeDiffInMinutes;
-                            closestBreakDuration = breakDuration;
-                        }
-                    }
-                }
-
-                String text = "";
-
-                if (u.getBreaks().isEmpty()){
-                    text = "No breaks at all";
-
-                } else if (closestBreak == null) {
-                    text = "No breaks today";
-
-                } else {
-                    if (closestBreakMin > 0) {
-                        // Next break in timediffminutes
-                        text = "Next break at : " + closestBreak.getFromTime();
-                    }
-                    else if (closestBreakMin < 0 && Math.abs(closestBreakMin) <= closestBreakDuration) {
-                        text = "In break until : " + closestBreak.getToTime();
-                    }
-                    else {
-                        // break is over.
-                        text = "No more breaks today";
-                    }
-
-                }
-                Log.d("Debug bt: ", ""+text);
-                view.setBreakTextText(text);
             }
 
             @Override
@@ -217,6 +139,88 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
             }
         };
         breakQuery.addListenerForSingleValueEvent(postListener);
+    }
+
+    public String breakCalculator(User u, ArrayList<Break> friendBreaks){
+        u.setBreaks(friendBreaks);
+
+        java.util.GregorianCalendar current = new java.util.GregorianCalendar();
+        int currentDay = current.get(java.util.Calendar.DAY_OF_WEEK);
+
+        long closestBreakMin = 1440; //Why?
+        Break closestBreak = null;
+        long closestBreakDuration = 0;
+
+        // find closest break for the day (if any)
+        for (int i=0; i < friendBreaks.size(); i++) {
+            Break breakNode = friendBreaks.get(i);
+
+            if (currentDay == breakNode.getIntDay()+1) {
+
+                GregorianCalendar now = new GregorianCalendar();
+
+                GregorianCalendar breakStart = new GregorianCalendar();
+                breakStart.set(Calendar.HOUR_OF_DAY,breakNode.getStart().getHour());
+                breakStart.set(Calendar.MINUTE,(breakNode.getStart().getMinute()));
+                breakStart.set(Calendar.SECOND,0);
+
+                long timeDiffInMinutes = getDateDiff(now, breakStart, TimeUnit.MINUTES);
+
+                GregorianCalendar breakEnd = new GregorianCalendar();
+                breakEnd.set(Calendar.HOUR_OF_DAY,breakNode.getEnd().getHour());
+                breakEnd.set(Calendar.MINUTE,breakNode.getEnd().getMinute());
+                breakEnd.set(Calendar.SECOND,0);
+
+                //check if currently in break.
+                long breakDuration = getDateDiff(breakStart, breakEnd, TimeUnit.MINUTES);
+
+                if (timeDiffInMinutes < 0 && Math.abs(timeDiffInMinutes) <= breakDuration) {
+                    //is currently in break! // Loop stops here.
+                    closestBreak = breakNode;
+                    closestBreakMin = timeDiffInMinutes;
+                    closestBreakDuration = breakDuration;
+                    break;
+
+                } else if (timeDiffInMinutes < closestBreakMin) {
+                    //this is to handle if there are multiple breaks in one day. The goal is to show when is the CLOSEST break.
+                    closestBreak = breakNode;
+                    closestBreakMin = timeDiffInMinutes;
+                    closestBreakDuration = breakDuration;
+                }
+                else if (timeDiffInMinutes > 0 && closestBreakMin < 0) {
+                    //There is still a break in the current day, while the closest break is already passed, so the coming break has priority. (get it?)
+                    closestBreak = breakNode;
+                    closestBreakMin = timeDiffInMinutes;
+                    closestBreakDuration = breakDuration;
+                }
+            }
+        }
+
+        String text = "";
+
+        if (u.getBreaks().isEmpty()){
+            text = "No breaks at all";
+
+        } else if (closestBreak == null) {
+            text = "No breaks today";
+
+        } else {
+            if (closestBreakMin > 0) {
+                // Next break in timediffminutes
+                text = "Next break at : " + closestBreak.getFromTime();
+            }
+            else if (closestBreakMin < 0 && Math.abs(closestBreakMin) <= closestBreakDuration) {
+                text = "In break until : " + closestBreak.getToTime();
+            }
+            else {
+                // break is over.
+                text = "No more breaks today";
+            }
+
+        }
+        Log.d("Debug bt: ", ""+text);
+
+        return text;
     }
 
 }

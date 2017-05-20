@@ -1,5 +1,6 @@
 package ultramirinc.champs_mood;
 
+import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -138,15 +139,60 @@ public class TabActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 String message = "";
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
                 switch (position){
-                    case 0: message = "Moods"; break;
-                    case 1: message = "Friends"; break;
-                    case 2: message = "Search"; break;
-                    case 3: message = "Notifications"; break;
-                    case 4: message = "Profil"; break;
-                        default: message = "Default"; break;
+
+                    case 0: message = "Moods";
+                        //ft.replace(R.id.container, new HomeFragment()); break;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .detach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .attach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .commit();
+                        break;
+
+                    case 1: message = "Friends";
+                        //ft.replace(R.id.container, new FriendsFragment()); break;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .detach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .attach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .commit();
+                        break;
+
+                    case 2: message = "Search";
+                        //ft.replace(R.id.container, new SearchFragment()); break;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .detach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .attach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .commit();
+                        break;
+
+                    case 3: message = "Notifications";
+                        //ft.replace(R.id.container, new NotificationFragment());break;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .detach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .attach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .commit();
+                        break;
+
+                    case 4: message = "Profil";
+                        //ft.replace(R.id.container, new ProfilFragment());break;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .detach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .attach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))
+                                .commit();
+                        break;
+
+                    default: message = "Default"; break;
                 }
                 getSupportActionBar().setTitle(message);
+                //ft.commit();
             }
 
             @Override
@@ -196,6 +242,10 @@ public class TabActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed(){
+        finish();
+    }
 
 
 
@@ -232,11 +282,4 @@ public class TabActivity extends AppCompatActivity {
 
 
     }
-
-    @Override
-    public void onBackPressed(){
-        finish();
-    }
-
-
 }

@@ -29,6 +29,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
         nameView = (TextView) itemView.findViewById(R.id.name);
         moodView = (TextView) itemView.findViewById(R.id.mood);
         breakTextView = (TextView) itemView.findViewById(R.id.breakText);
+        breakTextView.setText("");
 
     }
 
@@ -73,7 +74,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
     public void setBreakTextText(String s){
         breakTextView.setText(s);
     }
-
 
     public Button getButton() {
         return mButton;
