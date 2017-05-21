@@ -1,6 +1,5 @@
 package ultramirinc.champs_mood.managers;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -8,12 +7,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
-
-import ultramirinc.champs_mood.fragments.ProfilFragment;
 import ultramirinc.champs_mood.models.User;
 
 /**
@@ -58,7 +52,7 @@ public class UserManager extends Observable {
         this.databaseUsers.child(userInformations.getId()).setValue(userInformations);
     }
 
-    public void ClearCurrentUser() {
+    public void clearCurrentUser() {
         this.current_user = null;
     }
 

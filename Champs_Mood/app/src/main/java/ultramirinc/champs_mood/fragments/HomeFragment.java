@@ -1,16 +1,13 @@
 package ultramirinc.champs_mood.fragments;
-
+//DONE
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -32,14 +29,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.UserManager;
@@ -48,6 +43,8 @@ import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by Étienne Bérubé on 2017-03-23.
+ * This class is the homepage of the app. When it is launched. It appears as the first tab the user will see.
+ * He will then see his current mood and the location of his friends on the map.
  */
 
 
@@ -57,9 +54,11 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     private GoogleApiClient mGoogleApiClient;
     private View view;
     private LocationRequest mLocationRequest;
-    private Marker currentMarker;
     private List<User> friends = Collections.synchronizedList(new ArrayList<User>());
-    private boolean fetchFinished = false;
+
+    public HomeFragment(){
+
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,31 +105,14 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         myMood.setText(u.getMood());
     }
 
-    public void onStart() {
-        super.onStart();
+    @Override
+    public void onResume(){
+        super.onResume();
         if (mGoogleApiClient == null)
             createGoogleMapClient();
 
         if (mGoogleApiClient.isConnected()) {
             createGoogleMapClient();
-            //startLocationUpdates();
-        }
-    }
-
-    public void onStop() {
-        super.onStop();
-        //stopLocationUpdates();
-
-    }
-
-    @Override
-    public void onResume(){
-        super.onResume();
-        if(!mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.connect();
-
-        }else{
-            //startLocationUpdates();
         }
 
     }
@@ -138,10 +120,9 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     @Override
     public void onPause() {
         super.onPause();
-        if (mGoogleApiClient.isConnected()) {
-          //  stopLocationUpdates();
+        if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
+            mGoogleApiClient.disconnect();
         }
-        mGoogleApiClient.disconnect();
     }
 
     public void onConnected(@Nullable Bundle bundle) {
@@ -164,7 +145,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
             mLocationRequest.setFastestInterval(5000);
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -190,8 +170,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
 
     }
 
-
-
     public void onConnectionSuspended(int i) {
     }
 
@@ -216,6 +194,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
 
     @Override
     public void onClick(View v) {
+        //Empty
     }
 
     public void setUserAndPaintProfile(User u) {
@@ -276,7 +255,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         });
     }
 
-
     public void setDataListeners(User u){
         User currentUser = u;
 
@@ -324,7 +302,6 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
             }
         });
     }
-
 
     @Override
     public void onInfoWindowClick(Marker marker) {

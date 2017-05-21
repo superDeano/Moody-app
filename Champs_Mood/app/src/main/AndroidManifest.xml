@@ -62,10 +62,6 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".TabActivity"
             android:label="@string/title_activity_tab"
             android:theme="@style/AppTheme"
@@ -80,9 +76,6 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".NotificationObject"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".FriendProfilActivity"

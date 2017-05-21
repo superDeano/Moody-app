@@ -2,6 +2,7 @@ package ultramirinc.champs_mood.models;
 
 /**
  * Created by Bata on 2017-05-02.
+ * This class helps manage the notifications
  */
 
 public enum Notification_type {

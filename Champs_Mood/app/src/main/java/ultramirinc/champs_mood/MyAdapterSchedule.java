@@ -7,16 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.List;
-
 import ultramirinc.champs_mood.models.Break;
 
 /**
  * Created by William on 2017-04-13.
+ * This class makes the transition between the raw data and a visual interpretation for the user's breaks
  */
 
 public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule>{
@@ -25,6 +23,10 @@ public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule
 
     public MyAdapterSchedule(List<Break> list) {
         this.list = list;
+    }
+
+    public MyAdapterSchedule(){
+
     }
 
     @Override
@@ -55,7 +57,7 @@ public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule
                 public void run() {
                     notifyItemRemoved(list.indexOf(myBreak));
                     list.remove(myBreak);
-                    DeleteBreakFromDb(myBreak);
+                    deleteBreakFromDb(myBreak);
                 }
             },300);
 
@@ -64,7 +66,7 @@ public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule
         myViewHolderSchedule.bind(myBreak);
     }
 
-    private void DeleteBreakFromDb(Break breakToDelete) {
+    private void deleteBreakFromDb(Break breakToDelete) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("breaks");
         ref.child(breakToDelete.getId()).removeValue();
     }

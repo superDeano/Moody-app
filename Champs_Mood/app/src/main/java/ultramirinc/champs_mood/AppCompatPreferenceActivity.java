@@ -14,11 +14,15 @@ import android.view.ViewGroup;
 
 /**
  * A {@link android.preference.PreferenceActivity} which implements and proxies the necessary calls
- * to be used with AppCompat.
+ * to be used with AppCompat. Creates a compatibility activity for older devices
  */
 public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
 
     private AppCompatDelegate mDelegate;
+
+    public AppCompatPreferenceActivity(){
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

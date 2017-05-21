@@ -81,7 +81,7 @@ import ultramirinc.champs_mood.models.User;
  * Created by Étienne Bérubé on 2017-03-23.
  */
 
-public class ProfilFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, Observer,
+public class ProfileFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, Observer,
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, View.OnTouchListener, LocationListener {
 
     private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
@@ -98,7 +98,7 @@ public class ProfilFragment extends Fragment implements OnMapReadyCallback, Goog
     private LocationSettingsRequest.Builder builder;
     private PendingResult<LocationSettingsResult> result;
 
-    public ProfilFragment(){
+    public ProfileFragment(){
         context = getContext();
     }
 

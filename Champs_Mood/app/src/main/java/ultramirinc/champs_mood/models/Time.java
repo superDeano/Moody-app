@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 /**
  * Created by Étienne Bérubé on 2017-04-04.
+ * This class helps to do calculations with the breaks
  */
 
 public class Time implements Comparable<Time>{

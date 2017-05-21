@@ -1,5 +1,5 @@
 package ultramirinc.champs_mood.fragments;
-
+//Done
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -10,20 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.NotificationManager;
@@ -35,6 +32,8 @@ import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-06.
+ * This class creates a binding between the raw data and the visual interpretation for the results .
+ * This class binds it with a MyViewHolderNotification object.
  */
 
 public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
@@ -84,7 +83,7 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
                 //If is already our friend, will poke !
                 if (person.isFriend(UserManager.getInstance().getCurrentUser())
                         && UserManager.getInstance().getCurrentUser().isFriend(person) && isPokable){
-                    Poke(person);
+                    poke(person);
                 }
                 else if(person.isFriend(UserManager.getInstance().getCurrentUser())
                         && UserManager.getInstance().getCurrentUser().isFriend(person) && !isPokable){
@@ -123,7 +122,7 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
         checkBreakStatus(myViewHolderSearch, person);
     }
 
-    private void Poke(User user) {
+    private void poke(User user) {
         User currentUser = UserManager.getInstance().getCurrentUser();
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());
         NotificationManager nm = new NotificationManager();

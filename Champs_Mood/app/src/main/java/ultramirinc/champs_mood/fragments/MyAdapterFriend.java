@@ -1,31 +1,25 @@
 package ultramirinc.champs_mood.fragments;
-
+//Done
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.NotificationManager;
@@ -37,37 +31,42 @@ import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-04.
+ * This class creates a binding between the raw data and the visual interpretation of a User for the current user's friends.
+ * This class binds it with a MyViewHolderFriend object.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
+public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
 
     private List<User> list;
     private Context context;
     private boolean isPokable = true;
 
-    public MyAdapter(List<User> list, Context context) {
+    public MyAdapterFriend(List<User> list, Context context) {
         this.list = list;
         this.context = context;
     }
+    public MyAdapterFriend(){
 
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int itemType) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_friend,viewGroup,false);
-        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
+    public MyViewHolderFriend onCreateViewHolder(ViewGroup viewGroup, int itemType) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_friend,viewGroup,false);
+        return new MyViewHolderFriend(view);
+    }
+
+    @Override
+    public void onBindViewHolder(MyViewHolderFriend myViewHolderFriend, int position) {
         User myFriend = list.get(position);
         int p = position;
 
-        myViewHolder.getNameView().setOnClickListener(v -> {
+        myViewHolderFriend.getNameView().setOnClickListener(v -> {
             Intent intent = new Intent(context, FriendProfilActivity.class);
             intent.putExtra("userId", myFriend.getId());
             context.startActivity(intent);
         });
 
-        myViewHolder.getButton().setOnClickListener(v -> {
+        myViewHolderFriend.getButton().setOnClickListener(v -> {
            if (myFriend.isFriend(UserManager.getInstance().getCurrentUser()) && isPokable) {
                Poke(myFriend);
            }
@@ -83,9 +82,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         });
 
 
-        myViewHolder.bind(myFriend);
+        myViewHolderFriend.bind(myFriend);
 
-        checkBreakStatus(myViewHolder, myFriend);
+        checkBreakStatus(myViewHolderFriend, myFriend);
 
     }
 
@@ -97,7 +96,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         Toast.makeText(context, "Poke sent!", Toast.LENGTH_SHORT).show();
         isPokable =false;
         new Handler().postDelayed(() -> isPokable=true, 120000);
-        //checker.postDelayed(() -> isPokable=true, 120000);
     }
 
     @Override
@@ -110,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 
-    private void checkBreakStatus(MyViewHolder myViewHolder, User u) {
+    private void checkBreakStatus(MyViewHolderFriend myViewHolderFriend, User u) {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();
         //Loading things from database
@@ -125,7 +123,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendBreaks.add(singleSnapshot.getValue(Break.class));
                 }
-                myViewHolder.setBreakTextText(breakCalculator(u, friendBreaks));
+                myViewHolderFriend.setBreakTextText(breakCalculator(u, friendBreaks));
 
             }
 

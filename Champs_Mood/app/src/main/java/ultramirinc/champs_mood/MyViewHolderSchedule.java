@@ -10,6 +10,7 @@ import ultramirinc.champs_mood.models.Break;
 
 /**
  * Created by William on 2017-04-13.
+ * Transforms raw Data into a visual interpretation for the user
  */
 
 public class MyViewHolderSchedule extends RecyclerView.ViewHolder{

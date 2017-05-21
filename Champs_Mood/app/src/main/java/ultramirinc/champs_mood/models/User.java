@@ -1,13 +1,8 @@
 package ultramirinc.champs_mood.models;
 
-
-import android.location.Location;
-
 import com.google.firebase.database.IgnoreExtraProperties;
-
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -15,6 +10,7 @@ import java.util.Iterator;
 
 /**
  * Created by admin on 2017-04-23.
+ * This is the template for a typical user.
  */
 @IgnoreExtraProperties
 public class User {
@@ -30,7 +26,6 @@ public class User {
     private boolean isFriend; //TODO temporary
     private ArrayList<String> friendList = new ArrayList<>();
     private ArrayList<Break> breaks = new ArrayList<>();
-    //private Location mLastLocation = new Location("fused");
     private MyLocation lastLocation = new MyLocation();
     private int floor;
     private boolean shareFloor;
@@ -198,7 +193,7 @@ public class User {
         return breakText;
     }
 
-    public String getBreakText() {//TODO debug
+    public String getBreakText() {
         ArrayList<Break> temp = new ArrayList<>();
 
         Collections.sort(breaks);

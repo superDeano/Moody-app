@@ -2,6 +2,7 @@ package ultramirinc.champs_mood.models;
 
 /**
  * Created by William on 2017-04-06.
+ * This object contains all of the information or methods for a Notification
  */
 
 public class Notification {

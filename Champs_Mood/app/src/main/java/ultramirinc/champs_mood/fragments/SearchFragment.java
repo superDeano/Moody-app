@@ -1,36 +1,25 @@
 package ultramirinc.champs_mood.fragments;
-
+//Done
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.SearchView;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
@@ -38,6 +27,7 @@ import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by Étienne Bérubé on 2017-03-23.
+ * This class allows the user to search for friends or potential friends on the database. It is a tab for TabActivity.
  */
 
 public class SearchFragment extends Fragment {
@@ -49,10 +39,7 @@ public class SearchFragment extends Fragment {
     ProgressDialog progressDialog;
 
     public SearchFragment() {
-        //addPeople();
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

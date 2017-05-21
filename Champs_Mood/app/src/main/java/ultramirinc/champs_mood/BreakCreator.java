@@ -1,5 +1,5 @@
 package ultramirinc.champs_mood;
-
+//Done
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -21,6 +21,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * This class is a Pop-up that appears when the user wants to create a new Break Object for his schedule
+ */
+
 public class BreakCreator extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
     private boolean isCancelled = false;
@@ -39,6 +43,9 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
     public interface OnBreakReadyListener {
         void onBreakReady(String breakString);
+    }
+
+    public BreakCreator(){
     }
 
     @Override
@@ -90,43 +97,31 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
         ImageButton pickTime1 = (ImageButton) view.findViewById(R.id.button1);
 
-        pickTime1.setOnClickListener(new View.OnClickListener() {//TODO optimize
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
-                        startHour = hourOfDay;
-                        startMinute = minute;
-                        setStartTimeView();
-                    }
-                };
+        pickTime1.setOnClickListener(v -> {
+            TimePickerDialog.OnTimeSetListener listener = (view1, hourOfDay, minute) -> {
+                startHour = hourOfDay;
+                startMinute = minute;
+                setStartTimeView();
+            };
 
-                start = new TimePickerDialog(context, listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
+            start = new TimePickerDialog(context, listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
 
-                start.show();
-            }
+            start.show();
         });
 
         ImageButton pickTime2 = (ImageButton) view.findViewById(R.id.button2);
 
-        pickTime2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        pickTime2.setOnClickListener(v -> {
 
-                TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(android.widget.TimePicker view, int hourOfDay, int minute) {
-                        endHour = hourOfDay;
-                        endMinute = minute;
-                        setEndTimeView();
-                    }
-                };
+            TimePickerDialog.OnTimeSetListener listener = (view12, hourOfDay, minute) -> {
+                endHour = hourOfDay;
+                endMinute = minute;
+                setEndTimeView();
+            };
 
-                end = new TimePickerDialog(context, listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
+            end = new TimePickerDialog(context, listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), DateFormat.is24HourFormat(getActivity()));
 
-                end.show();
-            }
+            end.show();
         });
 
 
@@ -268,11 +263,11 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         return endMinute;
     }
 
-    public OnBreakReadyListener getmListener() {
+    public OnBreakReadyListener getListener() {
         return mListener;
     }
 
-    public void setmListener(OnBreakReadyListener mListener) {
+    public void setListener(OnBreakReadyListener listener) {
         this.mListener = mListener;
     }
 }

@@ -1,5 +1,5 @@
 package ultramirinc.champs_mood;
-
+//Done
 import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -8,7 +8,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -17,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,19 +23,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import ultramirinc.champs_mood.fragments.FriendsFragment;
 import ultramirinc.champs_mood.fragments.HomeFragment;
 import ultramirinc.champs_mood.fragments.NotificationFragment;
-import ultramirinc.champs_mood.fragments.ProfilFragment;
+import ultramirinc.champs_mood.fragments.ProfileFragment;
 import ultramirinc.champs_mood.fragments.SearchFragment;
 import ultramirinc.champs_mood.fragments.MyViewPager;
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
+
+/**
+ * This class is the mainframe of the application. Every function or fragment is link to this class. Here is the heart
+ * of the app.
+ */
 public class TabActivity extends AppCompatActivity {
 
     /*
@@ -56,6 +57,9 @@ public class TabActivity extends AppCompatActivity {
     private MyViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ProgressDialog progressDialog;
+
+    public TabActivity(){
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +105,7 @@ public class TabActivity extends AppCompatActivity {
                         tabLayout.addTab(tabLayout.newTab().setText("Friends"));
                         tabLayout.addTab(tabLayout.newTab().setText("Search"));
                         tabLayout.addTab(tabLayout.newTab().setText("Notif"));
-                        tabLayout.addTab(tabLayout.newTab().setText("Profil"));
+                        tabLayout.addTab(tabLayout.newTab().setText("Profile"));
 
                         tabLayout.setupWithViewPager(mViewPager);
 
@@ -128,7 +132,7 @@ public class TabActivity extends AppCompatActivity {
         mSectionsPagerAdapter.addFragment(new FriendsFragment());
         mSectionsPagerAdapter.addFragment(new SearchFragment());
         mSectionsPagerAdapter.addFragment(new NotificationFragment());
-        mSectionsPagerAdapter.addFragment(new ProfilFragment());
+        mSectionsPagerAdapter.addFragment(new ProfileFragment());
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -180,8 +184,8 @@ public class TabActivity extends AppCompatActivity {
                                 .commit();
                         break;
 
-                    case 4: message = "Profil";
-                        //ft.replace(R.id.container, new ProfilFragment());break;
+                    case 4: message = "Profile";
+                        //ft.replace(R.id.container, new ProfileFragment());break;
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .detach(((SectionsPagerAdapter)(mViewPager.getAdapter())).getItem(position))

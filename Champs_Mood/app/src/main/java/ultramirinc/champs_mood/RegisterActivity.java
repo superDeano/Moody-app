@@ -16,7 +16,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,21 +31,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import ultramirinc.champs_mood.models.User;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import ultramirinc.champs_mood.managers.UserManager;
-
 import static android.Manifest.permission.READ_CONTACTS;
+
+/**
+ * Allows the user to create an account into the Database. This account can be used to login later on
+ */
 
 public class RegisterActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -74,6 +72,10 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
     //Defining firebase auth object
     private FirebaseAuth firebaseAuth;
+
+    public RegisterActivity(){
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,5 +1,5 @@
 package ultramirinc.champs_mood.fragments;
-
+//Done
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 
 /**
  * Created by William on 2017-04-27.
+ * This class is a custom ViewPager in order to remove the swiping behavior.
  */
 
 public class MyViewPager extends ViewPager {

@@ -1,5 +1,5 @@
 package ultramirinc.champs_mood.fragments;
-
+//Done
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -20,6 +20,8 @@ import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-06.
+ * This class creates a binding between the raw data and the visual interpretation of the notifications for a given User.
+ * This class binds it with a MyViewHolderNotifications object.
  */
 
 public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNotification> {
@@ -60,7 +62,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
             public void onClick(View v) {
                 //If is already our friend, will poke !
                 if (UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId()) && isPokable) {
-                    Poke(notification.getSenderId());
+                    poke(notification.getSenderId());
                 }
                 else if (UserManager.getInstance().getCurrentUser().isFriend(notification.getSenderId()) && !isPokable) {
                     Toast.makeText(context, "Already poked!", Toast.LENGTH_SHORT).show();
@@ -90,7 +92,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
         myViewHolderNotification.bind(notification);
     }
 
-    private void Poke(String UserId) {
+    private void poke(String UserId) {
         User currentUser = UserManager.getInstance().getCurrentUser();
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), true, currentUser.getId(), UserId);
         NotificationManager nm = new NotificationManager();

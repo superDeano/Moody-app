@@ -1,10 +1,7 @@
 package ultramirinc.champs_mood;
-
-
+//Done
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.icu.util.Calendar;
-import android.icu.util.GregorianCalendar;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -21,28 +17,22 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.Break;
-import ultramirinc.champs_mood.models.Time;
 import ultramirinc.champs_mood.models.User;
+
+/**
+ * This is the profil of a given user (That is the the current user). This allows the user to see
+ * his friend's profile and location
+ */
 
 
 public class FriendProfilActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -51,6 +41,9 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
     private User friendProfile;
     private LatLng latLng;
     private ProgressDialog progressDialog;
+
+    public FriendProfilActivity(){
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +59,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
             loadFriendProfile(userId);
         }
         catch (Exception e) {
-            //error occured, don't do nothing.// TODO: 2017-05-11 check wifi
+            //error occured, do nothing.
         }
 
         Button button = (Button) findViewById(R.id.friendShipButton);
@@ -167,6 +160,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         Toast.makeText(this, "Unfollowed", Toast.LENGTH_SHORT).show();
         return done;
     }
+
     private void follow(User userToFollow) {
         boolean done = UserManager.getInstance().getCurrentUser().addToFriendList(userToFollow);
         //save
@@ -176,6 +170,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         }
         Toast.makeText(this, "Friend request sent!", Toast.LENGTH_SHORT).show();
     }
+
     public void updateFriendShipButton(boolean isFriend) {
         Button button = (Button) findViewById(R.id.friendShipButton);
 

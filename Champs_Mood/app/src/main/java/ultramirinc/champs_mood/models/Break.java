@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 
 /**
  * Created by Étienne Bérubé on 2017-03-28.
- * test
+ * This is the object that contains all the information and methods for a Break
  */
 
 public class Break implements Comparable<Break>{

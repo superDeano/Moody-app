@@ -1,29 +1,25 @@
 package ultramirinc.champs_mood.fragments;
-
-import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.ButtonBarLayout;
+//Done
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import ultramirinc.champs_mood.FriendProfilActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-04.
+ * This class assigns a given value to a View object, allowing the user to see the information for a given friend
  */
 
-public class MyViewHolder extends RecyclerView.ViewHolder{
+public class MyViewHolderFriend extends RecyclerView.ViewHolder{
 
     private TextView nameView;
     private TextView moodView;
     private TextView breakTextView;
     private Button mButton;
 
-    public MyViewHolder(View itemView) {
+    public MyViewHolderFriend(View itemView) {
         super(itemView);
         mButton = (Button) itemView.findViewById(R.id.poke);
         nameView = (TextView) itemView.findViewById(R.id.name);
@@ -32,6 +28,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
         breakTextView.setText("");
 
     }
+
 
     public void bind(User myFriend){
         nameView.setText(myFriend.getName());
@@ -44,7 +41,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder{
             moodView.setText(myFriend.getMood());
         }
 
-        //breakTextView.setText(myFriend.getBreakTextTemp());
     }
 
     public TextView getNameView() {

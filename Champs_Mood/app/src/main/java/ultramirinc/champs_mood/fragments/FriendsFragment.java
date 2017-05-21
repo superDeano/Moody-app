@@ -1,5 +1,5 @@
 package ultramirinc.champs_mood.fragments;
-
+//DONE
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +21,9 @@ import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by Étienne Bérubé on 2017-03-23.
+ * This class gives a visual interpretation of the friend list of the user. The friends are fetched from the Database
+ * and transformed into visual elements.
+ * This list is given as a tab for TabActivity
  */
 
 public class FriendsFragment extends Fragment{
@@ -31,7 +34,6 @@ public class FriendsFragment extends Fragment{
 
 
     public FriendsFragment(){
-
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,12 +47,12 @@ public class FriendsFragment extends Fragment{
 
         loadFriends();
 
-        recyclerView.setAdapter(new MyAdapter(friends, getContext()));
+        recyclerView.setAdapter(new MyAdapterFriend(friends, getContext()));
 
         return view;
     }
 
-    private void AddOrReplace(User user) {
+    private void addOrReplace(User user) {
         boolean found = false;
         int index = 0;
         for (User u: friends) {
@@ -80,7 +82,7 @@ public class FriendsFragment extends Fragment{
                 for (DataSnapshot friendKey: snapshot.getChildren()) {
                     FirebaseDatabase.getInstance().getReference("users").child(friendKey.getValue(String.class)).addValueEventListener(new ValueEventListener() {
                         public void onDataChange(DataSnapshot friendSnapshot) {
-                            AddOrReplace(friendSnapshot.getValue(User.class));
+                            addOrReplace(friendSnapshot.getValue(User.class));
                             recyclerView.getAdapter().notifyDataSetChanged();
                         }
                         public void onCancelled(DatabaseError firebaseError) {

@@ -7,15 +7,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
-
-import org.w3c.dom.Text;
-
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
+/**
+ * These are the settings the user can play with
+ */
+
 public class SettingsActivity extends AppCompatActivity {
+
+    public SettingsActivity(){
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void logOut() {
         FirebaseAuth.getInstance().signOut();
-        UserManager.getInstance().ClearCurrentUser();
+        UserManager.getInstance().clearCurrentUser();
         finish();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);

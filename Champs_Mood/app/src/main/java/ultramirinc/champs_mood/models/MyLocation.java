@@ -4,6 +4,8 @@ package ultramirinc.champs_mood.models;
 
 /**
  * Created by Étienne Bérubé on 2017-05-10.
+ * This class acts as an alternative to the LatLng object provided by Google. However, the LatLng object cannot be stored
+ * in the database. Thus, we created this object
  */
 
 public class MyLocation{

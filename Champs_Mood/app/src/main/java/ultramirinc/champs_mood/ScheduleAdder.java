@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,15 +18,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.Break;
 import ultramirinc.champs_mood.models.Time;
 import ultramirinc.champs_mood.models.User;
+
+/**
+ * This class allows the user to manage existing breaks or create new ones.
+ */
 
 public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnBreakReadyListener{
 
@@ -114,13 +115,13 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
         Break mBreak = new Break(new Time(startHour, startMinute),
                 new Time(endHour, endMinute), day, currentUser.getId());
         breakList.add(mBreak);
-        SaveBreakToDb(mBreak);
+        saveBreakToDb(mBreak);
         Collections.sort(breakList);
-        recyclerView.getAdapter().notifyDataSetChanged();//Try <--------------------------------------------------------------
+        recyclerView.getAdapter().notifyDataSetChanged();
         Log.d("Debug", "breakCreated");
     }
 
-    private void SaveBreakToDb(Break breakItem) {
+    private void saveBreakToDb(Break breakItem) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("breaks");
         DatabaseReference generatedId = ref.push();
         breakItem.setId(generatedId.getKey());
