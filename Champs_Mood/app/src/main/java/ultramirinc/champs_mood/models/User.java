@@ -79,6 +79,7 @@ public class User {
     public int getFloorLevel() {
         return this.floor;
     }
+
     public void setMood(String mood) {
         this.mood = mood;
     }

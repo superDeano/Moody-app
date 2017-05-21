@@ -123,7 +123,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                     TextView floor = (TextView) findViewById(R.id.floorLevel);
 
                     if (friendProfile.isLocationShared()) {
-                        floor.setText(Integer.toString(friendProfile.getFloorLevel()));
+                        floor.setText(Integer.toString(friendProfile.getFloor()));
                     }
                     else {
                         floor.setText("Floor not shared");
