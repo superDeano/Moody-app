@@ -44,7 +44,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
     private List<User> list;
     private Context context;
     private boolean isPokable = true;
-    private MyViewHolder view;
 
     public MyAdapter(List<User> list, Context context) {
         this.list = list;
@@ -59,7 +58,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     @Override
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
-        view = myViewHolder;
         User myFriend = list.get(position);
         int p = position;
 
@@ -87,7 +85,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         myViewHolder.bind(myFriend);
 
-        checkBreakStatus(myFriend);
+        checkBreakStatus(myViewHolder, myFriend);
 
     }
 
@@ -112,7 +110,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 
-    private void checkBreakStatus(User u) {
+    private void checkBreakStatus(MyViewHolder myViewHolder, User u) {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();
         //Loading things from database
@@ -127,9 +125,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendBreaks.add(singleSnapshot.getValue(Break.class));
                 }
-                u.setBreaks(friendBreaks);
-
-                view.setBreakTextText(breakCalculator(u, friendBreaks));
+                myViewHolder.setBreakTextText(breakCalculator(u, friendBreaks));
 
             }
 
@@ -145,9 +141,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         u.setBreaks(friendBreaks);
 
         java.util.GregorianCalendar current = new java.util.GregorianCalendar();
-        int currentDay = current.get(java.util.Calendar.DAY_OF_WEEK);
+        int currentDay = adaptDayOfWeek(current.get(java.util.Calendar.DAY_OF_WEEK));
 
-        long closestBreakMin = 1440; //Why?
+        long closestBreakMin = 1440; //Why? bcz: Initialise variable at 24 hrs (because 23:59 is the max value possible between now and the closest break in the same day) ps: this var keeps track of the closest break of the current day.
         Break closestBreak = null;
         long closestBreakDuration = 0;
 
@@ -155,7 +151,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         for (int i=0; i < friendBreaks.size(); i++) {
             Break breakNode = friendBreaks.get(i);
 
-            if (currentDay == breakNode.getIntDay()+1) {
+            if (currentDay == breakNode.getIntDay()) {
 
                 GregorianCalendar now = new GregorianCalendar();
 
@@ -198,7 +194,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
         String text = "";
 
-        if (u.getBreaks().isEmpty()){
+        if (friendBreaks.isEmpty()){
             text = "No breaks at all";
 
         } else if (closestBreak == null) {
@@ -223,4 +219,32 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         return text;
     }
 
+    //Theres a mismatch between our original int values of weekdays with the java.utils.calendar int values of weekdays.
+    private int adaptDayOfWeek(int weekday) {
+        int newValue = 0;
+        switch(weekday) {
+            case 1:
+                newValue = 7;
+                break;
+            case 2:
+                newValue = 1;
+                break;
+            case 3:
+                newValue = 2;
+                break;
+            case 4:
+                newValue = 3;
+                break;
+            case 5:
+                newValue = 4;
+                break;
+            case 6:
+                newValue = 5;
+                break;
+            case 7:
+                newValue = 6;
+                break;
+        }
+        return newValue;
+    }
 }

@@ -39,8 +39,6 @@ public class MyViewHolderSearch extends RecyclerView.ViewHolder{
         }else {
             moodView.setText(person.getMood());
         }
-
-        breakTextView.setText(person.getBreakTextTemp());
         isFriend = (UserManager.getInstance().getCurrentUser().getFriendStatus(person));
     }
 
@@ -60,12 +58,8 @@ public class MyViewHolderSearch extends RecyclerView.ViewHolder{
         this.moodView = moodView;
     }
 
-    public TextView getBreakTextView() {
-        return breakTextView;
-    }
-
-    public void setBreakTextView(TextView breakTextView) {
-        this.breakTextView = breakTextView;
+    public void setBreakText(String text) {
+        this.breakTextView.setText(text);
     }
 
     public String getIsFriend() {

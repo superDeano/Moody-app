@@ -115,7 +115,6 @@ public class User {
         return friendList;
     }
 
-
     public String getBreakStatus() {
         GregorianCalendar cal = new GregorianCalendar();
         int currentDay = cal.get(Calendar.DAY_OF_WEEK);

@@ -195,9 +195,8 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendBreaks.add(singleSnapshot.getValue(Break.class));
                 }
-                friendProfile.setBreaks(friendBreaks);
                 java.util.GregorianCalendar current = new java.util.GregorianCalendar();
-                int currentDay = current.get(java.util.Calendar.DAY_OF_WEEK);
+                int currentDay = adaptDayOfWeek(current.get(java.util.Calendar.DAY_OF_WEEK));
 
                 long closestBreakMin = 1440;
                 Break closestBreak = null;
@@ -206,20 +205,21 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
                 // find closest break for the day (if any)
                 for (int i=0; i < friendBreaks.size(); i++) {
                     Break breakNode = friendBreaks.get(i);
-                    if (currentDay == breakNode.getIntDay()+1) {
-                        Date now = new Date();
+                    if (currentDay == breakNode.getIntDay()) {
+                        java.util.GregorianCalendar now = new java.util.GregorianCalendar();
 
-                        Date breakStart = new Date(); //Todo NOOOOO pas de deprecated
-                        breakStart.setHours(breakNode.getStart().getHour());
-                        breakStart.setMinutes((breakNode.getStart().getMinute()));
-                        breakStart.setSeconds(0);
+                        java.util.GregorianCalendar breakStart = new java.util.GregorianCalendar();
+                        breakStart.set(java.util.Calendar.HOUR_OF_DAY,breakNode.getStart().getHour());
+                        breakStart.set(java.util.Calendar.MINUTE,(breakNode.getStart().getMinute()));
+                        breakStart.set(java.util.Calendar.SECOND,0);
 
                         long timeDiffInMinutes = getDateDiff(now, breakStart, TimeUnit.MINUTES);
 
-                        Date breakEnd = new Date();
-                        breakEnd.setHours(breakNode.getEnd().getHour());
-                        breakEnd.setMinutes(breakNode.getEnd().getMinute());
-                        breakEnd.setSeconds(0);
+                        java.util.GregorianCalendar breakEnd = new java.util.GregorianCalendar();
+                        breakEnd.set(java.util.Calendar.HOUR_OF_DAY,breakNode.getEnd().getHour());
+                        breakEnd.set(java.util.Calendar.MINUTE,breakNode.getEnd().getMinute());
+                        breakEnd.set(java.util.Calendar.SECOND,0);
+
 
                         //check if currently in break.
                         long breakDuration = getDateDiff(breakStart, breakEnd, TimeUnit.MINUTES);
@@ -278,9 +278,37 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         };
         breakQuery.addListenerForSingleValueEvent(postListener);
     }
+    //Theres a mismatch between our original int values of weekdays with the java.utils.calendar int values of weekdays.
+    private int adaptDayOfWeek(int weekday) {
+        int newValue = 0;
+        switch(weekday) {
+            case 1:
+                newValue = 7;
+                break;
+            case 2:
+                newValue = 1;
+                break;
+            case 3:
+                newValue = 2;
+                break;
+            case 4:
+                newValue = 3;
+                break;
+            case 5:
+                newValue = 4;
+                break;
+            case 6:
+                newValue = 5;
+                break;
+            case 7:
+                newValue = 6;
+                break;
+        }
+        return newValue;
+    }
 
-    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
-        long diffInMillies = date2.getTime() - date1.getTime();
+    public static long getDateDiff(java.util.GregorianCalendar date1, java.util.GregorianCalendar date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime().getTime() - date1.getTime().getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 

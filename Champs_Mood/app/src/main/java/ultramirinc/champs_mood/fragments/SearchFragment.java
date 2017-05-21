@@ -136,7 +136,7 @@ public class SearchFragment extends Fragment {
     }
 
 
-    public void searchUsers(String query) { //TODO non case sensitive
+    public void searchUsers(String query) {
 
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query searchQuery = this.databaseUsers.orderByChild("nameLowered").startAt(query).endAt(query+"\uf8ff");
