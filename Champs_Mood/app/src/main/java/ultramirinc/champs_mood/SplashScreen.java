@@ -12,14 +12,15 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 
 public class SplashScreen extends AppCompatActivity {
-
+    /**Contains the database authentication reference*/
     private FirebaseAuth firebaseAuth;
+    /**The time in millisecond this activity should stay active*/
     private static int SPLASH_TIME_OUT = 2000; //2 seconds
 
     public SplashScreen(){
 
     }
-
+    /**Creates and inflate the visual layout for the activity*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

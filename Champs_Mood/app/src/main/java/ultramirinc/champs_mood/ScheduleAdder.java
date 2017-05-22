@@ -32,16 +32,18 @@ import ultramirinc.champs_mood.models.User;
  */
 
 public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnBreakReadyListener{
-
+    /**Contains the context from the attached activity*/
     private Context context = this;
+    /**Contains a list of all the breaks of a user*/
     private List<Break> breakList= new ArrayList<>();
+    /**Contains the recycler view of the visual layout*/
     private RecyclerView recyclerView;
 
     public ScheduleAdder(){
         populateList();
         Collections.sort(breakList);
     }
-
+    /**Creates and inflate the view of the activity.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +78,7 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
             }
         });
     }
-
+    /**Gets the breaks from the databse and adds them in the list.*/
     public void populateList() {
         DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("breaks");
         Query breakQuery = breaksReference.orderByChild("userId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -96,8 +98,7 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
         };
         breakQuery.addListenerForSingleValueEvent(postListener);
     }
-
-
+    /**Handles the event when a break is ready.*/
     @Override
     public void onBreakReady(String breakString) {
         User currentUser = UserManager.getInstance().getCurrentUser();
@@ -121,7 +122,7 @@ public class ScheduleAdder extends AppCompatActivity implements BreakCreator.OnB
         recyclerView.getAdapter().notifyDataSetChanged();
         Log.d("Debug", "breakCreated");
     }
-
+    /**Saves a break to the database.*/
     private void saveBreakToDb(Break breakItem) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("breaks");
         DatabaseReference generatedId = ref.push();

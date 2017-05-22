@@ -20,7 +20,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public SettingsActivity(){
     }
-
+    /**Creates and inflate the visual layout for the activity.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,23 +40,15 @@ public class SettingsActivity extends AppCompatActivity {
             view.setText(theUser.getName());
         }
 
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               logOut();
-            }
-        });
+        mEmailSignInButton.setOnClickListener(view -> logOut());
 
-        mCreditsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SettingsActivity.this, CreditsActivity.class);
-                startActivity(intent);
-            }
+        mCreditsButton.setOnClickListener(view -> {
+            Intent intent1 = new Intent(SettingsActivity.this, CreditsActivity.class);
+            startActivity(intent1);
         });
 
     }
-
+    /**Logs out the current user.*/
     private void logOut() {
         FirebaseAuth.getInstance().signOut();
         UserManager.getInstance().clearCurrentUser();
@@ -64,7 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
-
+    /**Starts the activity of the breakCreator*/
     public void startBreakCreatorActivity(View view){
         Intent intent = new Intent(this, ScheduleAdder.class);
 
