@@ -25,22 +25,24 @@ import ultramirinc.champs_mood.models.User;
  */
 
 public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNotification> {
-
+    /**The context to the activity*/
     private Context context;
+    /**Contains the list of the user's notification*/
     private List<Notification> list;
+    /**Determines if the friend can be poked or not*/
     private boolean isPokable = true;
 
     public MyAdapterNotification(List<Notification> list, Context context) {
         this.list = list;
         this.context = context;
     }
-
+    /**Creates a Visual interpretation using a custom ViewHolder.*/
     @Override
     public MyViewHolderNotification onCreateViewHolder(ViewGroup viewGroup, int itemType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_notification,viewGroup,false);
         return new MyViewHolderNotification(view);
     }
-
+    /**Binds the information from a given notification with the ViewHolder.*/
     @Override
     public void onBindViewHolder(MyViewHolderNotification myViewHolderNotification, int position) {
         Notification notification = list.get(position);
@@ -91,7 +93,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
 
         myViewHolderNotification.bind(notification);
     }
-
+    /**Pokes a given user.*/
     private void poke(String UserId) {
         User currentUser = UserManager.getInstance().getCurrentUser();
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), true, currentUser.getId(), UserId);
@@ -107,7 +109,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
             }
         }, 120000);
     }
-
+    /**Returns the size of the list.*/
     @Override
     public int getItemCount() {
         return list.size();

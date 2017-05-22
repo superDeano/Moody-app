@@ -54,30 +54,33 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserRegisterTask mAuthTask = null;
 
     // UI references.
+    /**Contains a AutoCompleteTextView of the name of the account that is being created*/
     private AutoCompleteTextView mNameView;
+    /**Contains a AutoCompleteTextView of the email of the account that is being created*/
     private AutoCompleteTextView mEmailView;
+    /**Contains a EditText of the password of the account that is being created*/
     private EditText mPasswordView;
+    /**Contains a EditText of the password confirmation of the account that is being created*/
     private EditText mConfirmView;
+    /**Contains a View of the progress of the account that is being created*/
     private View mProgressView;
+    /**Contains a View of the register form of the account that is being created*/
     private View mRegisterFormView;
+    /**Contains a ProgressDialog of the account that is being created*/
     private ProgressDialog progressDialog;
-
-    //Defining firebase auth object
+    /**Defining firebase auth object*/
     private FirebaseAuth firebaseAuth;
 
     public RegisterActivity(){
 
     }
-
+    /**Creates and inflates the layout of the activity.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
         //mProgressView = findViewById(R.id.login_progress);
 
     }
-
+    /**Fills in the blanks if the permission for the contacts is not granted*/
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -140,6 +143,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
         getLoaderManager().initLoader(0, null, this);
     }
+    /**Registers the user*/
     private void registerUser(String email, String password){
 
         //checking if email and passwords are empty
@@ -183,6 +187,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                 });
 
     }
+    /**Requests the user's permission to access the contacts*/
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;
@@ -217,7 +222,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             }
         }
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -273,12 +277,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             registerUser(email, password);
         }
     }
-
+    /**Checks if the email is valid.*/
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
         return email.contains("@");
     }
-
+    /**Checks if the password is valid.*/
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
@@ -319,7 +323,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             mRegisterFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
-
+    /**Creates and inflates the layout of the loader.*/
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
@@ -336,7 +340,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                 // a primary email address if the user hasn't specified one.
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
-
+    /**Handles if the loader is finished.*/
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<>();
@@ -348,22 +352,21 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
         addEmailsToAutoComplete(emails);
     }
-
+    /**Handles if the loader is reset.*/
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
-
+    /**Creates adapter to tell the AutoCompleteTextView what to show in its dropdown list.*/
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
+
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<>(RegisterActivity.this,
                         android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
 
         mEmailView.setAdapter(adapter);
     }
-
-
+    /**Interface for the profile query*/
     private interface ProfileQuery {
         String[] PROJECTION = {
                 ContactsContract.CommonDataKinds.Email.ADDRESS,
@@ -399,14 +402,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
             // TODO: register the new account here.
             return true;
         }
@@ -429,30 +424,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             mAuthTask = null;
             showProgress(false);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.blank_toolbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add) {
-            return true;
-        }else if(id == R.id.action_list){
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -18,7 +18,7 @@ import ultramirinc.champs_mood.models.Break;
  */
 
 public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule>{
-
+    /**Contains the list of the schedule's breaks*/
     List<Break> list;
 
     public MyAdapterSchedule(List<Break> list) {
@@ -28,7 +28,7 @@ public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule
     public MyAdapterSchedule(){
 
     }
-
+    /**Creates a Visual interpretation using a custom ViewHolder.*/
     @Override
     public MyViewHolderSchedule onCreateViewHolder(ViewGroup viewGroup, int itemType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_schedule,viewGroup,false);
@@ -36,7 +36,7 @@ public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule
 
         return new MyViewHolderSchedule(view);
     }
-
+    /**Binds the information from a given break with the ViewHolder.*/
     @Override
     public void onBindViewHolder(MyViewHolderSchedule myViewHolderSchedule, int position) {
 
@@ -65,12 +65,12 @@ public class MyAdapterSchedule extends RecyclerView.Adapter<MyViewHolderSchedule
 
         myViewHolderSchedule.bind(myBreak);
     }
-
+    /**Deletes a break.*/
     private void deleteBreakFromDb(Break breakToDelete) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("breaks");
         ref.child(breakToDelete.getId()).removeValue();
     }
-
+    /**Returns the size of the list.*/
     @Override
     public int getItemCount() {
         return list.size();

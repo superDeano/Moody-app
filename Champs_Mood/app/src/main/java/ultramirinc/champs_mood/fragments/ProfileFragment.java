@@ -719,7 +719,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         return text;
     }
 
-    /**Theres a mismatch between our original int values of weekdays with the java.utils.calendar integer values of weekdays.*/
+    /**There's a mismatch between our original int values of weekdays with the java.utils.calendar integer values of weekdays.*/
     private int adaptDayOfWeek(int weekday) {
         int newValue = 0;
         switch(weekday) {

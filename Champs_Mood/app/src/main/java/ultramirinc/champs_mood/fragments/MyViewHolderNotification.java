@@ -13,9 +13,13 @@ import ultramirinc.champs_mood.models.Notification;
  */
 
 public class MyViewHolderNotification extends RecyclerView.ViewHolder{
+    /**Contains the Button of the person that sent the notification*/
     private Button button;
+    /**Contains the TextView of the name of the person that sent the notification*/
     private TextView sentByView;
+    /**Contains the TextView of the notification's type*/
     private TextView typeView;
+    /**Contains the TextView of the friend status of the person that sent the notification*/
     private TextView isFriendView;
 
     public MyViewHolderNotification(View itemView) {
@@ -25,41 +29,41 @@ public class MyViewHolderNotification extends RecyclerView.ViewHolder{
         typeView = (TextView) itemView.findViewById(R.id.message);
         isFriendView = (TextView) itemView.findViewById(R.id.button);
     }
-
+    /**Binds the notifications's person name, type and person friend status to their respective TextView variables.*/
     public void bind(Notification notification){
         sentByView.setText(notification.getSentBy());
         typeView.setText(notification.getMessage());
         isFriendView.setText(notification.getFriendStatus());
     }
-
+    /**Getter for sentByView.*/
     public TextView getSentByView() {
         return sentByView;
     }
-
+    /**Setter for sentByView.*/
     public void setSentByView(TextView sentByView) {
         this.sentByView = sentByView;
     }
-
+    /**Getter for typeView.*/
     public TextView getTypeView() {
         return typeView;
     }
-
+    /**Setter for typeView.*/
     public void setTypeView(TextView typeView) {
         this.typeView = typeView;
     }
-
+    /**Getter for isFriendView.*/
     public TextView getIsFriendView() {
         return isFriendView;
     }
-
+    /**Setter for isFriendView.*/
     public void setIsFriendView(TextView isFriendView) {
         this.isFriendView = isFriendView;
     }
-
+    /**Getter for button.*/
     public Button getButton() {
         return button;
     }
-
+    /**Setter for button.*/
     public void setButton(Button button) {
         this.button = button;
     }

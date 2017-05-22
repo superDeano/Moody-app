@@ -48,7 +48,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
 
     public FriendProfilActivity(){
     }
-    /**Creates and inflate the layout of the activity.*/
+    /**Creates and inflates the layout of the activity.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

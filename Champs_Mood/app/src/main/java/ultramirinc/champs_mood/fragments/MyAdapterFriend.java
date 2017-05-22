@@ -50,13 +50,13 @@ public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
     public MyAdapterFriend(){
 
     }
-    /**Creates a Visual interpretation using a custom ViewHolder*/
+    /**Creates a Visual interpretation using a custom ViewHolder.*/
     @Override
     public MyViewHolderFriend onCreateViewHolder(ViewGroup viewGroup, int itemType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_friend,viewGroup,false);
         return new MyViewHolderFriend(view);
     }
-    /**Binds the information from a given friend and binds it with the ViewHolder*/
+    /**Binds the information from a given friend with the ViewHolder.*/
     @Override
     public void onBindViewHolder(MyViewHolderFriend myViewHolderFriend, int position) {
         User myFriend = list.get(position);
@@ -89,7 +89,7 @@ public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
         checkBreakStatus(myViewHolderFriend, myFriend);
 
     }
-    /**Pokes a given user*/
+    /**Pokes a given user.*/
     private void Poke(User user) {
         User currentUser = UserManager.getInstance().getCurrentUser();
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());
@@ -99,17 +99,17 @@ public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
         isPokable =false;
         new Handler().postDelayed(() -> isPokable=true, 120000);
     }
-
+    /**Returns the size of the list.*/
     @Override
     public int getItemCount() {
         return list.size();
     }
-
+    /**Returns the difference between two dates in milliseconds.*/
     public static long getDateDiff(GregorianCalendar date1, GregorianCalendar date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime().getTime() - date1.getTime().getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
-
+    /**Gets the user's break status (time before a break, in break or no more breaks)*/
     private void checkBreakStatus(MyViewHolderFriend myViewHolderFriend, User u) {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();
@@ -219,7 +219,7 @@ public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
         return text;
     }
 
-    //Theres a mismatch between our original int values of weekdays with the java.utils.calendar int values of weekdays.
+    /**There's a mismatch between our original int values of weekdays with the java.utils.calendar integer values of weekdays.*/
     private int adaptDayOfWeek(int weekday) {
         int newValue = 0;
         switch(weekday) {

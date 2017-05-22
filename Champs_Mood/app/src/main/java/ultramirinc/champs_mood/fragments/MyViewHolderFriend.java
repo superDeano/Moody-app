@@ -13,10 +13,13 @@ import ultramirinc.champs_mood.models.User;
  */
 
 public class MyViewHolderFriend extends RecyclerView.ViewHolder{
-
+    /**Contains the TextView of the friend's name*/
     private TextView nameView;
+    /**Contains the TextView of the friend's mood*/
     private TextView moodView;
+    /**Contains the TextView of the friend's break text*/
     private TextView breakTextView;
+    /**Contains the Button of the friend's poke button*/
     private Button mButton;
 
     public MyViewHolderFriend(View itemView) {
@@ -29,7 +32,7 @@ public class MyViewHolderFriend extends RecyclerView.ViewHolder{
 
     }
 
-
+    /**Binds the friend's name and mood to their respective TextView variables.*/
     public void bind(User myFriend){
         nameView.setText(myFriend.getName());
 
@@ -42,39 +45,39 @@ public class MyViewHolderFriend extends RecyclerView.ViewHolder{
         }
 
     }
-
+    /**Getter for nameView.*/
     public TextView getNameView() {
         return nameView;
     }
-
+    /**Setter for nameView.*/
     public void setNameView(TextView nameView) {
         this.nameView = nameView;
     }
-
+    /**Getter for moodView.*/
     public TextView getMoodView() {
         return moodView;
     }
-
+    /**Setter for moodView.*/
     public void setMoodView(TextView moodView) {
         this.moodView = moodView;
     }
-
+    /**Getter for breakTextView.*/
     public TextView getBreakTextView() {
         return breakTextView;
     }
-
+    /**Setter for breakTextView using a TextView variable.*/
     public void setBreakTextView(TextView breakTextView) {
         this.breakTextView = breakTextView;
     }
-
+    /**Setter for breakTextView using a String variable.*/
     public void setBreakTextText(String s){
         breakTextView.setText(s);
     }
-
+    /**Getter for mButton.*/
     public Button getButton() {
         return mButton;
     }
-
+    /**Setter for mButton.*/
     public void setButton(Button mButton) {
         this.mButton = mButton;
     }

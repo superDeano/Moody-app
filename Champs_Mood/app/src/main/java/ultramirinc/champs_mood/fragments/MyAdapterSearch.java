@@ -36,22 +36,25 @@ import ultramirinc.champs_mood.models.User;
  * This class binds it with a MyViewHolderNotification object.
  */
 
-public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
+public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch>{
+    /**The context to the activity*/
     private Context context;
+    /**Contains the list of the user's search*/
     private List<User> list;
+    /**Determines if the friend can be poked or not*/
     private boolean isPokable = true;
 
     public MyAdapterSearch(List<User> list, Context context) {
         this.list = list;
         this.context = context;
     }
-
+    /**Creates a Visual interpretation using a custom ViewHolder.*/
     @Override
     public MyViewHolderSearch onCreateViewHolder(ViewGroup viewGroup, int itemType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_search,viewGroup,false);
         return new MyViewHolderSearch(view);
     }
-
+    /**Binds the information from a given search with the ViewHolder.*/
     @Override
     public void onBindViewHolder(MyViewHolderSearch myViewHolderSearch, int position) {
         User person = list.get(position);
@@ -121,7 +124,7 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
         myViewHolderSearch.bind(person);
         checkBreakStatus(myViewHolderSearch, person);
     }
-
+    /**Pokes a given user.*/
     private void poke(User user) {
         User currentUser = UserManager.getInstance().getCurrentUser();
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());
@@ -137,12 +140,12 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
             }
         }, 120000);
     }
-
+    /**Returns the size of the list.*/
     @Override
     public int getItemCount() {
         return list.size();
     }
-
+    /**Gets the user's break status (time before a break, in break or no more breaks)*/
     private void checkBreakStatus(MyViewHolderSearch viewHolderSearch, User u) {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();
@@ -250,13 +253,13 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch> {
 
         return text;
     }
-
+    /**Returns the difference between two dates in milliseconds.*/
     public static long getDateDiff(GregorianCalendar date1, GregorianCalendar date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime().getTime() - date1.getTime().getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 
-    //Theres a mismatch between our original int values of weekdays with the java.utils.calendar int values of weekdays.
+    /**There's a mismatch between our original int values of weekdays with the java.utils.calendar integer values of weekdays.*/
     private int adaptDayOfWeek(int weekday) {
         int newValue = 0;
         switch(weekday) {
