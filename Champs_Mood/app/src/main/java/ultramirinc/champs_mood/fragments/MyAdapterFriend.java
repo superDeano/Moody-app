@@ -36,9 +36,11 @@ import ultramirinc.champs_mood.models.User;
  */
 
 public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
-
+    /**Contains the list of the user's friends*/
     private List<User> list;
+    /**The context to the activity*/
     private Context context;
+    /**Determines if the friend can be poked or not*/
     private boolean isPokable = true;
 
     public MyAdapterFriend(List<User> list, Context context) {
@@ -48,13 +50,13 @@ public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
     public MyAdapterFriend(){
 
     }
-
+    /**Creates a Visual interpretation using a custom ViewHolder*/
     @Override
     public MyViewHolderFriend onCreateViewHolder(ViewGroup viewGroup, int itemType) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.cell_friend,viewGroup,false);
         return new MyViewHolderFriend(view);
     }
-
+    /**Binds the information from a given friend and binds it with the ViewHolder*/
     @Override
     public void onBindViewHolder(MyViewHolderFriend myViewHolderFriend, int position) {
         User myFriend = list.get(position);
@@ -87,7 +89,7 @@ public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
         checkBreakStatus(myViewHolderFriend, myFriend);
 
     }
-
+    /**Pokes a given user*/
     private void Poke(User user) {
         User currentUser = UserManager.getInstance().getCurrentUser();
         Notification n = new Notification(currentUser.getName(), Notification_type.poked_you.getNumVal(), user.isFriend(currentUser), currentUser.getId(), user.getId());

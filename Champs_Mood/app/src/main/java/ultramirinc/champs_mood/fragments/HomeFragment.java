@@ -49,17 +49,21 @@ import ultramirinc.champs_mood.models.User;
 
 
 public class HomeFragment extends Fragment implements Observer, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, GoogleMap.OnInfoWindowClickListener {
-
+    /**The map from Google Map*/
     private GoogleMap mMap;
+    /**The Google Api Client Object is required to access Google's APIs*/
     private GoogleApiClient mGoogleApiClient;
+    /**Contains the visual layout of the fragment*/
     private View view;
+    /**The location request in order to get information from the GPS*/
     private LocationRequest mLocationRequest;
+    /**Contains list of the user's Friends*/
     private List<User> friends = Collections.synchronizedList(new ArrayList<User>());
 
     public HomeFragment(){
 
     }
-
+    /**Inflates the visual layotu for the fragment*/
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -91,6 +95,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     }
 
     @Override
+    /**Updates the data when some fields in the database change.*/
     public void update(Observable o, Object arg) {
         try {
             setUserAndPaintProfile((User) arg);
@@ -99,13 +104,16 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
             //error not handeled
         }
     }
-
+    /**Updates the View for the user's mood.*/
     public void updateView(User u) {
         TextView myMood = (TextView)view.findViewById(R.id.mood);
         myMood.setText(u.getMood());
     }
 
     @Override
+    /**This method is called when the fragment's resumes.
+     * It recreates the Google Api Client if needed.
+     * */
     public void onResume(){
         super.onResume();
         if (mGoogleApiClient == null)
@@ -118,19 +126,21 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     }
 
     @Override
+    /**This method is called when the fragments pauses.
+     * Disconnects the Google Api Client if needed.*/
     public void onPause() {
         super.onPause();
         if (mGoogleApiClient.isConnected() || mGoogleApiClient.isConnecting()) {
             mGoogleApiClient.disconnect();
         }
     }
-
+    /**This method is called when the Google Api Client is connected.*/
     public void onConnected(@Nullable Bundle bundle) {
         createRequestLocation();
         //startLocationUpdates();
 
     }
-
+    /**This method creates the Google Api Client used for the Google Map.*/
     private void createGoogleMapClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
@@ -138,7 +148,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
                 .addApi(LocationServices.API)
                 .build();
     }
-
+    /**Creates the location requests in order to get the location from the user's phone*/
     private void createRequestLocation(){
             mLocationRequest = new LocationRequest();
             mLocationRequest.setInterval(30000);
@@ -147,6 +157,8 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     }
 
     @Override
+    /**This method is called when the map is ready. Sets the map for the user interactions
+     *  (Places, proper zoom, markers, etc.).*/
     public void onMapReady(GoogleMap googleMap) {
         Log.d("debug", "in");
         mMap = googleMap;
@@ -169,17 +181,20 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         mMap.setOnInfoWindowClickListener(this);
 
     }
-
+    /**This method is called when the connection between the Google Api Client and the user is lost.*/
     public void onConnectionSuspended(int i) {
     }
 
     @Override
+    /**This method is called when the connection between the Google Api Client and the user
+     * doesn't work.*/
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e("Client error", "Google client did not connect");
 
     }
 
     @Override
+    /**This method protects the JVM to re-inflate the view twice, causing an error.*/
     public void onDestroyView() {
 
         FragmentManager fm = getFragmentManager();
@@ -193,10 +208,11 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     }
 
     @Override
+    /**Handles the user's interaction with certain component when there should be no interactions.*/
     public void onClick(View v) {
         //Empty
     }
-
+    /**This method takes a User and sets the visual layout accordingly to certain fields and variables.*/
     public void setUserAndPaintProfile(User u) {
 
         friends = new ArrayList<User>();
@@ -208,13 +224,13 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
         getFriends(u);
         setDataListeners(u);
     }
-
+    /**Gets the current User's informations.*/
     private void loadProfile() {
         UserManager.getInstance().deleteObservers();
         UserManager.getInstance().addObserver(this);
         UserManager.getInstance().getUserInformations();
     }
-
+    /**Gets the current User's friends.*/
     public void getFriends(User u){
 
         User currentUser = u;
@@ -254,7 +270,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
             }
         });
     }
-
+    /**Sets Listeners for the map to re-draw each time a friend changes its location.*/
     public void setDataListeners(User u){
         User currentUser = u;
 
@@ -304,12 +320,13 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     }
 
     @Override
+    /**Sets action when user interacts with the information window of a marker.*/
     public void onInfoWindowClick(Marker marker) {
         Intent intent = new Intent(getContext(), FriendProfilActivity.class);
         intent.putExtra("userId", (String) marker.getTag());
         getContext().startActivity(intent);
     }
-
+    /**Draws the map accordingly to the user's friends locations*/
     public void drawMap(){
         mMap.clear();
         Log.d("Draw Map debug", ""+friends.size());

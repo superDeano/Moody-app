@@ -28,14 +28,17 @@ import ultramirinc.champs_mood.models.User;
 
 public class FriendsFragment extends Fragment{
 
+    /**Contains the RecyclerView from the visual layout*/
     private RecyclerView recyclerView;
+    /**Contains the user's friends*/
     private List<User> friends = new ArrayList<>();
+    /**Context from the attached activity */
     private Context context = getContext();
 
 
     public FriendsFragment(){
     }
-
+    /**Creates the visual layout for fragment */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +54,7 @@ public class FriendsFragment extends Fragment{
 
         return view;
     }
-
+    /**Adds or replace a friend in the friendlist*/
     private void addOrReplace(User user) {
         boolean found = false;
         int index = 0;
@@ -70,7 +73,7 @@ public class FriendsFragment extends Fragment{
             friends.add(user);
         }
     }
-
+    /**Loads the user's friends from the database */
     private void loadFriends() {
         User currentUser = UserManager.getInstance().getCurrentUser();
 

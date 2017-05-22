@@ -50,8 +50,11 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     public BreakCreator(){
     }
 
+
+
     @Override
     public void onResume(){
+
       super.onResume();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
