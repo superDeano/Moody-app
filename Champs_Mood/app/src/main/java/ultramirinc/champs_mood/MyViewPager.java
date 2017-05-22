@@ -1,4 +1,4 @@
-package ultramirinc.champs_mood.fragments;
+package ultramirinc.champs_mood;
 //Done
 import android.content.Context;
 import android.support.v4.view.ViewPager;

@@ -26,7 +26,7 @@ import ultramirinc.champs_mood.models.User;
 
 
 /**
- * Created by Étienne Bérubé on 2017-03-23.
+ * Created by Etienne Berube on 2017-03-23.
  * This class allows the user to search for friends or potential friends on the database. It is a tab for TabActivity.
  */
 

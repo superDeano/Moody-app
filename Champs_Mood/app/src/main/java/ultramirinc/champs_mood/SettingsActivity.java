@@ -12,6 +12,7 @@ import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
 /**
+ * Created by Etienne Berube on 2017-03-23.
  * These are the settings the user can play with
  */
 

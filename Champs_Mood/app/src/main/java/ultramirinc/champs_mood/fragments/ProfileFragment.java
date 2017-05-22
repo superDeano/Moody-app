@@ -78,7 +78,8 @@ import ultramirinc.champs_mood.models.Break;
 import ultramirinc.champs_mood.models.User;
 
 /**
- * Created by Étienne Bérubé on 2017-03-23.
+ * Created by Etienne Berube on 2017-03-23.
+ * This will be the user's profile. He will be able to change his mood, location and floor from this page.
  */
 
 public class ProfileFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, Observer,

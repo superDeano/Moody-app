@@ -27,6 +27,7 @@ import ultramirinc.champs_mood.models.Time;
 import ultramirinc.champs_mood.models.User;
 
 /**
+ * Created by Etienne Berube on 2017-03-23.
  * This class allows the user to manage existing breaks or create new ones.
  */
 

@@ -30,12 +30,12 @@ import ultramirinc.champs_mood.fragments.HomeFragment;
 import ultramirinc.champs_mood.fragments.NotificationFragment;
 import ultramirinc.champs_mood.fragments.ProfileFragment;
 import ultramirinc.champs_mood.fragments.SearchFragment;
-import ultramirinc.champs_mood.fragments.MyViewPager;
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
 
 /**
+ * Created by Etienne Berube on 2017-03-23.
  * This class is the mainframe of the application. Every function or fragment is link to this class. Here is the heart
  * of the app.
  */

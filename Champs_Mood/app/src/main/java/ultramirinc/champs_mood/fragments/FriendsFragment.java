@@ -20,7 +20,7 @@ import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
 
 /**
- * Created by Étienne Bérubé on 2017-03-23.
+ * Created by Etienne Berube on 2017-03-23.
  * This class gives a visual interpretation of the friend list of the user. The friends are fetched from the Database
  * and transformed into visual elements.
  * This list is given as a tab for TabActivity

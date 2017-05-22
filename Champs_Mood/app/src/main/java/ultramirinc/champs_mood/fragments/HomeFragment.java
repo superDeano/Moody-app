@@ -42,7 +42,7 @@ import ultramirinc.champs_mood.models.User;
 
 
 /**
- * Created by Étienne Bérubé on 2017-03-23.
+ * Created by Etienne Berube on 2017-03-23.
  * This class is the homepage of the app. When it is launched. It appears as the first tab the user will see.
  * He will then see his current mood and the location of his friends on the map.
  */

@@ -17,7 +17,7 @@ public class UserManager extends Observable {
     private User current_user;
     private static UserManager instance = null;
     //Our database reference object
-    DatabaseReference databaseUsers;
+    public DatabaseReference databaseUsers;
 
     protected UserManager() {
         // Exists only to defeat instantiation.

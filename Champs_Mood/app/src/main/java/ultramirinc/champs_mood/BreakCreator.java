@@ -22,8 +22,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /**
+ * Created by Etienne Berube on 2017-03-23.
  * This class is a Pop-up that appears when the user wants to create a new Break Object for his schedule
  */
+
 
 public class BreakCreator extends DialogFragment implements AdapterView.OnItemSelectedListener{
 
@@ -271,3 +273,4 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         this.mListener = mListener;
     }
 }
+

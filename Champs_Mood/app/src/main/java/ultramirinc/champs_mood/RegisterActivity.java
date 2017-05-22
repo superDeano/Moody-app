@@ -43,6 +43,7 @@ import ultramirinc.champs_mood.managers.UserManager;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
+ * Created by Etienne Berube on 2017-03-23.
  * Allows the user to create an account into the Database. This account can be used to login later on
  */
 

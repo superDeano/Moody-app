@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Created by William on 2017-05-03.
+ * This activity makes the bridge between the login page and the main app
  */
 
 public class SplashScreen extends AppCompatActivity {

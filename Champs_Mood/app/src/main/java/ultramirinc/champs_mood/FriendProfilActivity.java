@@ -30,6 +30,7 @@ import ultramirinc.champs_mood.models.Break;
 import ultramirinc.champs_mood.models.User;
 
 /**
+ * Created by Etienne Berube on 2017-05-05.
  * This is the profil of a given user (That is the the current user). This allows the user to see
  * his friend's profile and location
  */

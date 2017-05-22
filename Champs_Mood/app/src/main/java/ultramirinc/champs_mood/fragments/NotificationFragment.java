@@ -21,7 +21,7 @@ import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.models.Notification;
 
 /**
- * Created by Étienne Bérubé on 2017-03-23.
+ * Created by Etienne Berube on 2017-03-23.
  * This class is a tab that contains all of the notifications for a given User. It is a tab under TabActivity.
  */
 

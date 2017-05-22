@@ -36,7 +36,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ultramirinc.champs_mood.fragments.MyViewPager
+    <ultramirinc.champs_mood.MyViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
