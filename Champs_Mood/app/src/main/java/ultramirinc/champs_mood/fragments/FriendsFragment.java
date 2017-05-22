@@ -38,7 +38,7 @@ public class FriendsFragment extends Fragment{
 
     public FriendsFragment(){
     }
-    /**Creates the visual layout for fragment */
+    /**Creates the visual layout for fragment. */
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +54,7 @@ public class FriendsFragment extends Fragment{
 
         return view;
     }
-    /**Adds or replace a friend in the friendlist*/
+    /**Adds or replace a friend in the friend list.*/
     private void addOrReplace(User user) {
         boolean found = false;
         int index = 0;
@@ -73,7 +73,7 @@ public class FriendsFragment extends Fragment{
             friends.add(user);
         }
     }
-    /**Loads the user's friends from the database */
+    /**Loads the user's friends from the database. */
     private void loadFriends() {
         User currentUser = UserManager.getInstance().getCurrentUser();
 

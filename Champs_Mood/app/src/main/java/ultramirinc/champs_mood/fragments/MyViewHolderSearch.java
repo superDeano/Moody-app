@@ -10,7 +10,7 @@ import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by William on 2017-04-06.
- * This class does the transition between the raw data and a visual interpretation for the results of a searched friend
+ * This class does the transition between the raw data and a visual interpretation for the results of a searched person
  */
 
 public class MyViewHolderSearch extends RecyclerView.ViewHolder{

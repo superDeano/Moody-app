@@ -145,7 +145,7 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch>{
     public int getItemCount() {
         return list.size();
     }
-    /**Gets the user's break status (time before a break, in break or no more breaks)*/
+    /**Gets the user's break status (time before a break, in break or no more breaks).*/
     private void checkBreakStatus(MyViewHolderSearch viewHolderSearch, User u) {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();

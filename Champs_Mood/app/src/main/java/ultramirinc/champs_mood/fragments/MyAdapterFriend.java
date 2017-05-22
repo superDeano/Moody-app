@@ -109,7 +109,7 @@ public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
         long diffInMillies = date2.getTime().getTime() - date1.getTime().getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
-    /**Gets the user's break status (time before a break, in break or no more breaks)*/
+    /**Gets the user's break status (time before a break, in break or no more breaks).*/
     private void checkBreakStatus(MyViewHolderFriend myViewHolderFriend, User u) {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();

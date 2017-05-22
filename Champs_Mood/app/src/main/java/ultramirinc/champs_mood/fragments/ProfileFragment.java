@@ -375,7 +375,8 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
 
     }
 
-    /**Reconnects to the Google Api Client (if needed) and start the location updates from the user's device.*/
+    /**Reconnects to the Google API Client (if needed) and
+     * start the location updates from the user's device.*/
     @Override
     public void onResume(){
         super.onResume();
@@ -407,7 +408,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
 
     }
 
-    /**Creates a Google Map Api Client in order to use Google's APIs.*/
+    /**Creates a Google Map API Client in order to use Google's APIs.*/
     private void createGoogleMapClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
@@ -602,13 +603,13 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         mMap.clear();
     }
 
-    /**Returns the time difference between two dates in milliseconds*/
+    /**Returns the time difference between two dates in milliseconds.*/
     public static long getDateDiff(GregorianCalendar date1, GregorianCalendar date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime().getTime() - date1.getTime().getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 
-    /**Gets the user's break status (time before a break, in break or no more breaks)*/
+    /**Gets the user's break status (time before a break, in break or no more breaks).*/
     private void checkBreakStatus(User u) {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();
@@ -719,7 +720,8 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         return text;
     }
 
-    /**There's a mismatch between our original int values of weekdays with the java.utils.calendar integer values of weekdays.*/
+    /**There's a mismatch between our original int values of weekdays
+     * with the java.utils.calendar integer values of weekdays.*/
     private int adaptDayOfWeek(int weekday) {
         int newValue = 0;
         switch(weekday) {
@@ -748,7 +750,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         return newValue;
     }
 
-    /**Prints user's location*/
+    /**Prints user's location.*/
     public void printLocation(){
         mMap.clear();
         mMap.addMarker(new MarkerOptions().position(new LatLng(UserManager.getInstance().getCurrentUser().getLastLocation().getLat(),UserManager.getInstance().getCurrentUser().getLastLocation().getLng())).title("Me")) ;
