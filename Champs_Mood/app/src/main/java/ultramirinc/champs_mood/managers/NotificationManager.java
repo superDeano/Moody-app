@@ -8,13 +8,13 @@ import ultramirinc.champs_mood.models.Notification;
  * Created by Amir Osman on 2017-05-02.
  */
 public class NotificationManager {
-    /**A eference to the current databse used*/
+    /**A eference to the current database used*/
     public DatabaseReference databaseNotifications;
 
     public NotificationManager(){
 
     }
-    /**Saves the notification in the databse*/
+    /**Saves the notification in the database*/
     public void saveNotification(Notification n) {
         this.databaseNotifications = FirebaseDatabase.getInstance().getReference("notifications");
         n.setId(this.databaseNotifications.push().getKey().toString());
