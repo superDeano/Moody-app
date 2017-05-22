@@ -14,48 +14,51 @@ import ultramirinc.champs_mood.models.User;
  * Created by Amir Osman on 2017-04-25.
  */
 public class UserManager extends Observable {
+    /**The current user*/
     private User current_user;
+    /**A reference to a UserManager object*/
     private static UserManager instance = null;
-    //Our database reference object
+    /**A reference to the current database*/
     public DatabaseReference databaseUsers;
 
     protected UserManager() {
         // Exists only to defeat instantiation.
         getUserInformations();
     }
-
+    /**Getter for the current user.*/
     public User getCurrentUser() {
         if (this.current_user == null) {
             getUserInformations();
         }
         return this.current_user;
     }
-
+    /**Setter for the current user.*/
     public void setCurrentUser(User user) {
         this.current_user = user;
     }
+    /**Returns an instance of the Usermanager.*/
     public static UserManager getInstance() {
         if(instance == null) {
             instance = new UserManager();
         }
         return instance;
     }
-
+    /**Updates the user's information in the database.*/
     public void editUserInformations(User userInformations) {
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         this.databaseUsers.child(userInformations.getId()).setValue(userInformations);
     }
-
+    /**Adds a child node to the database.*/
     public void addUserInformations(User userInformations) {
         //simple validation of the object:
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         this.databaseUsers.child(userInformations.getId()).setValue(userInformations);
     }
-
+    /**Clears the current user from the fields.*/
     public void clearCurrentUser() {
         this.current_user = null;
     }
-
+    /**Gets the current user's information from the Database.*/
     public void getUserInformations() {
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");
         Query userQuery = this.databaseUsers.orderByChild("id").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());

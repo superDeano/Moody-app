@@ -11,11 +11,17 @@ import java.util.GregorianCalendar;
  */
 
 public class Break implements Comparable<Break>{
+    /**Contains the time at which the break starts*/
     private Time start;
+    /**Contains the at which the break ends*/
     private Time end;
+    /**The day of the break*/
     private String day;
+    /**The user's ID in the database*/
     private String userId;
+    /**The integer representation of the day*/
     private int intDay;
+    /**The Id of the Break*/
     private String Id;
 
     public Break() {}
@@ -33,59 +39,69 @@ public class Break implements Comparable<Break>{
             case ("Friday"): intDay = 5; break;
         }
     }
-
+    /**Setter for ID.*/
     public void setId(String id ) {
         this.Id = id;
     }
+    /**Getter for ID.*/
     public String getId() {
         return this.Id;
     }
+    /**Getter for the starting time.*/
     public Time getStart() {
         return start;
     }
-
+    /**Setter for the starting time.*/
     public void setStart(Time start) {
         this.start = start;
     }
-
+    /**Returns a string interpretation of the starting time.*/
     public String getFromTime() {
         if(start.getMinute() >= 10)
             return start.getHour() + ":" + start.getMinute();
         else
             return start.getHour() + ":0" + start.getMinute();
     }
-
+    /**Getter for the end time.*/
     public Time getEnd() {
         return end;
     }
-
+    /**Setter for the end time.*/
     public void setEnd(Time end) {
         this.end = end;
     }
-
+    /**Returns a string interpretation of the ending time.*/
     public String getToTime(){
         if(end.getMinute() >= 10)
             return end.getHour() + ":" + end.getMinute();
         else
             return end.getHour() + ":0" + end.getMinute();
     }
-
+    /**Getter for the day.*/
     public String getDay() {
         return day;
     }
-
+    /**Setter for  the day.*/
     public void setDay(String day) {
         this.day = day;
     }
-
+    /**Getter for the integer representation of the day.*/
     public int getIntDay() {
         return intDay;
     }
-
+    /**Setter for the integer representation of the day.*/
     public void setIntDay(int intDay) {
         this.intDay = intDay;
     }
-
+    /**Getter for the UserID*/
+    public String getUserId() {
+        return this.userId;
+    }
+    /**Setter for the the UserID*/
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    /**Returns whether or not two breaks are the same.*/
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -101,8 +117,7 @@ public class Break implements Comparable<Break>{
         return getDay() != null ? getDay().equals(aBreak.getDay()) : aBreak.getDay() == null;
 
     }
-
-
+    /**Determines is a break is before or after another break.*/
     @Override//Might change symbole;
     public int compareTo(@NonNull Break o) {
        if (this.intDay > o.getIntDay())
@@ -113,7 +128,7 @@ public class Break implements Comparable<Break>{
            return this.getStart().compareTo(o.getStart());
        }
     }
-
+    /**Returns the time difference between two breaks.*/
     public Time getTimeDifference(){
 
         GregorianCalendar current = new GregorianCalendar();
@@ -135,7 +150,4 @@ public class Break implements Comparable<Break>{
         return new Time(hourDif, minuteDif);
     }
 
-    public String getUserId() {
-        return this.userId;
-    }
 }

@@ -321,11 +321,6 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         LatLng champlain = new LatLng(45.5164522,-73.52062409999996);
 
 
-
-
-
-
-
         CameraPosition pos = CameraPosition.builder().target(champlain).bearing(-103).build(); //rotate map
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 

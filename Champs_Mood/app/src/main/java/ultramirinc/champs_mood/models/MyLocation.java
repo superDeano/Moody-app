@@ -9,7 +9,9 @@ package ultramirinc.champs_mood.models;
  */
 
 public class MyLocation{
+    /**A latitude*/
     private double lat;
+    /**A longitude*/
     private double lng;
 
 
@@ -20,19 +22,19 @@ public class MyLocation{
         this.lat = lat;
         this.lng = lng;
     }
-
+    /**Getter for the latitude.*/
     public double getLat() {
         return lat;
     }
-
+    /**Setter for the latitude.*/
     public void setLat(double lat) {
         this.lat = lat;
     }
-
+    /**Getter for the longitude.*/
     public double getLng() {
         return lng;
     }
-
+    /**Setter for the longitude.*/
     public void setLng(double lng) {
         this.lng = lng;
     }

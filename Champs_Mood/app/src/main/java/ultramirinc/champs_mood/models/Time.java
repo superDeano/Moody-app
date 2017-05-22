@@ -8,8 +8,9 @@ import android.support.annotation.NonNull;
  */
 
 public class Time implements Comparable<Time>{
-
+    /**The minutes of the time*/
     private int minute;
+    /**The hour of the time*/
     private int hour;
 
     public Time(){
@@ -21,24 +22,23 @@ public class Time implements Comparable<Time>{
         this.minute = minute;
         this.hour = hour;
     }
-
+    /**Getter for the hour.*/
     public int getHour() {
         return hour;
     }
-
+    /**Setter for the hour.*/
     public void setHour(int hour) {
         this.hour = hour;
     }
-
+    /**Getter for the minutes.*/
     public int getMinute() {
         return minute;
     }
-
+    /**Setter for the minutes.*/
     public void setMinute(int minute) {
         this.minute = minute;
     }
-
-
+    /**Returns if a Time is before or after another time.*/
     @Override
     public int compareTo(@NonNull Time o) {
         if(this.hour > o.getHour())
@@ -48,7 +48,7 @@ public class Time implements Comparable<Time>{
         else
             return 0;
     }
-
+    /**Returns a String representation of a time.*/
     @Override
     public String toString(){
         return hour + ":" + ((minute < 10) ? " " : "")+ minute;

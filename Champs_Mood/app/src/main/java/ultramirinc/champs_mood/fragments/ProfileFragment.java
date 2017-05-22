@@ -111,6 +111,8 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
     private LocationSettingsRequest.Builder builder;
     /**Contains the result of the permission validity*/
     private PendingResult<LocationSettingsResult> result;
+    /**If the map is ready*/
+    private boolean mapIsReady = false;
 
     public ProfileFragment(){
         context = getContext();
@@ -274,7 +276,9 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
                     button2.setEnabled(false);
                     button3.setEnabled(false);
                 }else{
-
+                    if(mapIsReady){
+                        printLocation();
+                    }
                     UserManager.getInstance().getCurrentUser().setLocationShared(true);
                     button1.setEnabled(true);
                     button2.setEnabled(true);
@@ -328,7 +332,6 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         breakText.setText(UserManager.getInstance().getCurrentUser().getBreakText());//TODO try
 
         Switch mSwitch = (Switch) view.findViewById(R.id.share_location);
-
 
         RadioGroup mRadioGroup = (RadioGroup) view.findViewById(R.id.floor_group);
 
@@ -429,6 +432,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d("debug", "in");
+        mapIsReady = true;
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
@@ -442,7 +446,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
 
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
 
-        if(UserManager.getInstance().getCurrentUser().getLastLocation() != null) {
+        if(UserManager.getInstance().getCurrentUser().getLastLocation() != null && UserManager.getInstance().getCurrentUser().isLocationShared()) {
             User u = UserManager.getInstance().getCurrentUser();
             LatLng temp = new LatLng(u.getLastLocation().getLat(), u.getLastLocation().getLng());
             Marker tempMarker = mMap.addMarker(new MarkerOptions().position(temp).title("Me"));
@@ -742,5 +746,11 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
                 break;
         }
         return newValue;
+    }
+
+    /**Prints user's location*/
+    public void printLocation(){
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions().position(new LatLng(UserManager.getInstance().getCurrentUser().getLastLocation().getLat(),UserManager.getInstance().getCurrentUser().getLastLocation().getLng())).title("Me")) ;
     }
 }

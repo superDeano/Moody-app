@@ -14,21 +14,32 @@ import java.util.Iterator;
  */
 @IgnoreExtraProperties
 public class User {
+    /**Code for if the user is in break*/
     public static final int IN_BREAK = 0;
+    /**Code for if the user is not in break*/
     public static final int NOT_IN_BREAK = 1;
-
+    /**The user's Id*/
     private String uId;
+    /**The user's name*/
     private String name;
+    /**The user's name lowered*/
     private String nameLowered;
+    /**The mood of the user*/
     private String mood;
+    /**If the user's location is shared*/
     private boolean isLocationShared;
-    private String breakText; //TODO temporary
-    private boolean isFriend; //TODO temporary
+    /**The break text of the user*/
+    private String breakText;
+    /**Whether he is a friend or not with another user*/
+    private boolean isFriend;
+    /**A list of his friends*/
     private ArrayList<String> friendList = new ArrayList<>();
+    /**A list of his breaks*/
     private ArrayList<Break> breaks = new ArrayList<>();
+    /**The user's location*/
     private MyLocation lastLocation = new MyLocation();
+    /**The floor of the user*/
     private int floor;
-    private boolean shareFloor;
 
     public User() {
     }
@@ -41,55 +52,32 @@ public class User {
         this.floor = 1;
     }
 
+    /**Getter for the user's id.*/
     public String getId() {
         return uId;
     }
-
+    /**Setter's for the user's id.*/
     public void setId(String id) {
         this.uId = id;
     }
-
+    /**Getter for the user's name.*/
     public String getName() {
         return name;
     }
-
+    /**Setter for the user's name.*/
     public void setName(String name) {
         this.name = name;
         this.nameLowered = name.toLowerCase();
     }
-
-    public boolean isShareFloor() {
-        return shareFloor;
-    }
-
+    /**Getter for the mood.*/
     public String getMood() {
         return mood;
     }
-
-    public void setShareFloor(boolean value) {
-        this.shareFloor = value;
-    }
-    /*public boolean getShareFloor() {
-        return this.shareFloor;
-    }*/
-
-    public void setFloorLevel(int value) {
-        this.floor = value;
-    }
-    public int getFloorLevel() {
-        return this.floor;
-    }
-
+    /**Setter for the mood.*/
     public void setMood(String mood) {
         this.mood = mood;
     }
-
-    // TODO verify behaviour of this
-    public void populateFriendList(ArrayList<User> friends){ //TODO update method
-        for(User u: friends)
-            this.friendList.add(u.getId());
-    }
-
+    /**Adds a user to the friendList.*/
     public boolean addToFriendList(User user){
         if (!isFriend(user))
         {
@@ -98,6 +86,7 @@ public class User {
         }
         return false;
     }
+    /**Adds a user to the friendList.*/
     public boolean addToFriendList(String userId){
         if (!isFriend(userId))
         {
@@ -106,11 +95,11 @@ public class User {
         }
         return false;
     }
-
+    /**Returns the friendList of the user.*/
     public ArrayList<String> getFriendList() {
         return friendList;
     }
-
+    /**Getter for the break status.*/
     public String getBreakStatus() {
         GregorianCalendar cal = new GregorianCalendar();
         int currentDay = cal.get(Calendar.DAY_OF_WEEK);
@@ -139,7 +128,7 @@ public class User {
 
         return "";
     }
-
+    /**Returns whether or not the user is friend with another user.*/
     public boolean isFriend(User user){
 
         Iterator<String> it = friendList.iterator();
@@ -153,7 +142,7 @@ public class User {
         }
         return false;
     }
-
+    /**Returns whether or not the user is friend with another user.*/
     public boolean isFriend(String userId){
 
         Iterator<String> it = friendList.iterator();
@@ -167,7 +156,7 @@ public class User {
         }
         return false;
     }
-
+    /**Gets the friend status.*/
     public String getFriendStatus(User user){
         if(isFriend(user)){
             return "Poke !";
@@ -176,24 +165,11 @@ public class User {
             return "Add";
         }
     }
-
+    /**Setter for the breakText.*/
     public void setBreakText(String breakText){
         this.breakText = breakText;
     }
-
-    public String getFriendStatusTemp(){ //temporary
-        if(isFriend){
-            return "Poke !";
-        }
-        else{
-            return "Add";
-        }
-    }
-
-    public String getBreakTextTemp(){ //temporary
-        return breakText;
-    }
-
+    /**Getter for the breakText.*/
     public String getBreakText() {
         ArrayList<Break> temp = new ArrayList<>();
 
@@ -260,95 +236,68 @@ public class User {
 
         return breakText;
     }
-
+    /**Gets the user's breaks.*/
     public ArrayList<Break> getBreaks() {
         return breaks;
     }
-
+    /**Sets the user's breaks.*/
     public void setBreaks(ArrayList<Break> breaks) {
         this.breaks = breaks;
     }
-
-    public boolean checkIsFriend(User possibleFriend){
-        boolean status = false;
-
-        if(friendList.contains(possibleFriend)){
-            status = true;
-        }
-
-        return status;
-    }
-
-    public static int getInBreak() {
-        return IN_BREAK;
-    }
-
-    public static int getNotInBreak() {
-        return NOT_IN_BREAK;
-    }
-
+    /**Gets the user Id.*/
     public String getuId() {
         return uId;
     }
-
+    /**Sets the user Id.*/
     public void setuId(String uId) {
         this.uId = uId;
     }
-
+    /**Getter for isLocationShared.*/
     public boolean isLocationShared() {
         return isLocationShared;
     }
-
+    /**Setter for isLocationShared.*/
     public void setLocationShared(boolean locationShared) {
         isLocationShared = locationShared;
     }
-
+    /**Getter for isFriend.*/
     public boolean isFriend() {
         return isFriend;
     }
-
+    /**Setter for isFriend.*/
     public void setFriend(boolean friend) {
         isFriend = friend;
     }
-
+    /**Sets the user's friendList.*/
     public void setFriendList(ArrayList<String> friendList) {
         this.friendList = friendList;
     }
-
-    /*public Location getmLastLocation() {
-        return mLastLocation;
-    }
-
-    public void setmLastLocation(Location mLastLocation) {
-        this.mLastLocation = mLastLocation;
-    }
-    */
-
+    /**Getter for the user's location.*/
     public MyLocation getLastLocation() {
         return lastLocation;
     }
-
+    /**Setter for the user's location.*/
     public void setLastLocation(MyLocation lastLocation) {
         this.lastLocation = lastLocation;
     }
-
+    /**Getter for the user's floor.*/
     public int getFloor() {
         return floor;
     }
-
+    /**Setter for the user's floor.*/
     public void setFloor(int floor) {
         this.floor = floor;
     }
-
+    /**Removes a user from the user's friendList*/
     public boolean removeFromFriendList(User user){
         friendList.remove(user.getId());
         return true;
     }
-
+    /**Gets the user's name lowered*/
     public String getNameLowered() {
         return nameLowered;
     }
-
+    /**Sets the user's name lowered*/
     public void setNameLowered(String nameLowered) {
         this.nameLowered = nameLowered;
     }
