@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
-    /**Defining firebase auth object*/
+    /**Defining Firebase auth object*/
     private FirebaseAuth firebaseAuth;
     /**Contains a ProgressDialog of the account that is logging in*/
     private ProgressDialog progressDialog;
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
     }
-    /**Fills in the blanks if the permission for the contacts is not granted*/
+    /**Fills in the blanks if the permission for the contacts is not granted.*/
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         getLoaderManager().initLoader(0, null, this);
     }
-    /**Requests the user's permission to access the contacts*/
+    /**Requests the user's permission to access the contacts.*/
     private boolean mayRequestContacts() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return true;

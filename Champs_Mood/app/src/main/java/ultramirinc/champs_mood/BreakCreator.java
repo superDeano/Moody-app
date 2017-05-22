@@ -44,7 +44,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     private TextView startTime;
     /**Contains the view for the end time*/
     private TextView endTime;
-    /**Contains the contaxt of the attached activity*/
+    /**Contains the context of the attached activity*/
     private Context context;
     /**Contains the drop-down menu of the days of the week*/
     private Spinner listDay;

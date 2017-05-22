@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 
 /**
- * Created by admin on 2017-04-23.
+ * Created by Amir Osman on 2017-04-23.
  * This is the template for a typical user.
  */
 @IgnoreExtraProperties

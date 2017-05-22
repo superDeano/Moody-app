@@ -31,12 +31,12 @@ import ultramirinc.champs_mood.models.User;
 
 /**
  * Created by Etienne Berube on 2017-05-05.
- * This is the profil of a given user (That is the the current user). This allows the user to see
+ * This is the profile of a given user (That is the the current user). This allows the user to see
  * his friend's profile and location
  */
 
 
-public class FriendProfilActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class FriendProfileActivity extends AppCompatActivity implements OnMapReadyCallback {
     /**Contains the map used*/
     private GoogleMap mMap;
     /**Contains the friend's User object*/
@@ -46,7 +46,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
     /**Contains a progress dialog*/
     private ProgressDialog progressDialog;
 
-    public FriendProfilActivity(){
+    public FriendProfileActivity(){
     }
     /**Creates and inflates the layout of the activity.*/
     @Override

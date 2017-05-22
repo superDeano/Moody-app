@@ -6,9 +6,10 @@ import ultramirinc.champs_mood.models.Notification;
 
 /**
  * Created by Amir Osman on 2017-05-02.
+ * This class manages the user's notification. This acts as a bridge between the database and the device.
  */
 public class NotificationManager {
-    /**A eference to the current database used*/
+    /**A reference to the current database used*/
     public DatabaseReference databaseNotifications;
 
     public NotificationManager(){

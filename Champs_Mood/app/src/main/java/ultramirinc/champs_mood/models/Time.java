@@ -3,7 +3,7 @@ package ultramirinc.champs_mood.models;
 import android.support.annotation.NonNull;
 
 /**
- * Created by Étienne Bérubé on 2017-04-04.
+ * Created by Etienne Berube on 2017-04-04.
  * This class helps to do calculations with the breaks
  */
 

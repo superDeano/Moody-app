@@ -1,7 +1,7 @@
 package ultramirinc.champs_mood.models;
 
 /**
- * Created by Bata on 2017-05-02.
+ * Created by Amir Osman on 2017-05-02.
  * This class helps manage the notifications
  */
 

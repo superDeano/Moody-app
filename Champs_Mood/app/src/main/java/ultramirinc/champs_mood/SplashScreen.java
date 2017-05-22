@@ -20,7 +20,7 @@ public class SplashScreen extends AppCompatActivity {
     public SplashScreen(){
 
     }
-    /**Creates and inflate the visual layout for the activity*/
+    /**Creates and inflate the visual layout for the activity.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
