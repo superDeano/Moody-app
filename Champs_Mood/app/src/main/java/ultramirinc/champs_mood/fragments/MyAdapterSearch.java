@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import ultramirinc.champs_mood.FriendProfilActivity;
+import ultramirinc.champs_mood.FriendProfileActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.NotificationManager;
 import ultramirinc.champs_mood.managers.UserManager;
@@ -74,7 +74,7 @@ public class MyAdapterSearch extends RecyclerView.Adapter<MyViewHolderSearch>{
                     Toast.makeText(context, "Hello?", Toast.LENGTH_SHORT).show();
                 }
                 else{*/
-                Intent intent = new Intent(context, FriendProfilActivity.class);
+                Intent intent = new Intent(context, FriendProfileActivity.class);
                 intent.putExtra("userId", person.getId());
                 context.startActivity(intent);
             }

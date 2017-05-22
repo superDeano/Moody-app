@@ -35,7 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import ultramirinc.champs_mood.FriendProfilActivity;
+import ultramirinc.champs_mood.FriendProfileActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.UserManager;
 import ultramirinc.champs_mood.models.User;
@@ -322,7 +322,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     @Override
     /**Sets action when user interacts with the information window of a marker.*/
     public void onInfoWindowClick(Marker marker) {
-        Intent intent = new Intent(getContext(), FriendProfilActivity.class);
+        Intent intent = new Intent(getContext(), FriendProfileActivity.class);
         intent.putExtra("userId", (String) marker.getTag());
         getContext().startActivity(intent);
     }

@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import ultramirinc.champs_mood.FriendProfilActivity;
+import ultramirinc.champs_mood.FriendProfileActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.NotificationManager;
 import ultramirinc.champs_mood.managers.UserManager;
@@ -63,7 +63,7 @@ public class MyAdapterFriend extends RecyclerView.Adapter<MyViewHolderFriend> {
         int p = position;
 
         myViewHolderFriend.getNameView().setOnClickListener(v -> {
-            Intent intent = new Intent(context, FriendProfilActivity.class);
+            Intent intent = new Intent(context, FriendProfileActivity.class);
             intent.putExtra("userId", myFriend.getId());
             context.startActivity(intent);
         });

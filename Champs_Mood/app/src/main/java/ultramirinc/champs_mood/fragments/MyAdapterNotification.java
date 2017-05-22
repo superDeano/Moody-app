@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import java.util.List;
-import ultramirinc.champs_mood.FriendProfilActivity;
+import ultramirinc.champs_mood.FriendProfileActivity;
 import ultramirinc.champs_mood.R;
 import ultramirinc.champs_mood.managers.NotificationManager;
 import ultramirinc.champs_mood.managers.UserManager;
@@ -51,7 +51,7 @@ public class MyAdapterNotification extends RecyclerView.Adapter<MyViewHolderNoti
             @Override
             public void onClick(View v) {
                 Log.d("listener Debug", "Coucou");
-                Intent intent = new Intent(context, FriendProfilActivity.class);
+                Intent intent = new Intent(context, FriendProfileActivity.class);
 
                 intent.putExtra("userId", notification.getSenderId());
 
