@@ -16,6 +16,7 @@ public class CreditsActivity extends AppCompatActivity {
 
     }
 
+    /**Creates and inflates the layout for the activity*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

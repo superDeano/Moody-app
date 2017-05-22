@@ -28,21 +28,34 @@ import android.widget.Toast;
 
 
 public class BreakCreator extends DialogFragment implements AdapterView.OnItemSelectedListener{
-
+    /**Is true if the user cancelled the break creation*/
     private boolean isCancelled = false;
+    /**Day of the break*/
     private String day;
+    /**The starting hour of the break*/
     private int startHour = -1;
+    /**The starting minute of the break*/
     private int startMinute = -1;
+    /**The ending hour of the break*/
     private int endHour = -1;
+    /**The ending minute of the break*/
     private int endMinute = -1;
+    /**Contains the view for the start time*/
     private TextView startTime;
+    /**Contains the view for the end time*/
     private TextView endTime;
+    /**Contains the contaxt of the attached activity*/
     private Context context;
+    /**Contains the drop-down menu of the days of the week*/
     private Spinner listDay;
+    /**The TimePickerDialog for the starting time*/
     private TimePickerDialog start;
+    /**The TimePickerDialog for the ending time*/
     private TimePickerDialog end;
+    /**Contains the listener when the break is ready*/
     private OnBreakReadyListener mListener;
 
+    /**A Custom listener for when the break is ready.*/
     public interface OnBreakReadyListener {
         void onBreakReady(String breakString);
     }
@@ -51,15 +64,14 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
     }
 
 
-
+    /**Removes the keyboard from the screen when the dialog appears.*/
     @Override
     public void onResume(){
-
       super.onResume();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
     }
 
-
+    /**Creates a new instance of this dialog.*/
     public static BreakCreator newInstance(int title) {
         BreakCreator frag = new BreakCreator();
         Bundle args = new Bundle();
@@ -68,7 +80,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         return frag;
     }
 
-
+    /**Gets context from attached activity.*/
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -81,6 +93,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
     }
 
+    /**Inflates the visual layout of the dialog.*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,6 +104,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         return view;
     }
 
+    /**Sets listeners when the layout is inflated.*/
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -176,12 +190,13 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
-
+    /**Selects a day from the dropdown menu when it is clicked on.*/
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         day = (String)listDay.getItemAtPosition(position);
     }
 
+    /**Sets a default value when no day is selected in the dropdown menu*/
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         listDay.setSelection(0);
@@ -189,8 +204,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
 
     }
 
-
-
+    /**Setter for startTimeView*/
     public void setStartTimeView(){
 
 
@@ -209,7 +223,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
             startTime.setText("Hr:Min");
         }
     }
-
+    /**Setter for endTimeView*/
     public void setEndTimeView(){
         if(endMinute != -1 && endMinute != -1){
             String stringEndHour = "" + endHour;
@@ -227,7 +241,7 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
             endTime.setText("Hr:Min");
         }
     }
-
+    /**Check if the potential break is complete or if certain fields are missing.*/
     public boolean checkIfComplete(){
         if((listDay.getSelectedItem() != null && startMinute != -1 && startHour != -1 && endMinute != -1 && endHour != -1)
             || (startHour == endHour && startMinute == endMinute)){
@@ -243,35 +257,35 @@ public class BreakCreator extends DialogFragment implements AdapterView.OnItemSe
         }else
             return false;
     }
-
+    /**Getter for isCancelled*/
     public boolean isCancelled() {
         return isCancelled;
     }
-
+    /**Getter for day*/
     public String getDay() {
         return day;
     }
-
+    /**Getter for startHour*/
     public int getStartHour() {
         return startHour;
     }
-
+    /**Getter for startMinute*/
     public int getStartMinute() {
         return startMinute;
     }
-
+    /**Getter for endHour*/
     public int getEndHour() {
         return endHour;
     }
-
+    /**Getter for endMinute*/
     public int getEndMinute() {
         return endMinute;
     }
-
+    /**Getter for mListener*/
     public OnBreakReadyListener getListener() {
         return mListener;
     }
-
+    /**Setter for mListener*/
     public void setListener(OnBreakReadyListener listener) {
         this.mListener = mListener;
     }

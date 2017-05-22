@@ -37,15 +37,18 @@ import ultramirinc.champs_mood.models.User;
 
 
 public class FriendProfilActivity extends AppCompatActivity implements OnMapReadyCallback {
-
+    /**Contains the map used*/
     private GoogleMap mMap;
+    /**Contains the friend's User object*/
     private User friendProfile;
+    /**Contains the friend's location*/
     private LatLng latLng;
+    /**Contains a progress dialog*/
     private ProgressDialog progressDialog;
 
     public FriendProfilActivity(){
     }
-
+    /**Creates and inflate the layout of the activity.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +82,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         SupportMapFragment mMap = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mMap.getMapAsync(this);
     }
-
+    /**Gets the user's information from the database.*/
     public void loadFriendProfile(String userId) {
         progressDialog.setMessage("Loading user data...");
         progressDialog.show();
@@ -150,7 +153,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         };
         userQuery.addListenerForSingleValueEvent(loadInfoListener);
     }
-
+    /**Allows to unfollow the given user.*/
     private boolean unFollow(User userToUnfollow) {
         boolean done = UserManager.getInstance().getCurrentUser().removeFromFriendList(userToUnfollow);
         //save
@@ -161,7 +164,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         Toast.makeText(this, "Unfollowed", Toast.LENGTH_SHORT).show();
         return done;
     }
-
+    /**Allows to follow the given user.*/
     private void follow(User userToFollow) {
         boolean done = UserManager.getInstance().getCurrentUser().addToFriendList(userToFollow);
         //save
@@ -171,14 +174,14 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         }
         Toast.makeText(this, "Friend request sent!", Toast.LENGTH_SHORT).show();
     }
-
+    /**Updates the text of the button.*/
     public void updateFriendShipButton(boolean isFriend) {
         Button button = (Button) findViewById(R.id.friendShipButton);
 
         String textButton = isFriend ? "Unfollow" : "Follow";
         button.setText(textButton);
     }
-
+    /**Checks the status of the friend's break (in break in X minutes, in break or no more breaks).*/
     private void checkBreakStatus() {
 
         ArrayList<Break> friendBreaks = new ArrayList<>();
@@ -274,7 +277,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         };
         breakQuery.addListenerForSingleValueEvent(postListener);
     }
-    //Theres a mismatch between our original int values of weekdays with the java.utils.calendar int values of weekdays.
+    /**There is a mismatch between our original int values of weekdays with the java.utils.calendar int values of weekdays.*/
     private int adaptDayOfWeek(int weekday) {
         int newValue = 0;
         switch(weekday) {
@@ -302,12 +305,12 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         }
         return newValue;
     }
-
+    /**Returns the time difference in milliseconds between two dates.*/
     public static long getDateDiff(java.util.GregorianCalendar date1, java.util.GregorianCalendar date2, TimeUnit timeUnit) {
         long diffInMillies = date2.getTime().getTime() - date1.getTime().getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
-
+    /**Sets the map when it is ready (Location, zoom, position, markers, etc.).*/
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d("debug", "in");
@@ -332,7 +335,7 @@ public class FriendProfilActivity extends AppCompatActivity implements OnMapRead
         mMap.getUiSettings().setRotateGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
     }
-
+    /**Handles the event when the back button is pressed on the android device.*/
     @Override
     public void onBackPressed(){
         finish();

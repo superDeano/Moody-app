@@ -31,16 +31,20 @@ import ultramirinc.champs_mood.models.User;
  */
 
 public class SearchFragment extends Fragment {
-
+    /**Contains the layout's RecyclerView*/
     private RecyclerView recyclerView;
+    /**Contains a list with the people found by the search query*/
     private List<User> people = new ArrayList<>();
+    /**Contains the context of the attached activity*/
     private Context context = getContext();
+    /**Contains a reference to the database used*/
     DatabaseReference databaseUsers;
+    /**Contains a progress dialog*/
     ProgressDialog progressDialog;
 
     public SearchFragment() {
     }
-
+    /**Sets certain parameters when the fragment is created.*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +52,7 @@ public class SearchFragment extends Fragment {
         setHasOptionsMenu(true);
 
     }
-
+    /**Inflates the visual layout to the fragment.*/
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,25 +82,6 @@ public class SearchFragment extends Fragment {
 
                 searchUsers(query);
 
-
-                /*
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
-
-                FragmentManager f = getActivity().getSupportFragmentManager();
-                List<Fragment> pageList = f.getFragments();
-                Iterator<Fragment> fragmentIterator = pageList.iterator();
-
-                while (fragmentIterator.hasNext()) {
-                    Fragment frg = fragmentIterator.next();
-                    final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                    ft.detach(frg);
-                    ft.attach(frg);
-                    ft.commit();
-                }
-                */
-
                 sv.clearFocus();
                 recyclerView.getAdapter().notifyItemRangeInserted(0, people.size());
                 return true;
@@ -122,7 +107,7 @@ public class SearchFragment extends Fragment {
 
     }
 
-
+    /**Searches for users with a given user name in the database*/
     public void searchUsers(String query) {
 
         this.databaseUsers = FirebaseDatabase.getInstance().getReference("users");

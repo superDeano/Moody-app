@@ -53,14 +53,16 @@ public class TabActivity extends AppCompatActivity {
     /*
      * The {@link ViewPager} that will host the section contents.
      */
-
+    /**Contains the view pager for the activity*/
     private MyViewPager mViewPager;
+    /**Contains a section pager adapter for the activity*/
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    /**Contains a progress dialog*/
     private ProgressDialog progressDialog;
 
     public TabActivity(){
     }
-
+    /**Creates and inflate the visual layout for the Activity.*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,11 +82,11 @@ public class TabActivity extends AppCompatActivity {
         mViewPager.setPagingEnabled(false);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        loadUserInformationsSetupViewPager(mViewPager);
+        loadUserInformationSetupViewPager(mViewPager);
 
     }
-
-    private void loadUserInformationsSetupViewPager(MyViewPager viewPager) {
+    /**Gets user's information from the database and sets up the ViewPager.*/
+    private void loadUserInformationSetupViewPager(MyViewPager viewPager) {
 
             progressDialog.setMessage("Loading user data...");
             progressDialog.show();
@@ -125,7 +127,7 @@ public class TabActivity extends AppCompatActivity {
             };
             userQuery.addListenerForSingleValueEvent(postListener);
     }
-
+    /**Sets up the ViewPager.*/
     private void setupViewPager(MyViewPager viewPager){
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mSectionsPagerAdapter.addFragment(new HomeFragment());
@@ -205,14 +207,14 @@ public class TabActivity extends AppCompatActivity {
             }
         });
     }
-
+    /**Inflates the toolbar with a given XML file.*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_tab, menu);
         return true;
     }
-
+    /**Handles the actions when a icon in the toolbar is clicked.*/
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -229,7 +231,7 @@ public class TabActivity extends AppCompatActivity {
 
         }
     }
-
+    /**Removes the keyboard from the screen.*/
     public void removeKeyboard(){
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -238,14 +240,14 @@ public class TabActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-
+    /**Removes the progress dialog when the activity is paused.*/
     @Override
     public void onPause(){
         super.onPause();
         progressDialog.dismiss();
     }
 
-
+    /**Quits the application when the back button of the android device is pressed.*/
     @Override
     public void onBackPressed(){
         finish();
@@ -263,22 +265,23 @@ public class TabActivity extends AppCompatActivity {
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        /**Contains a list of all fragments of the TabActivity*/
         private final List<Fragment> mFragmentList = new ArrayList<>();
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-
+        /**Adds a fragment to the list of fragments.*/
         public void addFragment(Fragment fragment) {
             mFragmentList.add(fragment);
         }
-
+        /**Gets a Fragment from the list a given position.*/
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
-
+        /**Gets the number of fragments in the list.*/
         @Override
         public int getCount() {
             return mFragmentList.size();
