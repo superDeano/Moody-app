@@ -26,16 +26,19 @@ import ultramirinc.champs_mood.models.Notification;
  */
 
 public class NotificationFragment extends Fragment {
-
+    /**Contains the RecyclerView of the layout*/
     private RecyclerView recyclerView;
+    /**Manages the LinearLayout of layout*/
     private LinearLayoutManager mLayoutManager;
+    /**Contains a list of all the user's notifications*/
     private List<Notification> nofications = new ArrayList<>();
+    /**Context from attached activity*/
     private Context context = getContext();
 
     public NotificationFragment(){
 
     }
-
+    /**Inflates the visual aspect of the Fragment.*/
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +55,12 @@ public class NotificationFragment extends Fragment {
         addNotifications();
         return view;
     }
-
+    /**Adds a notification to the list.*/
     private void addNotifications() {
         LoadNotifications();
     }
 
+    /**Gets notification from the Database.*/
     private void LoadNotifications() {
         DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("notifications");
         Query breakQuery = breaksReference.orderByChild("recipientId").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());

@@ -66,7 +66,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.TimeUnit;
@@ -85,24 +87,36 @@ import ultramirinc.champs_mood.models.User;
 public class ProfileFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, Observer,
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener, View.OnTouchListener, LocationListener {
 
-    private static final int MY_PERMISSION_ACCESS_COARSE_LOCATION = 11;
+    /**Constant for the permission of the Fine Location*/
     private static final int MY_PERMISSION_ACCESS_FINE_LOCATION = 12;
+    /**Contains map for fragment*/
     private GoogleMap mMap;
+    /**Contains Google Api Client*/
     private GoogleApiClient mGoogleApiClient;
+    /**Contains the last known location of the user*/
     private Location mLastLocation;
+    /**A String version of the user's last known latitude*/
     private String mLatitudeText;
+    /**A String version of the user's last known longitude*/
     private String mLongitudeText;
+    /**Contains the fragments visual layout*/
     private View view;
+    /**Contains the button for the GPS update*/
     private ImageButton mGpsUpdate;
+    /**Contains the location request in order to get updates form the user's device*/
     private LocationRequest mLocationRequest;
+    /**Contains the context from the attached activity*/
     private Context context;
+    /**Contains the a builder to change the user's device GPS state*/
     private LocationSettingsRequest.Builder builder;
+    /**Contains the result of the permission validity*/
     private PendingResult<LocationSettingsResult> result;
 
     public ProfileFragment(){
         context = getContext();
     }
 
+    /**Gets called when the fragment gets attached to an activity. This method gets the context.*/
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -113,7 +127,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
 
     }
 
-
+    /**Inflates the fragment's visual layout.*/
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (view != null) {
@@ -281,30 +295,27 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         return view;
     }
 
+    /**Updates the user's information when a field is changed in the database.*/
     @Override
     public void update(Observable o, Object arg) {
         setUserAndPaintProfile((User) arg);
     }
 
+    /**Changes the user's Mood in the database.*/
     private void setMood(String mood) { //TODO change this
         UserManager.getInstance().getCurrentUser().setMood(mood);
         UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
         Toast.makeText(getActivity(), "Mood updated!", Toast.LENGTH_SHORT).show();
     }
 
-    private void setBreakText(String breakText) {
-        UserManager.getInstance().getCurrentUser().setBreakText(breakText);
-        UserManager.getInstance().editUserInformations(UserManager.getInstance().getCurrentUser());
-        Toast.makeText(getActivity(), "Break text updated!", Toast.LENGTH_SHORT).show();
-    }
-
+    /**Gets the user's information from the database.*/
     private void loadProfile() {
         UserManager.getInstance().deleteObservers();
         UserManager.getInstance().addObserver(this);
         UserManager.getInstance().getUserInformations();
     }
 
-
+    /**Changes the layout according to the user's information.*/
     public void setUserAndPaintProfile(User u) {
 
         TextView profileName = (TextView) view.findViewById(R.id.profil_text);
@@ -325,7 +336,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         RadioButton button2 = (RadioButton) view.findViewById(R.id.radioButton2);
         RadioButton button3 = (RadioButton) view.findViewById(R.id.radioButton3);
 
-        checkBreakStatus();
+        checkBreakStatus(u);
 
         int tempFloor = u.getFloor();
         switch (tempFloor){
@@ -341,6 +352,8 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
 
     }
 
+    /**Create or connect to a Google Api Client (if needed) and start
+     * location updates from the device when the fragment starts. */
     public void onStart() {
         super.onStart();
         if(mGoogleApiClient == null)
@@ -352,12 +365,14 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         }
     }
 
+    /**Stops the location updates from the device when the fragment stops.*/
     public void onStop() {
         super.onStop();
         stopLocationUpdates();
 
     }
 
+    /**Reconnects to the Google Api Client (if needed) and start the location updates from the user's device.*/
     @Override
     public void onResume(){
         super.onResume();
@@ -370,6 +385,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
 
     }
 
+    /**Stops the location updates from the user's device and disconnect the Google API client.*/
     @Override
     public void onPause() {
         super.onPause();
@@ -379,6 +395,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         mGoogleApiClient.disconnect();
     }
 
+    /**Enables the user to update his or her location and start the location updates from the user's device.*/
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         createRequestLocation();
@@ -387,6 +404,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
 
     }
 
+    /**Creates a Google Map Api Client in order to use Google's APIs.*/
     private void createGoogleMapClient(){
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
@@ -395,6 +413,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
                 .build();
     }
 
+    /**Creates the request for the location updates.*/
     private void createRequestLocation() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
@@ -406,6 +425,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
 
     }
 
+    /**Sets the map when it is ready to be used (location, zoom, markers).*/
     @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d("debug", "in");
@@ -435,6 +455,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         mMap.getUiSettings().setCompassEnabled(false);
     }
 
+    /**Check if the application has the authorization to use the device's localisation.*/
     private boolean checkPermission() {//This should work
         int permissionCheck = ContextCompat.checkSelfPermission(
                 context, Manifest.permission.ACCESS_FINE_LOCATION); // Here is the problem BITCH ***********************************************************************************************************
@@ -455,15 +476,18 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
     }
 
 
+    /**Stops the location updates if the connection to the Google API Client is lost.*/
     @Override
     public void onConnectionSuspended(int i) {
         stopLocationUpdates();
     }
 
+    /**Handles the event where the connection to the Google API Client fails.*/
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
     }
 
+    /**Start the location updates.*/
     public void startLocationUpdates() {
 
         if(checkPermission() && mGoogleApiClient != null) { //debug
@@ -473,7 +497,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
             //Toast.makeText(getActivity(), "something went wrong in start", Toast.LENGTH_SHORT).show();
         }
     }
-
+    /**Stop the location updates.*/
     protected void stopLocationUpdates() {
         if(checkPermission() && mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(
@@ -483,6 +507,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         }
     }
 
+    /**Destroys the map when the fragment stops in order to prevent re-inflation of the view.*/
     @Override
     public void onDestroyView() {
 
@@ -496,22 +521,24 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         super.onDestroyView();
     }
 
+    /**prevents the user to click on undesired elements.*/
     @Override
     public void onClick(View v) {
-        //TODO do this
     }
 
+    /**Prevents the user to swipe undesired elements.*/
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         return false;
     }
 
+    /**Handles the event where the user's location changes.*/
     @Override
     public void onLocationChanged(Location location) {
         //Do Nothing
     }
 
-
+    /**Update the user's location on the map and in the database.*/
     public void updateLocation() { //TODO add parameter true/false + implement
         if (checkPermission() && mGoogleApiClient.isConnected()) {
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -544,11 +571,13 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
         }
     }
 
+    /**Requests a permission to a given aspect to the user.*/
     private void requestPermission(String permissionName, int permissionRequestCode) {
         ActivityCompat.requestPermissions(getActivity(),
                 new String[]{permissionName}, permissionRequestCode);
     }
 
+    /**Handles the result of the the permission request.*/
     @Override
     public void onRequestPermissionsResult(
             int requestCode,
@@ -564,109 +593,154 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback, Goo
                 }
         }
     }
-
+    /**Clears the map.*/
     public void clearMap(){
         mMap.clear();
     }
 
-    public static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
-        long diffInMillies = date2.getTime() - date1.getTime();
+    /**Returns the time difference between two dates in milliseconds*/
+    public static long getDateDiff(GregorianCalendar date1, GregorianCalendar date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime().getTime() - date1.getTime().getTime();
         return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
     }
 
-    private void checkBreakStatus() {
-        User u = UserManager.getInstance().getCurrentUser();
+    /**Gets the user's break status (time before a break, in break or no more breaks)*/
+    private void checkBreakStatus(User u) {
+
         ArrayList<Break> friendBreaks = new ArrayList<>();
-        //Loading things from db
+        //Loading things from database
+
         DatabaseReference breaksReference = FirebaseDatabase.getInstance().getReference("breaks");
         Query breakQuery = breaksReference.orderByChild("userId").equalTo(u.getId());
+
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("debug bt ", "inside checkBreakListener for: "+u.getName() );
                 for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     friendBreaks.add(singleSnapshot.getValue(Break.class));
                 }
-                u.setBreaks(friendBreaks);
-                java.util.GregorianCalendar current = new java.util.GregorianCalendar();
-                int currentDay = current.get(java.util.Calendar.DAY_OF_WEEK);
+                ((TextView)view.findViewById(R.id.breakText)).setText(breakCalculator(u, friendBreaks));
 
-                long closestBreakMin = 1440;
-                Break closestBreak = null;
-                long closestBreakDuration = 0;
-
-                // find closest break for the day (if any)
-                for (int i=0; i < friendBreaks.size(); i++) {
-                    Break breakNode = friendBreaks.get(i);
-                    if (currentDay == breakNode.getIntDay()+1) {
-                        Date now = new Date();
-
-                        Date breakStart = new Date(); //Todo NOOOOO pas de deprecated
-                        breakStart.setHours(breakNode.getStart().getHour());
-                        breakStart.setMinutes((breakNode.getStart().getMinute()));
-                        breakStart.setSeconds(0);
-
-                        long timeDiffInMinutes = getDateDiff(now, breakStart, TimeUnit.MINUTES);
-
-                        Date breakEnd = new Date();
-                        breakEnd.setHours(breakNode.getEnd().getHour());
-                        breakEnd.setMinutes(breakNode.getEnd().getMinute());
-                        breakEnd.setSeconds(0);
-
-                        //check if currently in break.
-                        long breakDuration = getDateDiff(breakStart, breakEnd, TimeUnit.MINUTES);
-                        if (timeDiffInMinutes < 0 && Math.abs(timeDiffInMinutes) <= breakDuration) {
-                            //is currently in break! // Loop stops here.
-                            closestBreak = breakNode;
-                            closestBreakMin = timeDiffInMinutes;
-                            closestBreakDuration = breakDuration;
-                            break;
-                        } else if (timeDiffInMinutes < closestBreakMin) {
-                            //this is to handle if there are multiple breaks in one day. The goal is to show when is the CLOSEST break.
-                            closestBreak = breakNode;
-                            closestBreakMin = timeDiffInMinutes;
-                            closestBreakDuration = breakDuration;
-                        }
-                        else if (timeDiffInMinutes > 0 && closestBreakMin < 0) {
-                            //There is still a break in the current day, while the closest break is already passed, so the coming break has priority. (get it?)
-                            closestBreak = breakNode;
-                            closestBreakMin = timeDiffInMinutes;
-                            closestBreakDuration = breakDuration;
-                        }
-                    }
-                }
-                String text = "";
-                if (closestBreak == null) {
-                    TextView tv = (TextView) view.findViewById(R.id.breakText);
-                    if (tv != null) {
-                        tv.setText("No breaks today");
-                    }
-                }
-                else {
-                    if (closestBreakMin > 0) {
-                        // Next break in timediffminutes
-                        text = "Next break at : " + closestBreak.getFromTime();
-                    }
-                    else if (closestBreakMin < 0 && Math.abs(closestBreakMin) <= closestBreakDuration) {
-                        text = "In break until : " + closestBreak.getToTime();
-                    }
-                    else {
-                        // break is over.
-                        text = "No more breaks today";
-                    }
-
-
-                    TextView tv = (TextView) view.findViewById(R.id.breakText);
-                    if (tv != null) {
-                        tv.setText(text);
-                    }
-                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //Not Handled
             }
         };
         breakQuery.addListenerForSingleValueEvent(postListener);
+    }
+
+    /**Calculates the time difference between two breaks.*/
+    public String breakCalculator(User u, ArrayList<Break> friendBreaks){
+        u.setBreaks(friendBreaks);
+
+        java.util.GregorianCalendar current = new java.util.GregorianCalendar();
+        int currentDay = adaptDayOfWeek(current.get(java.util.Calendar.DAY_OF_WEEK));
+
+        long closestBreakMin = 1440; //Why? bcz: Initialise variable at 24 hrs (because 23:59 is the max value possible between now and the closest break in the same day) ps: this var keeps track of the closest break of the current day.
+        Break closestBreak = null;
+        long closestBreakDuration = 0;
+
+        // find closest break for the day (if any)
+        for (int i=0; i < friendBreaks.size(); i++) {
+            Break breakNode = friendBreaks.get(i);
+
+            if (currentDay == breakNode.getIntDay()) {
+
+                GregorianCalendar now = new GregorianCalendar();
+
+                GregorianCalendar breakStart = new GregorianCalendar();
+                breakStart.set(Calendar.HOUR_OF_DAY,breakNode.getStart().getHour());
+                breakStart.set(Calendar.MINUTE,(breakNode.getStart().getMinute()));
+                breakStart.set(Calendar.SECOND,0);
+
+                long timeDiffInMinutes = getDateDiff(now, breakStart, TimeUnit.MINUTES);
+
+                GregorianCalendar breakEnd = new GregorianCalendar();
+                breakEnd.set(Calendar.HOUR_OF_DAY,breakNode.getEnd().getHour());
+                breakEnd.set(Calendar.MINUTE,breakNode.getEnd().getMinute());
+                breakEnd.set(Calendar.SECOND,0);
+
+                //check if currently in break.
+                long breakDuration = getDateDiff(breakStart, breakEnd, TimeUnit.MINUTES);
+
+                if (timeDiffInMinutes < 0 && Math.abs(timeDiffInMinutes) <= breakDuration) {
+                    //is currently in break! // Loop stops here.
+                    closestBreak = breakNode;
+                    closestBreakMin = timeDiffInMinutes;
+                    closestBreakDuration = breakDuration;
+                    break;
+
+                } else if (timeDiffInMinutes < closestBreakMin) {
+                    //this is to handle if there are multiple breaks in one day. The goal is to show when is the CLOSEST break.
+                    closestBreak = breakNode;
+                    closestBreakMin = timeDiffInMinutes;
+                    closestBreakDuration = breakDuration;
+                }
+                else if (timeDiffInMinutes > 0 && closestBreakMin < 0) {
+                    //There is still a break in the current day, while the closest break is already passed, so the coming break has priority. (get it?)
+                    closestBreak = breakNode;
+                    closestBreakMin = timeDiffInMinutes;
+                    closestBreakDuration = breakDuration;
+                }
+            }
+        }
+
+        String text = "";
+
+        if (friendBreaks.isEmpty()){
+            text = "No breaks at all";
+
+        } else if (closestBreak == null) {
+            text = "No breaks today";
+
+        } else {
+            if (closestBreakMin > 0) {
+                // Next break in timediffminutes
+                text = "Next break at : " + closestBreak.getFromTime();
+            }
+            else if (closestBreakMin < 0 && Math.abs(closestBreakMin) <= closestBreakDuration) {
+                text = "In break until : " + closestBreak.getToTime();
+            }
+            else {
+                // break is over.
+                text = "No more breaks today";
+            }
+
+        }
+        Log.d("Debug bt: ", ""+text);
+
+        return text;
+    }
+
+    /**Theres a mismatch between our original int values of weekdays with the java.utils.calendar integer values of weekdays.*/
+    private int adaptDayOfWeek(int weekday) {
+        int newValue = 0;
+        switch(weekday) {
+            case 1:
+                newValue = 7;
+                break;
+            case 2:
+                newValue = 1;
+                break;
+            case 3:
+                newValue = 2;
+                break;
+            case 4:
+                newValue = 3;
+                break;
+            case 5:
+                newValue = 4;
+                break;
+            case 6:
+                newValue = 5;
+                break;
+            case 7:
+                newValue = 6;
+                break;
+        }
+        return newValue;
     }
 }

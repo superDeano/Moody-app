@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment implements Observer, OnMapReadyCallba
     public HomeFragment(){
 
     }
-    /**Inflates the visual layotu for the fragment*/
+    /**Inflates the visual layout for the fragment*/
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
