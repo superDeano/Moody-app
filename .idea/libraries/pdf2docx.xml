@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="pdf2docx">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Documentation/JAVA_DOC/Nicer Final Version/pdf2docx.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

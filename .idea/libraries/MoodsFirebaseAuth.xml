@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MoodsFirebaseAuth">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Champs_Mood/MoodsFirebaseAuth.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
